@@ -1,0 +1,2187 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+    <title>Касса кофейни</title>
+    
+    <!-- iOS PWA мета-теги -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Кофейня">
+    
+    <!-- Иконки для iOS -->
+    <link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%230b1a2e'/%3E%3Ctext x='90' y='120' font-size='100' text-anchor='middle' fill='%23f6d365'%3E☕%3C/text%3E%3C/svg%3E">
+    
+    <!-- Splash Screen для iPhone -->
+    <link rel="apple-touch-startup-image" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1170' height='2532' viewBox='0 0 1170 2532'%3E%3Crect width='1170' height='2532' fill='%230b1a2e'/%3E%3Ctext x='585' y='1300' font-size='200' text-anchor='middle' fill='%23f6d365'%3E☕%3C/text%3E%3Ctext x='585' y='1500' font-size='60' text-anchor='middle' fill='white'%3EКасса кофейни%3C/text%3E%3C/svg%3E">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoi0JrQsNGB0YHQsCDQutC+0YTQtdC50L3QuCIsInNob3J0X25hbWUiOiLQmtC+0YTQtdC50L3RjyIsInN0YXJ0X3VybCI6Ii4iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjMGIxYTJlIiwidGhlbWVfY29sb3IiOiIjMGIxYTJlIiwiaWNvbnMiOlt7InNyYyI6ImRhdGE6aW1hZ2Uvc3ZnK3htbCwlM0Nzdmcgd2lkdGg9JzE5MicgaGVpZ2h0PScxOTInIHZpZXdCb3g9JzAgMCAxOTIgMTkyJyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnJTNFJTNDcmVjdCB3aWR0aD0nMTkyJyBoZWlnaHQ9JzE5Micgcng9JzQwJyBmaWxsPSclMjMwYjFhMmUnLyUzRSUzQ3RleHQgeD0nOTYnIHk9JzEzMCcgZm9udC1zaXplPScxMDAnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9JyUyM2Y2ZDM2NSclM0UlRTIlOTglOTUlM0MvdGV4dCUzRSUzQy9zdmclM0UiLCJzaXplcyI6IjE5MngxOTIiLCJ0eXBlIjoiaW1hZ2Uvc3ZnK3htbCJ9XX0=">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #0b1a2e;
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        button, .product-card, .btn, .login-btn {
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+        
+        .btn, .login-btn, .product-card {
+            min-height: 44px;
+        }
+        
+        input, select, textarea {
+            font-size: 16px !important;
+        }
+        
+        .products-grid, .table-wrap {
+            -webkit-overflow-scrolling: touch;
+            overflow-y: auto;
+        }
+        
+        #loginScreen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
+            padding: 20px;
+            background: linear-gradient(145deg, #0b1a2e, #1a2f44);
+            padding: env(safe-area-inset-top) 20px env(safe-area-inset-bottom) 20px;
+        }
+        
+        #loginScreen .login-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 40px 30px;
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        #loginScreen .login-box h2 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+        
+        #loginScreen .login-box p {
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        
+        #loginScreen .login-box .logo {
+            font-size: 48px;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        
+        #loginScreen .login-box input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-size: 16px;
+            margin-bottom: 14px;
+        }
+        
+        #loginScreen .login-box input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+        
+        #loginScreen .login-box .login-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            background: linear-gradient(135deg, #f6d365, #fda085);
+            color: #1a1a2e;
+            cursor: pointer;
+            min-height: 50px;
+        }
+        
+        #loginScreen .login-box .login-btn:active {
+            transform: scale(0.97);
+        }
+        
+        #loginScreen .login-box .error-msg {
+            color: #f87171;
+            font-size: 13px;
+            margin-top: 10px;
+            display: none;
+            text-align: center;
+        }
+        
+        #loginScreen .login-box .error-msg.show {
+            display: block;
+        }
+        
+        #appContent {
+            display: none;
+        }
+        
+        header {
+            background: rgba(11, 26, 46, 0.9);
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding-top: calc(12px + env(safe-area-inset-top));
+        }
+        
+        header h1 {
+            font-size: 17px;
+        }
+        
+        header p {
+            font-size: 11px;
+            opacity: 0.7;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .header-right button {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 16px;
+            font-size: 11px;
+            cursor: pointer;
+            min-height: 44px;
+        }
+        
+        nav {
+            display: flex;
+            gap: 3px;
+            flex-wrap: wrap;
+            padding: 8px 12px;
+            background: rgba(11, 26, 46, 0.6);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            position: sticky;
+            top: 56px;
+            z-index: 99;
+        }
+        
+        nav button {
+            border: none;
+            background: transparent;
+            padding: 6px 10px;
+            border-radius: 16px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.6);
+            min-height: 36px;
+        }
+        
+        nav button.active {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        main {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 10px;
+        }
+        
+        .section {
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .card h2 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: 8px;
+            max-height: 350px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .product-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 10px 6px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            min-height: 100px;
+        }
+        
+        .product-card:active {
+            transform: scale(0.95);
+        }
+        
+        .product-card img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            margin-bottom: 4px;
+        }
+        
+        .product-card .name {
+            font-size: 11px;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+        
+        .product-card .price {
+            font-size: 13px;
+            font-weight: 700;
+            color: #f6d365;
+        }
+        
+        .product-card .category-tag {
+            font-size: 8px;
+            color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+        
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            gap: 6px;
+        }
+        
+        .cart-item .info {
+            flex: 1;
+        }
+        
+        .cart-item .info strong {
+            font-size: 12px;
+        }
+        
+        .cart-item .info small {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 10px;
+        }
+        
+        .qty-control {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+        
+        .qty-control button {
+            width: 22px;
+            height: 22px;
+            border: none;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 5px;
+            font-size: 13px;
+            cursor: pointer;
+            color: #fff;
+            min-height: 22px;
+        }
+        
+        .qty-control button:active {
+            transform: scale(0.9);
+        }
+        
+        .qty-control span {
+            font-weight: 600;
+            min-width: 16px;
+            text-align: center;
+            font-size: 13px;
+        }
+        
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .flex-center {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+        
+        .mt-8 {
+            margin-top: 8px;
+        }
+        
+        .mt-12 {
+            margin-top: 12px;
+        }
+        
+        .text-muted {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 12px;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .btn {
+            padding: 8px 14px;
+            border: none;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn:active {
+            transform: scale(0.95);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #f6d365, #fda085);
+            color: #1a1a2e;
+        }
+        
+        .btn-green {
+            background: #22c55e;
+            color: #fff;
+        }
+        
+        .btn-red {
+            background: #ef4444;
+            color: #fff;
+        }
+        
+        .btn-blue {
+            background: #3b82f6;
+            color: #fff;
+        }
+        
+        .btn-gray {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+        
+        .btn-export {
+            background: #6b7280;
+            color: #fff;
+        }
+        
+        .btn-sm {
+            padding: 4px 10px;
+            font-size: 10px;
+            border-radius: 12px;
+            min-height: 30px;
+        }
+        
+        .btn-block {
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .table-wrap {
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+        }
+        
+        th {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 6px 8px;
+            text-align: left;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 10px;
+        }
+        
+        td {
+            padding: 6px 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 11px;
+        }
+        
+        .filter-group {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .filter-group label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .filter-group input,
+        .filter-group select {
+            padding: 4px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            min-width: 80px;
+            min-height: 44px;
+        }
+        
+        .filter-group select option {
+            background: #1a2f44;
+            color: #fff;
+        }
+        
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+        }
+        
+        .stat-card span {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.5);
+            display: block;
+        }
+        
+        .stat-card b {
+            font-size: 20px;
+            font-weight: 700;
+        }
+        
+        .period-group {
+            display: flex;
+            gap: 3px;
+            flex-wrap: wrap;
+        }
+        
+        .period-btn {
+            padding: 3px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            background: transparent;
+            cursor: pointer;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.5);
+            min-height: 36px;
+        }
+        
+        .period-btn.active {
+            background: linear-gradient(135deg, #f6d365, #fda085);
+            color: #1a1a2e;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 1px 6px;
+            border-radius: 10px;
+            font-size: 9px;
+            font-weight: 600;
+        }
+        
+        .badge-good {
+            background: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+        }
+        
+        .badge-low {
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        
+        .modal.show {
+            display: flex;
+        }
+        
+        .modal-box {
+            background: rgba(26, 47, 68, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            max-width: 450px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 20px;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .modal-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .modal-head h2 {
+            font-size: 17px;
+        }
+        
+        .close {
+            background: rgba(255, 255, 255, 0.08);
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            font-size: 16px;
+            cursor: pointer;
+            color: #fff;
+            min-height: 28px;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        
+        .form-grid label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            display: block;
+            margin-bottom: 3px;
+        }
+        
+        .form-grid input,
+        .form-grid select {
+            width: 100%;
+            padding: 6px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            min-height: 44px;
+        }
+        
+        .form-grid select option {
+            background: #1a2f44;
+            color: #fff;
+        }
+        
+        .recipe-line {
+            display: grid;
+            grid-template-columns: 1fr 70px 28px;
+            gap: 6px;
+            align-items: end;
+            margin-bottom: 6px;
+        }
+        
+        .recipe-line select,
+        .recipe-line input {
+            width: 100%;
+            padding: 4px 6px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-size: 16px;
+            min-height: 44px;
+        }
+        
+        .grid {
+            display: grid;
+        }
+        
+        #installBanner {
+            background: linear-gradient(135deg, #f6d365, #fda085);
+            color: #1a1a2e;
+            padding: 12px 16px;
+            text-align: center;
+            font-size: 13px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        @media (max-width: 600px) {
+            body {
+                font-size: 14px;
+            }
+            
+            header h1 {
+                font-size: 15px;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr !important;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+                max-height: 300px;
+            }
+            
+            .stat-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .recipe-line {
+                grid-template-columns: 1fr 60px 24px;
+            }
+            
+            nav button {
+                font-size: 10px;
+                padding: 4px 8px;
+                min-height: 36px;
+            }
+            
+            .card {
+                padding: 10px;
+            }
+            
+            main {
+                padding: 8px;
+            }
+            
+            .product-card {
+                min-height: 90px;
+                padding: 12px 8px;
+            }
+            
+            .product-card .name {
+                font-size: 12px;
+            }
+            
+            .product-card .price {
+                font-size: 14px;
+            }
+            
+            .btn, .login-btn {
+                min-height: 44px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Баннер установки для iOS -->
+    <div id="installBanner" style="display:none;">
+        📱 Нажмите <strong>Поделиться</strong> → <strong>На экран «Домой»</strong> для установки
+        <button onclick="this.parentElement.style.display='none'" style="background: none; border: none; margin-left: 10px; font-size: 16px; cursor: pointer; color: #1a1a2e;">✕</button>
+    </div>
+
+    <div id="loginScreen">
+        <div class="login-box">
+            <div class="logo">☕</div>
+            <h2>Вход в кассу</h2>
+            <p>Введите логин и пароль</p>
+            <input type="text" id="loginUsername" placeholder="Логин (admin)" value="admin">
+            <input type="password" id="loginPassword" placeholder="Пароль (admin123)" value="admin123">
+            <button class="login-btn" onclick="handleLogin()">Войти</button>
+            <div class="error-msg" id="loginError">Неверный логин или пароль</div>
+        </div>
+    </div>
+    
+    <div id="appContent">
+        <header>
+            <div><h1>☕ Касса</h1><p>Продажи, товары, ингредиенты</p></div>
+            <div class="header-right"><button onclick="logout()">🚪 Выйти</button></div>
+        </header>
+        <nav>
+            <button class="active" data-tab="cash">Касса</button>
+            <button data-tab="products">Товары</button>
+            <button data-tab="ingredients">Ингредиенты</button>
+            <button data-tab="stock">Остатки</button>
+            <button data-tab="history">История</button>
+            <button data-tab="reports">Отчёт</button>
+            <button data-tab="purchases">Закупки</button>
+            <button data-tab="supplier">📦 Заказ</button>
+        </nav>
+        <main>
+            <section id="cash" class="section active">
+                <div class="grid" style="grid-template-columns:1.5fr 1fr;gap:12px;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>📦 Товары</h2>
+                            <select id="categoryFilter" onchange="renderCash()" style="min-width:80px;padding:4px 8px;border:1px solid rgba(255,255,255,0.1);border-radius:14px;background:rgba(255,255,255,0.05);color:#fff;font-size:16px;min-height:44px;">
+                                <option value="">Все</option>
+                            </select>
+                        </div>
+                        <input id="cashSearch" placeholder="🔍 Поиск..." oninput="renderCash()" style="width:100%;padding:6px 12px;border:1px solid rgba(255,255,255,0.1);border-radius:16px;font-size:16px;margin-bottom:10px;background:rgba(255,255,255,0.05);color:#fff;min-height:44px;">
+                        <div id="cashProducts" class="products-grid"></div>
+                    </div>
+                    <div class="card">
+                        <h2>🛒 Корзина</h2>
+                        <div id="cart"></div>
+                        <div class="flex-between mt-12" style="font-size:16px;font-weight:700;padding-top:8px;border-top:1px solid rgba(255,255,255,0.06);">
+                            <span>Итого:</span><span id="cartTotal">0 ₽</span>
+                        </div>
+                        <div class="flex-between mt-8">
+                            <label style="font-size:12px;color:rgba(255,255,255,0.5);">Внесено, ₽</label>
+                            <input type="number" id="amountPaid" min="0" step="0.01" value="0" oninput="updateChange()" style="width:90px;padding:4px 8px;border:1px solid rgba(255,255,255,0.1);border-radius:6px;background:rgba(255,255,255,0.05);color:#fff;font-size:16px;min-height:44px;">
+                        </div>
+                        <div class="flex-between mt-8" style="font-size:14px;font-weight:600;">
+                            <span>Сдача:</span><span id="changeDisplay" style="color:#4ade80;">0 ₽</span>
+                        </div>
+                        <select id="payment" class="mt-8" style="width:100%;padding:6px 10px;border:1px solid rgba(255,255,255,0.1);border-radius:6px;background:rgba(255,255,255,0.05);color:#fff;font-size:16px;min-height:44px;">
+                            <option value="Наличные">Наличные</option>
+                            <option value="Карта">Карта</option>
+                            <option value="Перевод">Перевод</option>
+                        </select>
+                        <button class="btn btn-green btn-block mt-8" onclick="completeSale()">✅ Оформить</button>
+                        <button class="btn btn-gray btn-block mt-8" onclick="clearCart()">🗑 Очистить</button>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="products" class="section">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>📋 Товары</h2>
+                        <div class="flex-center">
+                            <button class="btn btn-primary btn-sm" onclick="openProductModal()">+</button>
+                            <button class="btn btn-export btn-sm" onclick="exportProducts()">📤</button>
+                        </div>
+                    </div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>Название</th><th>Кат.</th><th>Цена</th><th>Себест.</th><th>Маржа</th><th>⚙️</th></tr></thead>
+                            <tbody id="productsTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="ingredients" class="section">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>🧂 Ингредиенты</h2>
+                        <div class="flex-center">
+                            <button class="btn btn-primary btn-sm" onclick="openIngredientModal()">+</button>
+                            <button class="btn btn-export btn-sm" onclick="exportIngredients()">📤</button>
+                        </div>
+                    </div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>Название</th><th>Ед.</th><th>Остаток</th><th>Мин.</th><th>Цена</th><th>⚙️</th></tr></thead>
+                            <tbody id="ingredientsTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="stock" class="section">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>📊 Остатки</h2>
+                        <button class="btn btn-primary btn-sm" onclick="checkLowStock()">🔔</button>
+                    </div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>Ингредиент</th><th>Остаток</th><th>Ед.</th><th>Статус</th><th>Изменить</th></tr></thead>
+                            <tbody id="stockTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="history" class="section">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>📜 История</h2>
+                        <div class="flex-center">
+                            <button class="btn btn-red btn-sm" onclick="clearHistory()">🗑</button>
+                            <button class="btn btn-export btn-sm" onclick="exportSales()">📤</button>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <label>От:</label><input type="date" id="historyDateFrom" onchange="renderHistory()" style="min-width:60px;">
+                        <label>До:</label><input type="date" id="historyDateTo" onchange="renderHistory()" style="min-width:60px;">
+                        <label>Оплата:</label>
+                        <select id="historyPaymentFilter" onchange="renderHistory()" style="min-width:80px;">
+                            <option value="">Все</option>
+                            <option value="Наличные">Наличные</option>
+                            <option value="Карта">Карта</option>
+                            <option value="Перевод">Перевод</option>
+                        </select>
+                    </div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>Дата</th><th>Товары</th><th>Сумма</th><th>Оплата</th><th>Возврат</th></tr></thead>
+                            <tbody id="historyTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="reports" class="section">
+                <div class="stat-grid">
+                    <div class="stat-card"><span>Выручка</span><b id="reportRevenue">0 ₽</b></div>
+                    <div class="stat-card"><span>Продаж</span><b id="reportSales">0</b></div>
+                    <div class="stat-card"><span>Продано</span><b id="reportItems">0</b></div>
+                    <div class="stat-card"><span>Низкий остаток</span><b id="reportLowStock">0</b></div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h2>📈 Продажи по товарам</h2>
+                        <div class="flex-center">
+                            <div class="period-group">
+                                <button class="period-btn active" data-period="today" onclick="setReportPeriod('today')">Сегодня</button>
+                                <button class="period-btn" data-period="week" onclick="setReportPeriod('week')">Неделя</button>
+                                <button class="period-btn" data-period="month" onclick="setReportPeriod('month')">Месяц</button>
+                            </div>
+                            <button class="btn btn-export btn-sm" onclick="exportReport()">📤</button>
+                        </div>
+                    </div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>Товар</th><th>Кол-во</th><th>Выручка</th></tr></thead>
+                            <tbody id="reportTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="profitReports"></div>
+                <div class="card">
+                    <h3>💰 Финансы</h3>
+                    <div class="flex-between" style="flex-wrap:wrap;gap:8px;padding:4px 0;">
+                        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                            <label style="font-size:11px;color:rgba(255,255,255,0.5);">Аренда: 
+                                <input type="number" id="fixedExpenses" value="10000" min="0" step="100" style="width:70px;padding:3px 6px;border:1px solid rgba(255,255,255,0.1);border-radius:5px;background:rgba(255,255,255,0.05);color:#fff;font-size:16px;min-height:44px;" onchange="renderReports()">
+                            </label>
+                            <label style="font-size:11px;color:rgba(255,255,255,0.5);">З/п день: 
+                                <input type="number" id="salaryExpense" value="600" min="0" step="50" style="width:70px;padding:3px 6px;border:1px solid rgba(255,255,255,0.1);border-radius:5px;background:rgba(255,255,255,0.05);color:#fff;font-size:16px;min-height:44px;" onchange="renderReports()">
+                            </label>
+                        </div>
+                        <div style="display:flex;gap:12px;flex-wrap:wrap;font-size:12px;">
+                            <span><strong>Валовая:</strong> <span style="color:#4ade80;" id="grossProfitDisplay">0 ₽</span></span>
+                            <span><strong>Закупки:</strong> <span style="color:#60a5fa;" id="purchaseCostDisplay">0 ₽</span></span>
+                            <span><strong>Личная:</strong> <span id="personalProfitDisplay" style="color:#4ade80;">0 ₽</span></span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="purchases" class="section">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>📦 Закупки</h2>
+                        <button class="btn btn-primary btn-sm" onclick="openPurchaseModal()">+</button>
+                    </div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>Дата</th><th>Ингредиент</th><th>Кол-во</th><th>Цена</th><th>Сумма</th></tr></thead>
+                            <tbody id="purchasesTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="supplier" class="section">
+                <div class="card">
+                    <h2>📦 Заказ поставщику</h2>
+                    <p class="text-muted">Рекомендуемое количество до двойного минимума</p>
+                    <div id="supplierOrderList"></div>
+                    <div id="supplierTotal" style="font-size:15px;font-weight:700;margin-top:10px;"></div>
+                    <button class="btn btn-export btn-sm mt-8" onclick="exportSupplierOrder()">📤 Экспорт CSV</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Модальные окна -->
+    <div id="productModal" class="modal">
+        <div class="modal-box">
+            <div class="modal-head">
+                <h2 id="productModalTitle">Добавить товар</h2>
+                <button class="close" onclick="closeModal('productModal')">✕</button>
+            </div>
+            <div class="form-grid">
+                <div>
+                    <label>Название</label>
+                    <input id="productName">
+                </div>
+                <div>
+                    <label>Категория</label>
+                    <input id="productCategory">
+                </div>
+                <div>
+                    <label>Цена</label>
+                    <input type="number" id="productPrice" min="0">
+                </div>
+                <div>
+                    <label>Изображение (файл)</label>
+                    <input type="file" id="productImageInput" accept="image/*" onchange="previewProductImage(event)">
+                </div>
+                <div>
+                    <label>или URL изображения</label>
+                    <input type="url" id="productImageUrl" placeholder="https://..." oninput="previewProductUrl(this.value)">
+                </div>
+                <div id="imagePreviewContainer" style="grid-column: 1 / -1; display: none;">
+                    <img id="productImagePreview" style="max-width: 100px; max-height: 100px; border-radius: 8px; display: block;">
+                    <button class="btn btn-sm btn-red mt-8" onclick="removeProductImage()">Удалить фото</button>
+                </div>
+            </div>
+            <input type="hidden" id="productId">
+            <h3 style="margin-top: 12px; font-size: 13px;">Рецепт</h3>
+            <div id="recipe"></div>
+            <button class="btn btn-sm btn-blue mt-8" onclick="addRecipeLine()">+ Ингредиент</button>
+            <button class="btn btn-primary btn-block mt-12" onclick="saveProduct()">💾 Сохранить</button>
+        </div>
+    </div>
+
+    <div id="ingredientModal" class="modal">
+        <div class="modal-box">
+            <div class="modal-head">
+                <h2 id="ingredientModalTitle">Добавить ингредиент</h2>
+                <button class="close" onclick="closeModal('ingredientModal')">✕</button>
+            </div>
+            <div class="form-grid">
+                <div>
+                    <label>Название</label>
+                    <input id="ingredientName">
+                </div>
+                <div>
+                    <label>Единица</label>
+                    <select id="ingredientUnit">
+                        <option value="мл">мл</option>
+                        <option value="г">г</option>
+                        <option value="шт">шт</option>
+                        <option value="л">л</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Остаток</label>
+                    <input type="number" id="ingredientStock" min="0">
+                </div>
+                <div>
+                    <label>Мин. остаток</label>
+                    <input type="number" id="ingredientMin" min="0">
+                </div>
+                <div>
+                    <label>Закупочная цена</label>
+                    <input type="number" id="ingredientCost" min="0" step="0.01">
+                </div>
+            </div>
+            <input type="hidden" id="ingredientId">
+            <button class="btn btn-primary btn-block mt-12" onclick="saveIngredient()">💾 Сохранить</button>
+        </div>
+    </div>
+
+    <div id="purchaseModal" class="modal">
+        <div class="modal-box">
+            <div class="modal-head">
+                <h2>Добавить закупку</h2>
+                <button class="close" onclick="closeModal('purchaseModal')">✕</button>
+            </div>
+            <div class="form-grid">
+                <div>
+                    <label>Ингредиент</label>
+                    <select id="purchaseIngredient"></select>
+                </div>
+                <div>
+                    <label>Количество</label>
+                    <input type="number" id="purchaseQty" min="0">
+                </div>
+                <div>
+                    <label>Цена за единицу</label>
+                    <input type="number" id="purchasePrice" min="0" step="0.01">
+                </div>
+                <div>
+                    <label>Дата</label>
+                    <input type="date" id="purchaseDate">
+                </div>
+            </div>
+            <button class="btn btn-primary btn-block mt-12" onclick="savePurchase()">💾 Сохранить</button>
+        </div>
+    </div>
+
+    <script>
+        // Показать баннер установки на iOS
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        const isStandalone = window.navigator.standalone;
+        if (isIOS && !isStandalone) {
+            document.getElementById('installBanner').style.display = 'block';
+        }
+
+        // Регистрация Service Worker для офлайн-работы
+        if ('serviceWorker' in navigator) {
+            const swCode = `
+                const CACHE_NAME = 'coffee-cache-v1';
+                const ASSETS = ['./', 'index.html'];
+                
+                self.addEventListener('install', event => {
+                    event.waitUntil(
+                        caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
+                    );
+                });
+                
+                self.addEventListener('fetch', event => {
+                    event.respondWith(
+                        caches.match(event.request).then(response => {
+                            return response || fetch(event.request).then(fetchResponse => {
+                                return caches.open(CACHE_NAME).then(cache => {
+                                    cache.put(event.request, fetchResponse.clone());
+                                    return fetchResponse;
+                                });
+                            });
+                        })
+                    );
+                });
+                
+                self.addEventListener('activate', event => {
+                    event.waitUntil(
+                        caches.keys().then(keys => {
+                            return Promise.all(
+                                keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
+                            );
+                        })
+                    );
+                });
+            `;
+            
+            const blob = new Blob([swCode], { type: 'application/javascript' });
+            const swUrl = URL.createObjectURL(blob);
+            navigator.serviceWorker.register(swUrl).catch(err => console.log('SW register error:', err));
+        }
+
+        // ============================================================
+        // АВТОРИЗАЦИЯ
+        // ============================================================
+        const ADMIN_USER = 'admin';
+        const ADMIN_PASS = 'admin123';
+
+        function isLoggedIn() {
+            return localStorage.getItem('coffeeAuth') === 'true';
+        }
+
+        function handleLogin() {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+            const errorEl = document.getElementById('loginError');
+            if (username === ADMIN_USER && password === ADMIN_PASS) {
+                localStorage.setItem('coffeeAuth', 'true');
+                errorEl.classList.remove('show');
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('appContent').style.display = 'block';
+                renderAll();
+            } else {
+                errorEl.classList.add('show');
+                setTimeout(() => errorEl.classList.remove('show'), 3000);
+            }
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') handleLogin();
+        });
+
+        function logout() {
+            if (confirm('Выйти?')) {
+                localStorage.removeItem('coffeeAuth');
+                location.reload();
+            }
+        }
+
+        if (isLoggedIn()) {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('appContent').style.display = 'block';
+        }
+
+        // ============================================================
+        // ДАННЫЕ
+        // ============================================================
+        const defaultIngredients = [
+            { id: 1, name: "Кофе", unit: "г", stock: 10000, min: 2000, cost: 1.8 },
+            { id: 2, name: "Молоко", unit: "мл", stock: 20000, min: 5000, cost: 0.09 },
+            { id: 3, name: "Сахар", unit: "г", stock: 5000, min: 1000, cost: 0.04 },
+            { id: 4, name: "Стакан горячий маленький", unit: "шт", stock: 500, min: 50, cost: 5 },
+            { id: 5, name: "Стакан горячий большой", unit: "шт", stock: 500, min: 50, cost: 6 },
+            { id: 6, name: "Стакан холодный 300 мл", unit: "шт", stock: 500, min: 50, cost: 5 },
+            { id: 7, name: "Стакан холодный 450 мл", unit: "шт", stock: 500, min: 50, cost: 6 },
+            { id: 8, name: "Крышка маленькая", unit: "шт", stock: 500, min: 50, cost: 2 },
+            { id: 9, name: "Крышка большая", unit: "шт", stock: 500, min: 50, cost: 2 },
+            { id: 10, name: "Крышка купольная", unit: "шт", stock: 500, min: 50, cost: 3 },
+            { id: 11, name: "Сироп ванильный", unit: "мл", stock: 3000, min: 500, cost: 0.41 },
+            { id: 12, name: "Сироп карамельный", unit: "мл", stock: 3000, min: 500, cost: 0.41 },
+            { id: 13, name: "Сироп малиновый", unit: "мл", stock: 2000, min: 500, cost: 0.41 },
+            { id: 14, name: "Сироп солёная карамель", unit: "мл", stock: 2000, min: 500, cost: 0.41 },
+            { id: 15, name: "Сироп карамель (2 шт.)", unit: "мл", stock: 4000, min: 500, cost: 0.41 },
+            { id: 16, name: "Сироп кокос (2 шт.)", unit: "мл", stock: 4000, min: 500, cost: 0.41 },
+            { id: 17, name: "Сироп попкорн", unit: "мл", stock: 2000, min: 500, cost: 0.41 },
+            { id: 18, name: "Сироп шоколадное печенье", unit: "мл", stock: 2000, min: 500, cost: 0.41 },
+            { id: 19, name: "Сироп макадамия", unit: "мл", stock: 2000, min: 500, cost: 0.41 },
+            { id: 20, name: "Сироп ваниль (доп.)", unit: "мл", stock: 2000, min: 500, cost: 0.41 },
+            { id: 21, name: "Сироп кубинский мохито", unit: "мл", stock: 2000, min: 500, cost: 0.41 },
+            { id: 22, name: "Шоколадный сироп", unit: "мл", stock: 2000, min: 500, cost: 0.41 },
+            { id: 23, name: "Топинг карамель", unit: "мл", stock: 1000, min: 200, cost: 0.4 },
+            { id: 24, name: "Топинг шоколад", unit: "мл", stock: 1000, min: 200, cost: 0.4 },
+            { id: 25, name: "Сливки 10%", unit: "мл", stock: 5000, min: 1000, cost: 0.17 },
+            { id: 26, name: "Горячий шоколад", unit: "г", stock: 3000, min: 500, cost: 1.8 },
+            { id: 27, name: "Урбеч (паста)", unit: "г", stock: 2000, min: 500, cost: 1.5 },
+            { id: 28, name: "Мороженое пломбир", unit: "г", stock: 5000, min: 1000, cost: 0.34 },
+            { id: 29, name: "Тоник", unit: "мл", stock: 5000, min: 1000, cost: 0.14 },
+            { id: 30, name: "Сок апельсиновый", unit: "мл", stock: 5000, min: 1000, cost: 0.2 },
+            { id: 31, name: "Сок гранатовый", unit: "мл", stock: 5000, min: 1000, cost: 0.15 },
+            { id: 32, name: "Чай чёрный", unit: "г", stock: 2000, min: 500, cost: 0.7 },
+            { id: 33, name: "Ванильный сахар", unit: "г", stock: 1000, min: 100, cost: 1 },
+            { id: 34, name: "Сок лимонный", unit: "мл", stock: 3000, min: 500, cost: 0.3 },
+            { id: 35, name: "Сироп мятный", unit: "мл", stock: 2000, min: 500, cost: 0.41 },
+            { id: 36, name: "Нарзан", unit: "мл", stock: 5000, min: 1000, cost: 0.0267 },
+            { id: 37, name: "Лимон (дольки)", unit: "шт", stock: 200, min: 20, cost: 15 },
+            { id: 38, name: "Мята свежая", unit: "г", stock: 500, min: 50, cost: 0.8 },
+            { id: 39, name: "Клубника", unit: "г", stock: 2000, min: 200, cost: 0.5 },
+            { id: 40, name: "Банан", unit: "г", stock: 2000, min: 200, cost: 0.4 },
+            { id: 41, name: "Основа лимонада", unit: "г", stock: 5000, min: 1000, cost: 0.52 },
+            { id: 42, name: "Вода", unit: "л", stock: 500, min: 50, cost: 40 },
+            { id: 43, name: "Колд брю", unit: "г", stock: 2000, min: 500, cost: 2.5 },
+            { id: 44, name: "Мороженое ванильное", unit: "г", stock: 3000, min: 500, cost: 0.35 },
+            { id: 45, name: "Мороженое шоколадное", unit: "г", stock: 3000, min: 500, cost: 0.35 },
+            { id: 46, name: "Мороженое клубничное", unit: "г", stock: 3000, min: 500, cost: 0.35 },
+            { id: 47, name: "Лёд для милкшейка", unit: "г", stock: 5000, min: 1000, cost: 0.01 },
+            { id: 48, name: "Сироп банановый", unit: "мл", stock: 2000, min: 500, cost: 0.41 },
+            { id: 49, name: "Сироп клубничный", unit: "мл", stock: 2000, min: 500, cost: 0.41 },
+            { id: 50, name: "Топинг ванильный", unit: "мл", stock: 1000, min: 200, cost: 0.4 },
+            { id: 51, name: "Топинг клубничный", unit: "мл", stock: 1000, min: 200, cost: 0.4 },
+        ];
+
+        const defaultProducts = [
+            { id: 1, name: "Эспрессо", category: "Кофе", price: 100, image: "", recipe: [{ ingredientId: 1, amount: 20 }, { ingredientId: 4, amount: 1 }, { ingredientId: 8, amount: 1 }] },
+            { id: 2, name: "Американо", category: "Кофе", price: 130, image: "", recipe: [{ ingredientId: 1, amount: 20 }, { ingredientId: 4, amount: 1 }, { ingredientId: 8, amount: 1 }] },
+            { id: 3, name: "Капучино маленький", category: "Кофе", price: 170, image: "", recipe: [{ ingredientId: 1, amount: 20 }, { ingredientId: 2, amount: 200 }, { ingredientId: 4, amount: 1 }, { ingredientId: 8, amount: 1 }] },
+            { id: 4, name: "Капучино большой", category: "Кофе", price: 200, image: "", recipe: [{ ingredientId: 1, amount: 20 }, { ingredientId: 2, amount: 300 }, { ingredientId: 5, amount: 1 }, { ingredientId: 9, amount: 1 }] },
+            { id: 5, name: "Флэт Уайт маленький", category: "Кофе", price: 200, image: "", recipe: [{ ingredientId: 1, amount: 20 }, { ingredientId: 2, amount: 200 }, { ingredientId: 4, amount: 1 }, { ingredientId: 8, amount: 1 }] },
+            { id: 6, name: "Латте большой", category: "Кофе", price: 200, image: "", recipe: [{ ingredientId: 1, amount: 20 }, { ingredientId: 2, amount: 300 }, { ingredientId: 5, amount: 1 }, { ingredientId: 9, amount: 1 }] },
+            { id: 7, name: "Раф маленький", category: "Кофе", price: 200, image: "", recipe: [{ ingredientId: 1, amount: 20 }, { ingredientId: 25, amount: 200 }, { ingredientId: 4, amount: 1 }, { ingredientId: 8, amount: 1 }] },
+            { id: 8, name: "Раф большой", category: "Кофе", price: 230, image: "", recipe: [{ ingredientId: 1, amount: 20 }, { ingredientId: 25, amount: 300 }, { ingredientId: 5, amount: 1 }, { ingredientId: 9, amount: 1 }] },
+            { id: 9, name: "Раф малиновый маленький", category: "Кофе", price: 220, image: "", recipe: [{ ingredientId: 1, amount: 20 }, { ingredientId: 25, amount: 200 }, { ingredientId: 13, amount: 10 }, { ingredientId: 23, amount: 3 }, { ingredientId: 33, amount: 5 }, { ingredientId: 4, amount: 1 }, { ingredientId: 8, amount: 1 }] },
+            { id: 10, name: "Раф малиновый большой", category: "Кофе", price: 250, image: "", recipe: [{ ingredientId: 1, amount: 20 }, { ingredientId: 25, amount: 300 }, { ingredientId: 13, amount: 15 }, { ingredientId: 23, amount: 7 }, { ingredientId: 33, amount: 5 }, { ingredientId: 5, amount: 1 }, { ingredientId: 9, amount: 1 }] },
+            { id: 11, name: "Горячий шоколад маленький", category: "Горячие напитки", price: 200, image: "", recipe: [{ ingredientId: 26, amount: 35 }, { ingredientId: 2, amount: 200 }, { ingredientId: 4, amount: 1 }, { ingredientId: 8, amount: 1 }] },
+            { id: 12, name: "Горячий шоколад большой", category: "Горячие напитки", price: 230, image: "", recipe: [{ ingredientId: 26, amount: 50 }, { ingredientId: 2, amount: 300 }, { ingredientId: 5, amount: 1 }, { ingredientId: 9, amount: 1 }] },
+            { id: 13, name: "Какао маленький", category: "Горячие напитки", price: 170, image: "", recipe: [{ ingredientId: 26, amount: 25 }, { ingredientId: 2, amount: 200 }, { ingredientId: 4, amount: 1 }, { ingredientId: 8, amount: 1 }] },
+            { id: 14, name: "Какао большой", category: "Горячие напитки", price: 200, image: "", recipe: [{ ingredientId: 26, amount: 35 }, { ingredientId: 2, amount: 300 }, { ingredientId: 5, amount: 1 }, { ingredientId: 9, amount: 1 }] },
+            { id: 15, name: "Раф урбеч маленький", category: "Кофе", price: 250, image: "", recipe: [{ ingredientId: 1, amount: 20 }, { ingredientId: 25, amount: 200 }, { ingredientId: 27, amount: 30 }, { ingredientId: 33, amount: 5 }, { ingredientId: 4, amount: 1 }, { ingredientId: 8, amount: 1 }] },
+            { id: 16, name: "Раф урбеч большой", category: "Кофе", price: 300, image: "", recipe: [{ ingredientId: 1, amount: 20 }, { ingredientId: 25, amount: 300 }, { ingredientId: 27, amount: 40 }, { ingredientId: 33, amount: 5 }, { ingredientId: 5, amount: 1 }, { ingredientId: 9, amount: 1 }] },
+            { id: 17, name: "Чай чёрный", category: "Чай", price: 160, image: "", recipe: [{ ingredientId: 32, amount: 5 }, { ingredientId: 4, amount: 1 }, { ingredientId: 8, amount: 1 }] },
+            { id: 18, name: "Айс латте", category: "Холодные напитки", price: 250, image: "", recipe: [{ ingredientId: 1, amount: 20 }, { ingredientId: 2, amount: 250 }, { ingredientId: 11, amount: 15 }, { ingredientId: 6, amount: 1 }, { ingredientId: 10, amount: 1 }] },
+            { id: 19, name: "Айс мокко латте", category: "Холодные напитки", price: 280, image: "", recipe: [{ ingredientId: 1, amount: 20 }, { ingredientId: 2, amount: 250 }, { ingredientId: 22, amount: 15 }, { ingredientId: 24, amount: 10 }, { ingredientId: 26, amount: 15 }, { ingredientId: 6, amount: 1 }, { ingredientId: 10, amount: 1 }] },
+            { id: 20, name: "Айс кофе с урбечом большой", category: "Холодные напитки", price: 300, image: "", recipe: [{ ingredientId: 1, amount: 20 }, { ingredientId: 27, amount: 40 }, { ingredientId: 28, amount: 150 }, { ingredientId: 11, amount: 10 }, { ingredientId: 2, amount: 120 }, { ingredientId: 7, amount: 1 }, { ingredientId: 10, amount: 1 }] },
+            { id: 21, name: "Бамбл апельсин маленький", category: "Холодные напитки", price: 250, image: "", recipe: [{ ingredientId: 30, amount: 250 }, { ingredientId: 11, amount: 15 }, { ingredientId: 6, amount: 1 }, { ingredientId: 10, amount: 1 }] },
+            { id: 22, name: "Бамбл апельсин большой", category: "Холодные напитки", price: 300, image: "", recipe: [{ ingredientId: 30, amount: 350 }, { ingredientId: 11, amount: 15 }, { ingredientId: 7, amount: 1 }, { ingredientId: 10, amount: 1 }] },
+            { id: 23, name: "Бамбл гранат маленький", category: "Холодные напитки", price: 250, image: "", recipe: [{ ingredientId: 31, amount: 250 }, { ingredientId: 11, amount: 15 }, { ingredientId: 6, amount: 1 }, { ingredientId: 10, amount: 1 }] },
+            { id: 24, name: "Бамбл гранат большой", category: "Холодные напитки", price: 300, image: "", recipe: [{ ingredientId: 31, amount: 350 }, { ingredientId: 11, amount: 15 }, { ingredientId: 7, amount: 1 }, { ingredientId: 10, amount: 1 }] },
+            { id: 25, name: "Эспрессо тоник", category: "Холодные напитки", price: 250, image: "", recipe: [{ ingredientId: 1, amount: 20 }, { ingredientId: 29, amount: 250 }, { ingredientId: 11, amount: 20 }, { ingredientId: 6, amount: 1 }, { ingredientId: 10, amount: 1 }] },
+            { id: 26, name: "Фраппе", category: "Холодные напитки", price: 300, image: "", recipe: [{ ingredientId: 1, amount: 20 }, { ingredientId: 11, amount: 15 }, { ingredientId: 28, amount: 150 }, { ingredientId: 2, amount: 100 }, { ingredientId: 6, amount: 1 }, { ingredientId: 10, amount: 1 }] },
+            { id: 27, name: "Раф 'тут кофе' маленький", category: "Кофе", price: 300, image: "", recipe: [{ ingredientId: 1, amount: 20 }, { ingredientId: 25, amount: 200 }, { ingredientId: 12, amount: 10 }, { ingredientId: 4, amount: 1 }, { ingredientId: 8, amount: 1 }] },
+            { id: 28, name: "Раф 'тут кофе' большой", category: "Кофе", price: 350, image: "", recipe: [{ ingredientId: 1, amount: 20 }, { ingredientId: 25, amount: 300 }, { ingredientId: 12, amount: 15 }, { ingredientId: 5, amount: 1 }, { ingredientId: 9, amount: 1 }] },
+            { id: 29, name: "Лимонад классический", category: "Лимонады", price: 250, image: "", recipe: [{ ingredientId: 41, amount: 50 }, { ingredientId: 36, amount: 300 }, { ingredientId: 37, amount: 1 }, { ingredientId: 6, amount: 1 }, { ingredientId: 10, amount: 1 }] },
+            { id: 32, name: "Коктейль", category: "Коктейли", price: 250, image: "", recipe: [{ ingredientId: 23, amount: 20 }, { ingredientId: 11, amount: 15 }, { ingredientId: 28, amount: 150 }, { ingredientId: 2, amount: 100 }, { ingredientId: 35, amount: 15 }, { ingredientId: 38, amount: 5 }, { ingredientId: 6, amount: 1 }, { ingredientId: 10, amount: 1 }] },
+            { id: 33, name: "Вода", category: "Напитки", price: 60, image: "", recipe: [{ ingredientId: 42, amount: 1 }, { ingredientId: 6, amount: 1 }, { ingredientId: 10, amount: 1 }] },
+            { id: 34, name: "Колд брю", category: "Кофе", price: 350, image: "", recipe: [{ ingredientId: 43, amount: 20 }, { ingredientId: 6, amount: 1 }, { ingredientId: 10, amount: 1 }] },
+            { id: 35, name: "Милкшейк ванильный", category: "Милкшейки", price: 250, image: "", recipe: [{ ingredientId: 44, amount: 130 }, { ingredientId: 47, amount: 120 }, { ingredientId: 2, amount: 110 }, { ingredientId: 11, amount: 10 }, { ingredientId: 50, amount: 5 }, { ingredientId: 50, amount: 5 }, { ingredientId: 6, amount: 1 }, { ingredientId: 10, amount: 1 }] },
+            { id: 36, name: "Милкшейк шоколадный", category: "Милкшейки", price: 250, image: "", recipe: [{ ingredientId: 45, amount: 130 }, { ingredientId: 47, amount: 120 }, { ingredientId: 2, amount: 110 }, { ingredientId: 24, amount: 10 }, { ingredientId: 24, amount: 5 }, { ingredientId: 6, amount: 1 }, { ingredientId: 10, amount: 1 }] },
+            { id: 37, name: "Милкшейк клубничный", category: "Милкшейки", price: 250, image: "", recipe: [{ ingredientId: 46, amount: 130 }, { ingredientId: 47, amount: 120 }, { ingredientId: 2, amount: 110 }, { ingredientId: 49, amount: 10 }, { ingredientId: 51, amount: 5 }, { ingredientId: 51, amount: 5 }, { ingredientId: 6, amount: 1 }, { ingredientId: 10, amount: 1 }] },
+            { id: 38, name: "Милкшейк банановый", category: "Милкшейки", price: 250, image: "", recipe: [{ ingredientId: 44, amount: 130 }, { ingredientId: 47, amount: 120 }, { ingredientId: 2, amount: 110 }, { ingredientId: 48, amount: 10 }, { ingredientId: 6, amount: 1 }, { ingredientId: 10, amount: 1 }] },
+        ];
+
+        let ingredients = JSON.parse(localStorage.getItem("coffeeIngredients") || "null") || defaultIngredients;
+        let products = JSON.parse(localStorage.getItem("coffeeProducts") || "null") || defaultProducts;
+        let sales = JSON.parse(localStorage.getItem("coffeeSales") || "[]");
+        let purchases = JSON.parse(localStorage.getItem("coffeePurchases") || "[]");
+        let cart = [];
+        let reportPeriod = 'today';
+
+        function saveData() {
+            localStorage.setItem("coffeeIngredients", JSON.stringify(ingredients));
+            localStorage.setItem("coffeeProducts", JSON.stringify(products));
+            localStorage.setItem("coffeeSales", JSON.stringify(sales));
+            localStorage.setItem("coffeePurchases", JSON.stringify(purchases));
+        }
+
+        function money(v) { return Number(v || 0).toLocaleString("ru-RU", { maximumFractionDigits: 2 }) + " ₽"; }
+        function esc(v) { return String(v ?? "").replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[m])); }
+
+        function calculateCost(product) {
+            if (!product.recipe || product.recipe.length === 0) return 0;
+            let total = 0;
+            for (const r of product.recipe) {
+                const ing = ingredients.find(i => i.id === r.ingredientId);
+                if (ing) total += Number(r.amount) * Number(ing.cost || 0);
+            }
+            return total;
+        }
+
+        function calculateMargin(product) {
+            const cost = calculateCost(product);
+            if (cost === 0) return 0;
+            return ((product.price - cost) / product.price) * 100;
+        }
+
+        function getDateRange(period) {
+            const now = new Date();
+            let from = new Date(),
+                to = new Date();
+            if (period === 'today') {
+                from.setHours(0, 0, 0, 0);
+                to.setHours(23, 59, 59, 999);
+            } else if (period === 'week') {
+                from.setDate(now.getDate() - now.getDay());
+                from.setHours(0, 0, 0, 0);
+                to = new Date(from);
+                to.setDate(from.getDate() + 6);
+                to.setHours(23, 59, 59, 999);
+            } else if (period === 'month') {
+                from.setDate(1);
+                from.setHours(0, 0, 0, 0);
+                to = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+                to.setHours(23, 59, 59, 999);
+            }
+            return { from, to };
+        }
+
+        // ============================================================
+        // НАВИГАЦИЯ
+        // ============================================================
+        document.querySelectorAll("nav button").forEach(btn => {
+            btn.addEventListener("click", function() {
+                document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
+                document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+                this.classList.add("active");
+                document.getElementById(this.dataset.tab).classList.add("active");
+                renderAll();
+            });
+        });
+
+        function renderAll() {
+            renderCash();
+            renderCart();
+            renderProducts();
+            renderIngredients();
+            renderStock();
+            renderHistory();
+            renderReports();
+            renderPurchases();
+            renderSupplierOrder();
+            updateCategoryFilter();
+            updateChange();
+        }
+
+        // ============================================================
+        // КАССА
+        // ============================================================
+        function updateCategoryFilter() {
+            const select = document.getElementById('categoryFilter');
+            const categories = [...new Set(products.map(p => p.category).filter(Boolean))];
+            const current = select.value;
+            select.innerHTML = '<option value="">Все</option>';
+            categories.forEach(cat => {
+                const opt = document.createElement('option');
+                opt.value = cat;
+                opt.textContent = cat;
+                if (cat === current) opt.selected = true;
+                select.appendChild(opt);
+            });
+        }
+
+        function renderCash() {
+            const search = (document.getElementById("cashSearch")?.value || "").toLowerCase();
+            const category = document.getElementById("categoryFilter").value;
+            let list = products.filter(p => p.name.toLowerCase().includes(search));
+            if (category) list = list.filter(p => p.category === category);
+            const box = document.getElementById("cashProducts");
+            if (!list.length) { box.innerHTML = '<div class="text-center text-muted" style="padding:20px;">Товары не найдены</div>'; return; }
+            box.innerHTML = list.map(p => `
+                <div class="product-card" onclick="addToCart(${p.id})">
+                    <img src="${p.image || 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 100 100\'%3E%3Crect width=\'100\' height=\'100\' fill=\'%23eee\'/%3E%3Ctext x=\'50\' y=\'55\' font-size=\'14\' text-anchor=\'middle\' fill=\'%23999\' font-family=\'Arial\'%3EНет фото%3C/text%3E%3C/svg%3E'}" alt="${esc(p.name)}">
+                    <div class="name">${esc(p.name)}</div>
+                    <div class="price">${money(p.price)}</div>
+                    <div class="category-tag">${esc(p.category || "Без категории")}</div>
+                </div>
+            `).join("");
+        }
+
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+            const item = cart.find(x => x.id === id);
+            if (item) item.qty++;
+            else cart.push({ id, qty: 1 });
+            renderCart();
+        }
+
+        function changeQty(id, delta) {
+            const item = cart.find(x => x.id === id);
+            if (!item) return;
+            item.qty += delta;
+            if (item.qty <= 0) cart = cart.filter(x => x.id !== id);
+            renderCart();
+        }
+
+        function clearCart() {
+            cart = [];
+            renderCart();
+        }
+
+        function renderCart() {
+            const box = document.getElementById("cart");
+            if (!cart.length) {
+                box.innerHTML = '<div class="text-center text-muted" style="padding:20px;">Корзина пуста</div>';
+                document.getElementById("cartTotal").textContent = "0 ₽";
+                updateChange();
+                return;
+            }
+            let total = 0;
+            box.innerHTML = cart.map(item => {
+                const p = products.find(x => x.id === item.id);
+                const sum = p.price * item.qty;
+                total += sum;
+                return `
+                    <div class="cart-item">
+                        <div class="info">
+                            <strong>${esc(p.name)}</strong>
+                            <small>${money(p.price)} × ${item.qty}</small>
+                        </div>
+                        <div class="qty-control">
+                            <button onclick="changeQty(${p.id}, -1)">−</button>
+                            <span>${item.qty}</span>
+                            <button onclick="changeQty(${p.id}, 1)">+</button>
+                        </div>
+                        <b>${money(sum)}</b>
+                    </div>
+                `;
+            }).join("");
+            document.getElementById("cartTotal").textContent = money(total);
+            updateChange();
+        }
+
+        function updateChange() {
+            const totalText = document.getElementById('cartTotal').textContent;
+            const total = parseFloat(totalText.replace(/[^0-9.,]/g, '').replace(',', '.')) || 0;
+            const paid = parseFloat(document.getElementById('amountPaid').value) || 0;
+            const change = paid - total;
+            const display = document.getElementById('changeDisplay');
+            if (change >= 0) {
+                display.textContent = money(change);
+                display.style.color = '#4ade80';
+            } else {
+                display.textContent = 'Недостаточно: ' + money(Math.abs(change));
+                display.style.color = '#f87171';
+            }
+        }
+
+        function canSell() {
+            for (const item of cart) {
+                const p = products.find(x => x.id === item.id);
+                for (const r of p.recipe || []) {
+                    const ing = ingredients.find(x => x.id === r.ingredientId);
+                    if (ing && Number(ing.stock) < Number(r.amount) * item.qty) {
+                        alert(`Недостаточно ингредиента: ${ing.name}`);
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        function completeSale() {
+            if (!cart.length) { alert("Корзина пуста"); return; }
+            if (!canSell()) return;
+            let total = 0;
+            const saleItems = [];
+            cart.forEach(item => {
+                const p = products.find(x => x.id === item.id);
+                total += p.price * item.qty;
+                saleItems.push({ id: p.id, name: p.name, qty: item.qty, price: p.price });
+                (p.recipe || []).forEach(r => {
+                    const ing = ingredients.find(x => x.id === r.ingredientId);
+                    if (ing) ing.stock = Number(ing.stock) - Number(r.amount) * item.qty;
+                });
+            });
+            sales.unshift({
+                id: Date.now(),
+                date: new Date().toISOString(),
+                items: saleItems,
+                total,
+                payment: document.getElementById("payment").value
+            });
+            cart = [];
+            document.getElementById('amountPaid').value = 0;
+            saveData();
+            renderAll();
+            alert("Продажа успешно оформлена");
+        }
+
+        // ============================================================
+        // ТОВАРЫ
+        // ============================================================
+        let currentImageData = null;
+        let currentImageUrl = '';
+
+        function previewProductImage(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                currentImageData = e.target.result;
+                document.getElementById('productImageUrl').value = '';
+                currentImageUrl = '';
+                const preview = document.getElementById('productImagePreview');
+                preview.src = currentImageData;
+                preview.style.display = 'block';
+                document.getElementById('imagePreviewContainer').style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function previewProductUrl(url) {
+            if (url && url.trim() !== '') {
+                currentImageUrl = url.trim();
+                document.getElementById('productImageInput').value = '';
+                currentImageData = null;
+                const preview = document.getElementById('productImagePreview');
+                preview.src = currentImageUrl;
+                preview.style.display = 'block';
+                document.getElementById('imagePreviewContainer').style.display = 'block';
+            } else {
+                if (!document.getElementById('productImageInput').value && !currentImageData) {
+                    document.getElementById('productImagePreview').style.display = 'none';
+                    document.getElementById('imagePreviewContainer').style.display = 'none';
+                }
+            }
+        }
+
+        function removeProductImage() {
+            currentImageData = null;
+            currentImageUrl = '';
+            document.getElementById('productImagePreview').style.display = 'none';
+            document.getElementById('imagePreviewContainer').style.display = 'none';
+            document.getElementById('productImageInput').value = '';
+            document.getElementById('productImageUrl').value = '';
+        }
+
+        function openProductModal(id = null) {
+            document.getElementById("productId").value = id || "";
+            document.getElementById("recipe").innerHTML = "";
+            currentImageData = null;
+            currentImageUrl = '';
+            document.getElementById('productImagePreview').style.display = 'none';
+            document.getElementById('imagePreviewContainer').style.display = 'none';
+            document.getElementById('productImageInput').value = '';
+            document.getElementById('productImageUrl').value = '';
+
+            if (id) {
+                const p = products.find(x => x.id === id);
+                document.getElementById("productModalTitle").textContent = "Редактировать товар";
+                document.getElementById("productName").value = p.name;
+                document.getElementById("productCategory").value = p.category || "";
+                document.getElementById("productPrice").value = p.price;
+                if (p.image) {
+                    if (p.image.startsWith('http')) {
+                        currentImageUrl = p.image;
+                        document.getElementById('productImageUrl').value = p.image;
+                    } else {
+                        currentImageData = p.image;
+                    }
+                    const preview = document.getElementById('productImagePreview');
+                    preview.src = p.image;
+                    preview.style.display = 'block';
+                    document.getElementById('imagePreviewContainer').style.display = 'block';
+                }
+                (p.recipe || []).forEach(r => addRecipeLine(r.ingredientId, r.amount));
+            } else {
+                document.getElementById("productModalTitle").textContent = "Добавить товар";
+                document.getElementById("productName").value = "";
+                document.getElementById("productCategory").value = "";
+                document.getElementById("productPrice").value = "";
+                addRecipeLine();
+            }
+            document.getElementById("productModal").classList.add("show");
+        }
+
+        function addRecipeLine(ingredientId = "", amount = "") {
+            const box = document.getElementById("recipe");
+            const line = document.createElement("div");
+            line.className = "recipe-line";
+            line.innerHTML = `
+                <div>
+                    <select class="recipe-ing" style="width:100%;padding:4px 6px;border:1px solid rgba(255,255,255,0.1);border-radius:5px;background:rgba(255,255,255,0.05);color:#fff;font-size:16px;min-height:44px;">
+                        <option value="">Выберите</option>
+                        ${ingredients.map(i => `
+                            <option value="${i.id}" ${String(i.id) === String(ingredientId) ? "selected" : ""}>${esc(i.name)} (${i.unit})</option>
+                        `).join("")}
+                    </select>
+                </div>
+                <div>
+                    <input class="recipe-amount" type="number" min="0" step="0.01" value="${amount}" placeholder="Кол-во" style="width:100%;padding:4px 6px;border:1px solid rgba(255,255,255,0.1);border-radius:5px;background:rgba(255,255,255,0.05);color:#fff;font-size:16px;min-height:44px;">
+                </div>
+                <button class="btn btn-sm btn-red" onclick="this.parentElement.remove()" style="padding:1px 6px;font-size:14px;min-height:28px;">×</button>
+            `;
+            box.appendChild(line);
+        }
+
+        function saveProduct() {
+            const name = document.getElementById("productName").value.trim();
+            const category = document.getElementById("productCategory").value.trim();
+            const price = Number(document.getElementById("productPrice").value);
+            const id = Number(document.getElementById("productId").value);
+            if (!name || price < 0) { alert("Заполните название и цену"); return; }
+            const recipe = [...document.querySelectorAll(".recipe-line")].map(line => ({
+                ingredientId: Number(line.querySelector(".recipe-ing").value),
+                amount: Number(line.querySelector(".recipe-amount").value)
+            })).filter(x => x.ingredientId && x.amount > 0);
+
+            let image = '';
+            if (currentImageData) image = currentImageData;
+            else if (currentImageUrl) image = currentImageUrl;
+
+            if (id) {
+                const p = products.find(x => x.id === id);
+                p.name = name;
+                p.category = category;
+                p.price = price;
+                p.recipe = recipe;
+                p.image = image;
+            } else {
+                products.push({ id: Date.now(), name, category, price, recipe, image });
+            }
+            saveData();
+            closeModal("productModal");
+            renderAll();
+        }
+
+        function deleteProduct(id) {
+            const p = products.find(x => x.id === id);
+            if (confirm(`Удалить товар «${p.name}»?`)) {
+                products = products.filter(x => x.id !== id);
+                cart = cart.filter(x => x.id !== id);
+                saveData();
+                renderAll();
+            }
+        }
+
+        function renderProducts() {
+            const tbody = document.getElementById("productsTable");
+            if (!products.length) {
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">Нет товаров</td></tr>';
+                return;
+            }
+            tbody.innerHTML = products.map(p => {
+                const cost = calculateCost(p);
+                const margin = calculateMargin(p);
+                let marginClass = margin > 50 ? 'badge-good' : margin > 30 ? 'badge-good' : 'badge-low';
+                return `
+                    <tr>
+                        <td><b>${esc(p.name)}</b></td>
+                        <td>${esc(p.category || "")}</td>
+                        <td>${money(p.price)}</td>
+                        <td>${money(cost)}</td>
+                        <td><span class="badge ${marginClass}">${margin.toFixed(1)}%</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-blue" onclick="openProductModal(${p.id})">✏️</button>
+                            <button class="btn btn-sm btn-red" onclick="deleteProduct(${p.id})">🗑</button>
+                        </td>
+                    </tr>
+                `;
+            }).join("");
+        }
+
+        // ============================================================
+        // ИНГРЕДИЕНТЫ
+        // ============================================================
+        function renderIngredients() {
+            const tbody = document.getElementById("ingredientsTable");
+            if (!ingredients.length) {
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">Нет ингредиентов</td></tr>';
+                return;
+            }
+            tbody.innerHTML = ingredients.map(i => `
+                <tr>
+                    <td><b>${esc(i.name)}</b></td>
+                    <td>${esc(i.unit)}</td>
+                    <td class="${Number(i.stock) <= Number(i.min) ? "low" : "good"}">${i.stock}</td>
+                    <td>${i.min}</td>
+                    <td>${money(i.cost)}</td>
+                    <td>
+                        <button class="btn btn-sm btn-blue" onclick="openIngredientModal(${i.id})">✏️</button>
+                        <button class="btn btn-sm btn-red" onclick="deleteIngredient(${i.id})">🗑</button>
+                    </td>
+                </tr>
+            `).join("");
+        }
+
+        function openIngredientModal(id = null) {
+            document.getElementById("ingredientId").value = id || "";
+            if (id) {
+                const i = ingredients.find(x => x.id === id);
+                document.getElementById("ingredientModalTitle").textContent = "Редактировать ингредиент";
+                document.getElementById("ingredientName").value = i.name;
+                document.getElementById("ingredientUnit").value = i.unit;
+                document.getElementById("ingredientStock").value = i.stock;
+                document.getElementById("ingredientMin").value = i.min;
+                document.getElementById("ingredientCost").value = i.cost;
+            } else {
+                document.getElementById("ingredientModalTitle").textContent = "Добавить ингредиент";
+                document.getElementById("ingredientName").value = "";
+                document.getElementById("ingredientUnit").value = "мл";
+                document.getElementById("ingredientStock").value = 0;
+                document.getElementById("ingredientMin").value = 0;
+                document.getElementById("ingredientCost").value = 0;
+            }
+            document.getElementById("ingredientModal").classList.add("show");
+        }
+
+        function saveIngredient() {
+            const name = document.getElementById("ingredientName").value.trim();
+            const unit = document.getElementById("ingredientUnit").value;
+            const stock = Number(document.getElementById("ingredientStock").value);
+            const min = Number(document.getElementById("ingredientMin").value);
+            const cost = Number(document.getElementById("ingredientCost").value);
+            const id = Number(document.getElementById("ingredientId").value);
+            if (!name || stock < 0 || min < 0 || cost < 0) { alert("Проверьте заполнение полей"); return; }
+            if (id) {
+                const i = ingredients.find(x => x.id === id);
+                i.name = name;
+                i.unit = unit;
+                i.stock = stock;
+                i.min = min;
+                i.cost = cost;
+            } else {
+                ingredients.push({ id: Date.now(), name, unit, stock, min, cost });
+            }
+            saveData();
+            closeModal("ingredientModal");
+            renderAll();
+        }
+
+        function deleteIngredient(id) {
+            const ing = ingredients.find(x => x.id === id);
+            const used = products.some(p => (p.recipe || []).some(r => r.ingredientId === id));
+            if (used) { alert("Ингредиент используется в рецептах"); return; }
+            if (confirm(`Удалить ингредиент «${ing.name}»?`)) {
+                ingredients = ingredients.filter(x => x.id !== id);
+                saveData();
+                renderAll();
+            }
+        }
+
+        // ============================================================
+        // ОСТАТКИ
+        // ============================================================
+        function renderStock() {
+            const tbody = document.getElementById("stockTable");
+            tbody.innerHTML = ingredients.map(i => {
+                const isLow = Number(i.stock) <= Number(i.min);
+                return `
+                    <tr>
+                        <td>${esc(i.name)}</td>
+                        <td><b>${i.stock}</b></td>
+                        <td>${i.unit}</td>
+                        <td><span class="badge ${isLow ? 'badge-low' : 'badge-good'}">${isLow ? "Мало" : "Достаточно"}</span></td>
+                        <td>
+                            <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;">
+                                <input id="stock-${i.id}" type="number" min="0" step="0.01" value="${i.stock}" style="width:70px;padding:3px 6px;border:1px solid rgba(255,255,255,0.1);border-radius:4px;background:rgba(255,255,255,0.05);color:#fff;font-size:16px;min-height:44px;">
+                                <button class="btn btn-sm btn-green" onclick="updateStock(${i.id})">Сохранить</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join("");
+        }
+
+        function updateStock(id) {
+            const value = Number(document.getElementById("stock-" + id).value);
+            if (value < 0) { alert("Остаток не может быть отрицательным"); return; }
+            const ing = ingredients.find(i => i.id === id);
+            ing.stock = value;
+            saveData();
+            renderAll();
+        }
+
+        // ============================================================
+        // УВЕДОМЛЕНИЯ
+        // ============================================================
+        function checkLowStock() {
+            const low = ingredients.filter(i => i.stock <= i.min);
+            if (low.length === 0) {
+                alert('✅ Все ингредиенты в достаточном количестве!');
+                return;
+            }
+            alert('⚠️ Низкий остаток: ' + low.map(i => i.name + ' (' + i.stock + ')').join(', '));
+        }
+
+        // ============================================================
+        // ЗАКАЗ ПОСТАВЩИКУ
+        // ============================================================
+        function renderSupplierOrder() {
+            const container = document.getElementById('supplierOrderList');
+            const low = ingredients.filter(i => i.stock <= i.min);
+            if (low.length === 0) {
+                container.innerHTML = '<p class="text-muted">✅ Все в достатке. Заказ не требуется.</p>';
+                document.getElementById('supplierTotal').textContent = '';
+                return;
+            }
+            let html = '<div class="table-wrap"><table><thead><tr><th>Ингредиент</th><th>Остаток</th><th>Мин.</th><th>Рекомендуется</th><th>Цена</th><th>Сумма</th></tr></thead><tbody>';
+            let total = 0;
+            low.forEach(i => {
+                const need = i.min * 2 - i.stock;
+                if (need < 0) return;
+                const sum = need * i.cost;
+                total += sum;
+                html += `<tr>
+                    <td><b>${esc(i.name)}</b></td>
+                    <td>${i.stock}</td>
+                    <td>${i.min}</td>
+                    <td>${need} ${i.unit}</td>
+                    <td>${money(i.cost)}</td>
+                    <td>${money(sum)}</td>
+                </tr>`;
+            });
+            html += '</tbody></table></div>';
+            container.innerHTML = html;
+            document.getElementById('supplierTotal').textContent = '💰 Общая сумма: ' + money(total);
+        }
+
+        function exportSupplierOrder() {
+            const low = ingredients.filter(i => i.stock <= i.min);
+            if (low.length === 0) { alert('Нет позиций'); return; }
+            const data = low.map(i => {
+                const need = i.min * 2 - i.stock;
+                return {
+                    'Ингредиент': i.name,
+                    'Единица': i.unit,
+                    'Остаток': i.stock,
+                    'Мин. остаток': i.min,
+                    'Рекомендуемое': need,
+                    'Цена': i.cost,
+                    'Сумма': need * i.cost
+                };
+            });
+            exportToCSV(data, 'Заказ_поставщику');
+        }
+
+        // ============================================================
+        // ВОЗВРАТ ПРОДАЖ
+        // ============================================================
+        function returnSale(saleId) {
+            const sale = sales.find(s => s.id === saleId);
+            if (!sale) { alert('Продажа не найдена'); return; }
+            if (sale.returned) { alert('Уже возвращена'); return; }
+            if (!confirm(`Вернуть на ${money(sale.total)}?`)) return;
+            for (const item of sale.items) {
+                const product = products.find(p => p.id === item.id);
+                if (!product) continue;
+                for (const r of product.recipe || []) {
+                    const ing = ingredients.find(i => i.id === r.ingredientId);
+                    if (ing) ing.stock = Number(ing.stock) + Number(r.amount) * item.qty;
+                }
+            }
+            sale.returned = true;
+            sales.unshift({
+                id: Date.now(),
+                date: new Date().toISOString(),
+                items: sale.items.map(i => ({ ...i, price: -i.price })),
+                total: -sale.total,
+                payment: 'Возврат',
+                isReturn: true,
+                originalSaleId: sale.id
+            });
+            saveData();
+            renderAll();
+            alert('Возврат выполнен');
+        }
+
+        // ============================================================
+        // ИСТОРИЯ
+        // ============================================================
+        function renderHistory() {
+            const tbody = document.getElementById("historyTable");
+            const dateFrom = document.getElementById("historyDateFrom").value;
+            const dateTo = document.getElementById("historyDateTo").value;
+            const paymentFilter = document.getElementById("historyPaymentFilter").value;
+            let filtered = sales;
+            if (dateFrom) { const from = new Date(dateFrom); from.setHours(0, 0, 0, 0); filtered = filtered.filter(s => new Date(s.date) >= from); }
+            if (dateTo) { const to = new Date(dateTo); to.setHours(23, 59, 59, 999); filtered = filtered.filter(s => new Date(s.date) <= to); }
+            if (paymentFilter) filtered = filtered.filter(s => s.payment === paymentFilter);
+            if (!filtered.length) {
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">Нет продаж</td></tr>';
+                return;
+            }
+            tbody.innerHTML = filtered.map(s => {
+                const isReturn = s.isReturn || false;
+                const returned = s.returned || false;
+                const itemsStr = s.items.map(i => `${esc(i.name)} × ${i.qty} ${i.price < 0 ? '(возврат)' : ''}`).join("<br>");
+                let returnBtn = '';
+                if (!isReturn && !returned) {
+                    returnBtn = `<button class="btn btn-sm btn-red" onclick="returnSale(${s.id})">↩️</button>`;
+                } else if (returned) {
+                    returnBtn = '<span class="badge badge-low">✓ Возвращён</span>';
+                }
+                return `
+                    <tr>
+                        <td>${new Date(s.date).toLocaleString("ru-RU")}</td>
+                        <td>${itemsStr}</td>
+                        <td><b>${money(s.total)}</b></td>
+                        <td>${esc(s.payment)}</td>
+                        <td>${returnBtn}</td>
+                    </tr>
+                `;
+            }).join("");
+        }
+
+        function clearHistory() {
+            if (confirm("Удалить всю историю?")) {
+                sales = [];
+                saveData();
+                renderAll();
+            }
+        }
+
+        // ============================================================
+        // ОТЧЁТЫ
+        // ============================================================
+        function setReportPeriod(period) {
+            reportPeriod = period;
+            document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+            const btn = document.querySelector(`.period-btn[data-period="${period}"]`);
+            if (btn) btn.classList.add('active');
+            renderReports();
+        }
+
+        function renderReports() {
+            const range = getDateRange(reportPeriod);
+            const from = range.from;
+            const to = range.to;
+            const periodSales = sales.filter(s => {
+                const d = new Date(s.date);
+                return d >= from && d <= to;
+            });
+            const revenue = periodSales.reduce((sum, s) => sum + s.total, 0);
+            const count = periodSales.length;
+            const items = periodSales.reduce((sum, s) => sum + s.items.reduce((a, i) => a + i.qty, 0), 0);
+            const low = ingredients.filter(i => Number(i.stock) <= Number(i.min)).length;
+
+            document.getElementById("reportRevenue").textContent = money(revenue);
+            document.getElementById("reportSales").textContent = count;
+            document.getElementById("reportItems").textContent = items;
+            document.getElementById("reportLowStock").textContent = low;
+
+            const map = {};
+            periodSales.forEach(s => {
+                s.items.forEach(i => {
+                    if (!map[i.name]) map[i.name] = { qty: 0, revenue: 0 };
+                    map[i.name].qty += i.qty;
+                    map[i.name].revenue += i.qty * i.price;
+                });
+            });
+            const tbody = document.getElementById("reportTable");
+            const rows = Object.entries(map);
+            tbody.innerHTML = rows.length ? rows.map(([name, v]) => `
+                <tr>
+                    <td>${esc(name)}</td>
+                    <td>${v.qty}</td>
+                    <td>${money(v.revenue)}</td>
+                </tr>
+            `).join("") : '<tr><td colspan="3" class="text-center text-muted">Нет продаж</td></tr>';
+
+            const marginData = products.map(p => {
+                const cost = calculateCost(p);
+                const profit = p.price - cost;
+                const margin = cost === 0 ? 0 : (profit / p.price * 100);
+                return { name: p.name, price: p.price, cost, profit, margin };
+            }).sort((a, b) => a.name.localeCompare(b.name));
+
+            let marginHtml = `
+                <div class="card">
+                    <h3>📈 Маржинальность</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>Товар</th><th>Цена</th><th>Себест.</th><th>Прибыль</th><th>Маржа</th></tr></thead>
+                            <tbody>
+            `;
+            marginData.forEach(p => {
+                let marginClass = p.margin > 50 ? 'badge-good' : (p.margin > 30 ? 'badge-good' : 'badge-low');
+                marginHtml += `<tr>
+                    <td><b>${esc(p.name)}</b></td>
+                    <td>${money(p.price)}</td>
+                    <td>${money(p.cost)}</td>
+                    <td class="${p.profit >= 0 ? 'profit-green' : 'profit-red'}">${money(p.profit)}</td>
+                    <td><span class="badge ${marginClass}">${p.margin.toFixed(1)}%</span></td>
+                </tr>`;
+            });
+            marginHtml += `</tbody></table></div></div>`;
+            document.getElementById("profitReports").innerHTML = marginHtml;
+
+            const fixedExpenses = Number(document.getElementById('fixedExpenses').value) || 0;
+            const dailySalary = Number(document.getElementById('salaryExpense').value) || 0;
+            const daysInPeriod = Math.max(1, Math.ceil((to - from) / (1000 * 60 * 60 * 24)) + 1);
+            const salaryTotal = dailySalary * daysInPeriod;
+            const grossProfit = periodSales.reduce((sum, s) => sum + (s.total - calculateCostSale(s)), 0);
+            const periodPurchases = purchases.filter(p => {
+                const d = new Date(p.date);
+                return d >= from && d <= to;
+            });
+            const purchaseCost = periodPurchases.reduce((sum, p) => sum + (p.qty * p.price), 0);
+            const personalProfit = revenue - purchaseCost - fixedExpenses - salaryTotal;
+
+            document.getElementById('grossProfitDisplay').textContent = money(grossProfit);
+            document.getElementById('purchaseCostDisplay').textContent = money(purchaseCost);
+            const personalDisplay = document.getElementById('personalProfitDisplay');
+            personalDisplay.textContent = money(personalProfit);
+            personalDisplay.style.color = personalProfit >= 0 ? '#4ade80' : '#f87171';
+
+            function calculateCostSale(sale) {
+                let totalCost = 0;
+                for (const item of sale.items) {
+                    const product = products.find(p => p.id === item.id);
+                    if (product) {
+                        totalCost += calculateCost(product) * item.qty;
+                    }
+                }
+                return totalCost;
+            }
+        }
+
+        // ============================================================
+        // ЗАКУПКИ
+        // ============================================================
+        function renderPurchases() {
+            const tbody = document.getElementById("purchasesTable");
+            if (!purchases.length) {
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">Нет закупок</td></tr>';
+                return;
+            }
+            tbody.innerHTML = purchases.map(p => `
+                <tr>
+                    <td>${new Date(p.date).toLocaleString("ru-RU")}</td>
+                    <td>${esc(p.ingredientName)}</td>
+                    <td>${p.qty} ${p.unit}</td>
+                    <td>${money(p.price)}</td>
+                    <td>${money(p.qty * p.price)}</td>
+                </tr>
+            `).join("");
+        }
+
+        function openPurchaseModal() {
+            const select = document.getElementById('purchaseIngredient');
+            select.innerHTML = '<option value="">Выберите</option>';
+            ingredients.forEach(i => {
+                const opt = document.createElement('option');
+                opt.value = i.id;
+                opt.textContent = i.name + ' (' + i.unit + ')';
+                select.appendChild(opt);
+            });
+            document.getElementById('purchaseQty').value = '';
+            document.getElementById('purchasePrice').value = '';
+            document.getElementById('purchaseDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('purchaseModal').classList.add('show');
+        }
+
+        function savePurchase() {
+            const ingredientId = Number(document.getElementById('purchaseIngredient').value);
+            const qty = Number(document.getElementById('purchaseQty').value);
+            const price = Number(document.getElementById('purchasePrice').value);
+            const date = document.getElementById('purchaseDate').value;
+            if (!ingredientId || qty <= 0 || price < 0 || !date) {
+                alert('Заполните все поля');
+                return;
+            }
+            const ing = ingredients.find(i => i.id === ingredientId);
+            if (!ing) { alert('Ингредиент не найден'); return; }
+            ing.stock = Number(ing.stock) + qty;
+            purchases.push({
+                id: Date.now(),
+                date: new Date(date).toISOString(),
+                ingredientId: ing.id,
+                ingredientName: ing.name,
+                unit: ing.unit,
+                qty: qty,
+                price: price
+            });
+            saveData();
+            closeModal('purchaseModal');
+            renderAll();
+            alert('Закупка добавлена');
+        }
+
+        // ============================================================
+        // ЭКСПОРТ
+        // ============================================================
+        function exportToCSV(data, filename, headers) {
+            if (!data || data.length === 0) { alert('Нет данных'); return; }
+            if (!headers) headers = Object.keys(data[0]);
+            let csv = headers.join(';') + '\n';
+            data.forEach(row => {
+                const values = headers.map(h => {
+                    let val = row[h] !== undefined ? row[h] : '';
+                    if (typeof val === 'string' && val.includes(';')) val = '"' + val + '"';
+                    return val;
+                });
+                csv += values.join(';') + '\n';
+            });
+            const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = filename + '.csv';
+            link.click();
+            URL.revokeObjectURL(link.href);
+        }
+
+        function exportProducts() {
+            const data = products.map(p => ({
+                'Название': p.name,
+                'Категория': p.category || '',
+                'Цена': p.price,
+                'Себестоимость': calculateCost(p),
+                'Маржинальность, %': calculateMargin(p),
+                'Прибыль': p.price - calculateCost(p)
+            }));
+            exportToCSV(data, 'Товары');
+        }
+
+        function exportIngredients() {
+            const data = ingredients.map(i => ({
+                'Название': i.name,
+                'Единица': i.unit,
+                'Остаток': i.stock,
+                'Мин. остаток': i.min,
+                'Закуп. цена': i.cost
+            }));
+            exportToCSV(data, 'Ингредиенты');
+        }
+
+        function exportSales() {
+            if (sales.length === 0) { alert('Нет продаж'); return; }
+            const data = sales.map(s => ({
+                'Дата': new Date(s.date).toLocaleString('ru-RU'),
+                'Товары': s.items.map(i => `${i.name} × ${i.qty}`).join(', '),
+                'Сумма': s.total,
+                'Оплата': s.payment
+            }));
+            exportToCSV(data, 'История_продаж');
+        }
+
+        function exportReport() {
+            const range = getDateRange(reportPeriod);
+            const from = range.from,
+                to = range.to;
+            const periodSales = sales.filter(s => { const d = new Date(s.date); return d >= from && d <= to; });
+            if (periodSales.length === 0) { alert('Нет продаж за период'); return; }
+            const map = {};
+            periodSales.forEach(s => {
+                s.items.forEach(i => {
+                    if (!map[i.name]) map[i.name] = { qty: 0, revenue: 0 };
+                    map[i.name].qty += i.qty;
+                    map[i.name].revenue += i.qty * i.price;
+                });
+            });
+            const data = Object.keys(map).map(name => ({
+                'Товар': name,
+                'Количество': map[name].qty,
+                'Выручка': map[name].revenue
+            }));
+            exportToCSV(data, 'Отчёт_за_период');
+        }
+
+        // ============================================================
+        // МОДАЛЬНЫЕ ОКНА
+        // ============================================================
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('show');
+        }
+
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', e => {
+                if (e.target === modal) modal.classList.remove('show');
+            });
+        });
+
+        // ============================================================
+        // ЗАПУСК
+        // ============================================================
+        if (document.getElementById('appContent').style.display !== 'none') {
+            renderAll();
+        }
+    </script>
+</body>
+</html>
