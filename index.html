@@ -10,414 +10,125 @@
     <meta name="theme-color" content="#0b1a2e">
     <link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%230b1a2e'/%3E%3Ctext x='90' y='120' font-size='100' text-anchor='middle' fill='%23f6d365'%3E☕%3C/text%3E%3C/svg%3E">
     <style>
-<!doctype html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-    <title>Касса кофейни</title>
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Кофейня">
-    <meta name="theme-color" content="#0b1a2e">
-    <link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%230b1a2e'/%3E%3Ctext x='90' y='120' font-size='100' text-anchor='middle' fill='%23f6d365'%3E☕%3C/text%3E%3C/svg%3E">
-    <style>
         *{margin:0;padding:0;box-sizing:border-box}
-        
-        /* АНИМИРОВАННЫЙ ФОН */
-        body{
-            background: linear-gradient(135deg, #0b1a2e 0%, #1a2f44 25%, #0f2027 50%, #1a2f44 75%, #0b1a2e 100%);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-            color:#fff;
-            font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',Arial,sans-serif;
-            min-height:100vh;min-height:-webkit-fill-available;
-            padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-            -webkit-user-select:none;user-select:none;
-            -webkit-tap-highlight-color:transparent;
-            -webkit-overflow-scrolling:touch;
-        }
-        
-        @keyframes gradientShift {
-            0%{background-position:0% 50%}
-            25%{background-position:100% 0%}
-            50%{background-position:100% 100%}
-            75%{background-position:0% 100%}
-            100%{background-position:0% 50%}
-        }
-        
-        @keyframes fadeInUp {
-            from{opacity:0;transform:translateY(20px)}
-            to{opacity:1;transform:translateY(0)}
-        }
-        
-        @keyframes fadeIn {
-            from{opacity:0}
-            to{opacity:1}
-        }
-        
-        @keyframes scaleIn {
-            from{opacity:0;transform:scale(0.9)}
-            to{opacity:1;transform:scale(1)}
-        }
-        
-        @keyframes pulse {
-            0%,100%{transform:scale(1)}
-            50%{transform:scale(1.05)}
-        }
-        
-        @keyframes slideIn {
-            from{opacity:0;transform:translateX(-20px)}
-            to{opacity:1;transform:translateX(0)}
-        }
-        
-        @keyframes shimmer {
-            0%{background-position:-200% center}
-            100%{background-position:200% center}
-        }
-        
-        button,.product-card,.btn,.login-btn{
-            -webkit-tap-highlight-color:transparent;
-            touch-action:manipulation;
-            cursor:pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
+        body{background:linear-gradient(135deg,#0a0e27 0%,#0d1b33 30%,#0f1f3a 50%,#0d1b33 70%,#0a0e27 100%);background-size:400% 400%;animation:gradientShift 20s ease infinite;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text','Helvetica Neue',Arial,sans-serif;min-height:100vh;min-height:-webkit-fill-available;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;-webkit-overflow-scrolling:touch}
+        @keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+        @keyframes scaleIn{from{opacity:0;transform:scale(0.85)}to{opacity:1;transform:scale(1)}}
+        @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+        @keyframes slideIn{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:translateX(0)}}
+        @keyframes shimmer{0%{transform:translateX(-100%) skewX(-15deg)}100%{transform:translateX(200%) skewX(-15deg)}}
+        button,.product-card,.btn,.login-btn{-webkit-tap-highlight-color:transparent;touch-action:manipulation;cursor:pointer;transition:all .3s cubic-bezier(.25,.8,.25,1.2)}
         .btn,.login-btn,.product-card{min-height:44px}
         input,select,textarea{font-size:16px!important}
-        
-        /* ЭКРАН ВХОДА */
-        #loginScreen{
-            display:flex;flex-direction:column;align-items:center;justify-content:center;
-            min-height:100vh;min-height:-webkit-fill-available;
-            padding:20px;
-            background:linear-gradient(145deg, #0b1a2e 0%, #1a2f44 50%, #0f2027 100%);
-            animation: fadeIn 0.5s ease;
-        }
-        
-        #loginScreen .login-box{
-            background:rgba(255,255,255,0.05);
-            backdrop-filter:blur(20px);
-            -webkit-backdrop-filter:blur(20px);
-            border:1px solid rgba(255,255,255,0.1);
-            border-radius:16px;padding:40px 30px;max-width:400px;width:100%;
-            animation: scaleIn 0.6s ease;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-        }
-        
-        #loginScreen .login-box h2{font-size:28px;margin-bottom:8px;text-align:center}
-        #loginScreen .login-box p{color:rgba(255,255,255,0.7);text-align:center;margin-bottom:24px}
-        #loginScreen .login-box .logo{font-size:48px;text-align:center;margin-bottom:12px;animation: pulse 2s ease-in-out infinite}
-        
-        #loginScreen .login-box input{
-            width:100%;padding:14px 16px;border:1px solid rgba(255,255,255,0.1);
-            border-radius:10px;background:rgba(255,255,255,0.05);color:#fff;
-            font-size:16px;margin-bottom:14px;
-            transition: all 0.3s ease;
-        }
-        
-        #loginScreen .login-box input:focus{
-            border-color: rgba(246,211,101,0.5);
-            box-shadow: 0 0 20px rgba(246,211,101,0.1);
-            outline: none;
-        }
-        
-        #loginScreen .login-box .login-btn{
-            width:100%;padding:14px;border:none;border-radius:10px;
-            font-size:16px;font-weight:600;
-            background:linear-gradient(135deg,#f6d365,#fda085);
-            color:#1a1a2e;cursor:pointer;min-height:50px;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        #loginScreen .login-box .login-btn::after{
-            content:'';
-            position:absolute;
-            top:-50%;left:-50%;
-            width:200%;height:200%;
-            background:linear-gradient(45deg,transparent,rgba(255,255,255,0.2),transparent);
-            transform:rotate(45deg);
-            animation: shimmer 2s infinite;
-        }
-        
-        #loginScreen .login-box .login-btn:active{transform:scale(0.95)}
-        #loginScreen .login-box .error-msg{color:#f87171;font-size:13px;margin-top:10px;display:none;text-align:center}
-        #loginScreen .login-box .error-msg.show{display:block;animation: fadeIn 0.3s ease}
-        
-        #appContent{display:none;animation: fadeIn 0.5s ease}
-        
-        /* ШАПКА */
-        header{
-            background:rgba(11,26,46,0.8);
-            backdrop-filter:blur(20px);
-            -webkit-backdrop-filter:blur(20px);
-            padding:12px 16px;display:flex;justify-content:space-between;align-items:center;
-            border-bottom:1px solid rgba(255,255,255,0.06);
-            position:sticky;top:0;z-index:100;
-            padding-top:calc(12px + env(safe-area-inset-top));
-        }
-        
-        header h1{font-size:17px}
-        header p{font-size:11px;opacity:0.7}
-        .header-right{display:flex;align-items:center;gap:8px}
-        .header-right button{
-            background:rgba(255,255,255,0.1);color:#fff;border:none;
-            padding:5px 12px;border-radius:16px;font-size:11px;cursor:pointer;min-height:44px;
-            transition: all 0.3s ease;
-        }
-        .header-right button:hover{background:rgba(255,255,255,0.2)}
-        .header-right button:active{transform:scale(0.95)}
-        
-        /* НАВИГАЦИЯ */
-        nav{
-            display:flex;gap:3px;flex-wrap:wrap;padding:8px 12px;
-            background:rgba(11,26,46,0.6);
-            backdrop-filter:blur(20px);
-            -webkit-backdrop-filter:blur(20px);
-            border-bottom:1px solid rgba(255,255,255,0.06);
-            position:sticky;top:56px;z-index:99;
-        }
-        
-        nav button{
-            border:none;background:transparent;padding:6px 10px;border-radius:16px;
-            cursor:pointer;font-size:11px;font-weight:500;color:rgba(255,255,255,0.6);
-            min-height:36px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        nav button:hover{color:#fff;background:rgba(255,255,255,0.05)}
-        nav button.active{color:#fff;background:rgba(255,255,255,0.1);animation: scaleIn 0.3s ease}
-        
-        main{max-width:100%;margin:0 auto;padding:10px}
-        
-        /* СЕКЦИИ */
+        .btn{padding:10px 20px;border:none;border-radius:25px;font-weight:600;font-size:12px;cursor:pointer;min-height:44px;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:all .3s cubic-bezier(.25,.8,.25,1.2);position:relative;overflow:hidden;letter-spacing:.5px;text-transform:uppercase;box-shadow:0 4px 15px rgba(0,0,0,.2)}
+        .btn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);transition:left .5s ease}
+        .btn:hover::before{left:100%}
+        .btn:active{transform:scale(.92) translateY(2px);box-shadow:0 2px 8px rgba(0,0,0,.3)}
+        .btn-primary{background:linear-gradient(135deg,#f6d365 0%,#fda085 50%,#f6d365 100%);background-size:200% 200%;animation:gradientShift 3s ease infinite;color:#1a1a2e;font-weight:700;box-shadow:0 4px 20px rgba(246,211,101,.3)}
+        .btn-primary:hover{box-shadow:0 8px 30px rgba(246,211,101,.5);transform:translateY(-2px)}
+        .btn-green{background:linear-gradient(135deg,#22c55e 0%,#16a34a 50%,#22c55e 100%);background-size:200% 200%;animation:gradientShift 3s ease infinite;color:#fff;font-weight:700;box-shadow:0 4px 20px rgba(34,197,94,.3)}
+        .btn-green:hover{box-shadow:0 8px 30px rgba(34,197,94,.5);transform:translateY(-2px)}
+        .btn-red{background:linear-gradient(135deg,#ef4444 0%,#dc2626 50%,#ef4444 100%);background-size:200% 200%;animation:gradientShift 3s ease infinite;color:#fff;font-weight:700;box-shadow:0 4px 20px rgba(239,68,68,.3)}
+        .btn-red:hover{box-shadow:0 8px 30px rgba(239,68,68,.5);transform:translateY(-2px)}
+        .btn-blue{background:linear-gradient(135deg,#3b82f6 0%,#2563eb 50%,#3b82f6 100%);background-size:200% 200%;animation:gradientShift 3s ease infinite;color:#fff;font-weight:700;box-shadow:0 4px 20px rgba(59,130,246,.3)}
+        .btn-blue:hover{box-shadow:0 8px 30px rgba(59,130,246,.5);transform:translateY(-2px)}
+        .btn-gray{background:linear-gradient(135deg,rgba(255,255,255,.1) 0%,rgba(255,255,255,.05) 100%);border:1px solid rgba(255,255,255,.15);color:#fff;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+        .btn-gray:hover{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.3);transform:translateY(-2px)}
+        .btn-export{background:linear-gradient(135deg,#6366f1 0%,#4f46e5 50%,#6366f1 100%);background-size:200% 200%;animation:gradientShift 3s ease infinite;color:#fff;font-weight:700;box-shadow:0 4px 20px rgba(99,102,241,.3)}
+        .btn-export:hover{box-shadow:0 8px 30px rgba(99,102,241,.5);transform:translateY(-2px)}
+        .btn-sm{padding:6px 14px;font-size:10px;border-radius:20px;min-height:36px;letter-spacing:.3px}
+        .btn-block{width:100%;justify-content:center;font-size:14px;letter-spacing:1px}
+        #loginScreen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;min-height:-webkit-fill-available;padding:20px;background:radial-gradient(ellipse at center,#0f1f3a 0%,#0a0e27 70%);animation:fadeIn .8s ease}
+        #loginScreen .login-box{background:rgba(255,255,255,.03);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:50px 35px;max-width:420px;width:100%;animation:scaleIn .8s cubic-bezier(.25,.8,.25,1.2);box-shadow:0 20px 60px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.05)}
+        #loginScreen .login-box h2{font-size:32px;margin-bottom:8px;text-align:center;font-weight:700;letter-spacing:-.5px;background:linear-gradient(135deg,#f6d365,#fda085);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        #loginScreen .login-box p{color:rgba(255,255,255,.5);text-align:center;margin-bottom:30px;font-size:14px}
+        #loginScreen .login-box .logo{font-size:60px;text-align:center;margin-bottom:16px;animation:pulse 2s ease-in-out infinite;filter:drop-shadow(0 0 20px rgba(246,211,101,.3))}
+        #loginScreen .login-box input{width:100%;padding:16px 20px;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:rgba(255,255,255,.03);color:#fff;font-size:16px;margin-bottom:16px;transition:all .4s ease;letter-spacing:.3px}
+        #loginScreen .login-box input:focus{border-color:rgba(246,211,101,.4);box-shadow:0 0 30px rgba(246,211,101,.08),inset 0 1px 0 rgba(255,255,255,.05);outline:none;background:rgba(255,255,255,.05)}
+        #loginScreen .login-box input::placeholder{color:rgba(255,255,255,.25)}
+        #loginScreen .login-box .login-btn{width:100%;padding:16px;border:none;border-radius:14px;font-size:16px;font-weight:700;background:linear-gradient(135deg,#f6d365 0%,#fda085 50%,#f6d365 100%);background-size:200% 200%;animation:gradientShift 3s ease infinite;color:#1a1a2e;cursor:pointer;min-height:56px;transition:all .3s ease;position:relative;overflow:hidden;box-shadow:0 8px 30px rgba(246,211,101,.3);letter-spacing:1px;text-transform:uppercase}
+        #loginScreen .login-box .login-btn::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);animation:shimmer 2s infinite}
+        #loginScreen .login-box .login-btn:hover{box-shadow:0 12px 40px rgba(246,211,101,.5);transform:translateY(-3px)}
+        #loginScreen .login-box .login-btn:active{transform:scale(.95) translateY(0);box-shadow:0 4px 15px rgba(246,211,101,.3)}
+        #loginScreen .login-box .error-msg{color:#f87171;font-size:13px;margin-top:12px;display:none;text-align:center;padding:10px;border-radius:10px;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.2)}
+        #loginScreen .login-box .error-msg.show{display:block;animation:fadeIn .4s ease}
+        #appContent{display:none;animation:fadeIn .6s ease}
+        header{background:rgba(10,14,39,.7);backdrop-filter:blur(30px) saturate(180%);-webkit-backdrop-filter:blur(30px) saturate(180%);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.04);position:sticky;top:0;z-index:100;padding-top:calc(14px + env(safe-area-inset-top));box-shadow:0 4px 30px rgba(0,0,0,.3)}
+        header h1{font-size:18px;font-weight:700;letter-spacing:-.3px}
+        header p{font-size:11px;opacity:.4;letter-spacing:.5px}
+        .header-right{display:flex;align-items:center;gap:10px}
+        .header-right button{background:rgba(255,255,255,.06);color:rgba(255,255,255,.7);border:none;padding:8px 16px;border-radius:20px;font-size:11px;cursor:pointer;min-height:40px;transition:all .3s ease;letter-spacing:.5px;border:1px solid rgba(255,255,255,.05)}
+        .header-right button:hover{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.15)}
+        .header-right button:active{transform:scale(.95)}
+        nav{display:flex;gap:4px;flex-wrap:wrap;padding:10px 16px;background:rgba(10,14,39,.5);backdrop-filter:blur(30px) saturate(180%);-webkit-backdrop-filter:blur(30px) saturate(180%);border-bottom:1px solid rgba(255,255,255,.04);position:sticky;top:56px;z-index:99}
+        nav button{border:none;background:transparent;padding:8px 14px;border-radius:20px;cursor:pointer;font-size:11px;font-weight:500;color:rgba(255,255,255,.4);min-height:38px;letter-spacing:.3px;transition:all .3s cubic-bezier(.25,.8,.25,1.2)}
+        nav button:hover{color:rgba(255,255,255,.8);background:rgba(255,255,255,.04)}
+        nav button.active{color:#fff;background:rgba(255,255,255,.08);box-shadow:0 2px 10px rgba(0,0,0,.2);animation:scaleIn .3s ease}
+        main{max-width:100%;margin:0 auto;padding:14px}
         .section{display:none}
-        .section.active{display:block;animation: fadeInUp 0.4s ease}
-        
-        /* КАРТОЧКИ */
-        .card{
-            background:rgba(255,255,255,0.03);
-            backdrop-filter:blur(10px);
-            -webkit-backdrop-filter:blur(10px);
-            border:1px solid rgba(255,255,255,0.06);
-            border-radius:12px;padding:12px;margin-bottom:12px;
-            transition: all 0.3s ease;
-            animation: fadeInUp 0.5s ease;
-        }
-        
-        .card:hover{
-            border-color:rgba(255,255,255,0.12);
-            box-shadow:0 4px 20px rgba(0,0,0,0.2);
-        }
-        
-        .card h2{font-size:16px;margin-bottom:10px}
-        .card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px}
-        
-        /* ТОВАРЫ В КАССЕ */
-        .products-grid{
-            display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));
-            gap:8px;max-height:350px;overflow-y:auto;
-        }
-        
-        .product-card{
-            background:rgba(255,255,255,0.03);
-            backdrop-filter:blur(10px);
-            -webkit-backdrop-filter:blur(10px);
-            border:1px solid rgba(255,255,255,0.06);
-            border-radius:10px;padding:10px 6px;text-align:center;cursor:pointer;
-            min-height:100px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            animation: scaleIn 0.4s ease;
-        }
-        
-        .product-card:hover{
-            border-color:rgba(246,211,101,0.3);
-            box-shadow:0 4px 15px rgba(246,211,101,0.1);
-            transform:translateY(-2px);
-        }
-        
-        .product-card:active{transform:scale(0.92)}
-        .product-card img{width:50px;height:50px;object-fit:cover;border-radius:8px;background:rgba(255,255,255,0.05);margin-bottom:4px}
-        .product-card .name{font-size:11px;font-weight:600;line-height:1.2}
-        .product-card .price{font-size:13px;font-weight:700;color:#f6d365}
-        .product-card .category-tag{font-size:8px;color:rgba(255,255,255,0.5);background:rgba(255,255,255,0.05);padding:2px 6px;border-radius:10px}
-        
-        /* КОРЗИНА */
-        .cart-item{
-            display:flex;justify-content:space-between;align-items:center;
-            padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.06);gap:6px;
-            animation: slideIn 0.3s ease;
-        }
-        .cart-item .info{flex:1}.cart-item .info strong{font-size:12px}.cart-item .info small{color:rgba(255,255,255,0.5);font-size:10px}
-        .qty-control{display:flex;align-items:center;gap:3px}
-        .qty-control button{
-            width:22px;height:22px;border:none;background:rgba(255,255,255,0.08);
-            border-radius:5px;font-size:13px;cursor:pointer;color:#fff;min-height:22px;
-            transition: all 0.2s ease;
-        }
-        .qty-control button:hover{background:rgba(255,255,255,0.15)}
-        .qty-control button:active{transform:scale(0.9)}
-        .qty-control span{font-weight:600;min-width:16px;text-align:center;font-size:13px}
-        
-        .flex-between{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
-        .flex-center{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
-        .mt-8{margin-top:8px}.mt-12{margin-top:12px}.text-muted{color:rgba(255,255,255,0.5);font-size:12px}.text-center{text-align:center}
-        
-        /* КНОПКИ */
-        .btn{
-            padding:8px 14px;border:none;border-radius:20px;font-weight:500;
-            font-size:12px;cursor:pointer;min-height:44px;
-            display:inline-flex;align-items:center;justify-content:center;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .btn::after{
-            content:'';
-            position:absolute;
-            top:-50%;left:-50%;
-            width:200%;height:200%;
-            background:linear-gradient(45deg,transparent,rgba(255,255,255,0.1),transparent);
-            transform:rotate(45deg);
-            animation: shimmer 3s infinite;
-        }
-        
-        .btn:hover{transform:translateY(-1px);box-shadow:0 4px 15px rgba(0,0,0,0.3)}
-        .btn:active{transform:scale(0.92)}
-        .btn-primary{background:linear-gradient(135deg,#f6d365,#fda085);color:#1a1a2e}
-        .btn-green{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff}
-        .btn-red{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff}
-        .btn-blue{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff}
-        .btn-gray{background:rgba(255,255,255,0.1);color:#fff}
-        .btn-export{background:linear-gradient(135deg,#6b7280,#4b5563);color:#fff}
-        .btn-sm{padding:4px 10px;font-size:10px;border-radius:12px;min-height:30px}
-        .btn-block{width:100%;justify-content:center}
-        
-        /* ТАБЛИЦЫ */
-        .table-wrap{
-            overflow-x:auto;border-radius:8px;
-            border:1px solid rgba(255,255,255,0.06);
-            animation: fadeIn 0.5s ease;
-        }
+        .section.active{display:block;animation:fadeInUp .5s cubic-bezier(.25,.8,.25,1.2)}
+        .card{background:rgba(255,255,255,.02);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border:1px solid rgba(255,255,255,.04);border-radius:18px;padding:16px;margin-bottom:14px;transition:all .4s ease;animation:fadeInUp .6s cubic-bezier(.25,.8,.25,1.2);box-shadow:0 8px 32px rgba(0,0,0,.2)}
+        .card:hover{border-color:rgba(255,255,255,.08);box-shadow:0 12px 40px rgba(0,0,0,.3);transform:translateY(-2px)}
+        .card h2{font-size:17px;margin-bottom:12px;font-weight:700;letter-spacing:-.2px}
+        .card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:10px}
+        .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(115px,1fr));gap:10px;max-height:380px;overflow-y:auto}
+        .product-card{background:rgba(255,255,255,.02);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);border:1px solid rgba(255,255,255,.04);border-radius:14px;padding:14px 8px;text-align:center;cursor:pointer;min-height:110px;transition:all .4s cubic-bezier(.25,.8,.25,1.2);animation:scaleIn .5s ease}
+        .product-card:hover{border-color:rgba(246,211,101,.2);box-shadow:0 8px 25px rgba(246,211,101,.08);transform:translateY(-4px);background:rgba(255,255,255,.04)}
+        .product-card:active{transform:scale(.9)}
+        .product-card img{width:55px;height:55px;object-fit:cover;border-radius:12px;background:rgba(255,255,255,.03);margin-bottom:6px}
+        .product-card .name{font-size:12px;font-weight:600;line-height:1.3;margin-bottom:2px}
+        .product-card .price{font-size:14px;font-weight:700;color:#f6d365}
+        .product-card .category-tag{font-size:8px;color:rgba(255,255,255,.3);background:rgba(255,255,255,.03);padding:2px 8px;border-radius:10px;margin-top:4px;display:inline-block}
+        .cart-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);gap:8px;animation:slideIn .4s ease}
+        .cart-item .info{flex:1}
+        .cart-item .info strong{font-size:13px;font-weight:600}
+        .cart-item .info small{color:rgba(255,255,255,.3);font-size:10px}
+        .qty-control{display:flex;align-items:center;gap:4px}
+        .qty-control button{width:26px;height:26px;border:none;background:rgba(255,255,255,.06);border-radius:8px;font-size:14px;cursor:pointer;color:#fff;min-height:26px;transition:all .2s ease;display:flex;align-items:center;justify-content:center}
+        .qty-control button:hover{background:rgba(255,255,255,.12)}
+        .qty-control button:active{transform:scale(.85)}
+        .qty-control span{font-weight:600;min-width:20px;text-align:center;font-size:14px}
+        .flex-between{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+        .flex-center{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+        .mt-8{margin-top:8px}.mt-12{margin-top:12px}.text-muted{color:rgba(255,255,255,.3);font-size:12px}.text-center{text-align:center}
+        .table-wrap{overflow-x:auto;border-radius:12px;border:1px solid rgba(255,255,255,.04);animation:fadeIn .6s ease}
         table{width:100%;border-collapse:collapse;font-size:11px}
-        th{
-            background:rgba(255,255,255,0.05);padding:6px 8px;text-align:left;
-            font-weight:600;color:rgba(255,255,255,0.5);font-size:10px;
-        }
-        td{padding:6px 8px;border-bottom:1px solid rgba(255,255,255,0.06);font-size:11px;transition: background 0.2s ease}
-        tr:hover td{background:rgba(255,255,255,0.02)}
-        
-        .filter-group{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
-        .filter-group label{font-size:11px;color:rgba(255,255,255,0.5)}
-        .filter-group input,.filter-group select{
-            padding:4px 10px;border:1px solid rgba(255,255,255,0.1);border-radius:16px;
-            font-size:16px;background:rgba(255,255,255,0.05);color:#fff;
-            min-width:80px;min-height:44px;
-            transition: all 0.3s ease;
-        }
-        .filter-group input:focus,.filter-group select:focus{
-            border-color:rgba(246,211,101,0.5);
-            outline:none;
-        }
-        
-        /* СТАТИСТИКА */
-        .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:12px}
-        .stat-card{
-            background:rgba(255,255,255,0.03);
-            backdrop-filter:blur(10px);
-            -webkit-backdrop-filter:blur(10px);
-            border:1px solid rgba(255,255,255,0.06);
-            border-radius:10px;padding:12px;text-align:center;
-            transition: all 0.3s ease;
-            animation: scaleIn 0.5s ease;
-        }
-        .stat-card:hover{transform:translateY(-2px);box-shadow:0 4px 15px rgba(0,0,0,0.2)}
-        .stat-card span{font-size:10px;color:rgba(255,255,255,0.5);display:block}
-        .stat-card b{font-size:20px;font-weight:700}
-        
-        .period-group{display:flex;gap:3px;flex-wrap:wrap}
-        .period-btn{
-            padding:3px 10px;border:1px solid rgba(255,255,255,0.1);border-radius:14px;
-            background:transparent;cursor:pointer;font-size:10px;color:rgba(255,255,255,0.5);
-            min-height:36px;
-            transition: all 0.3s ease;
-        }
-        .period-btn:hover{color:#fff;border-color:rgba(255,255,255,0.3)}
-        .period-btn.active{
-            background:linear-gradient(135deg,#f6d365,#fda085);color:#1a1a2e;
-            border-color:transparent;
-        }
-        
-        .badge{display:inline-block;padding:1px 6px;border-radius:10px;font-size:9px;font-weight:600}
-        .badge-good{background:rgba(34,197,94,0.2);color:#4ade80}
-        .badge-low{background:rgba(239,68,68,0.2);color:#f87171}
-        
-        /* МОДАЛЬНЫЕ ОКНА */
-        .modal{
-            display:none;position:fixed;inset:0;
-            background:rgba(0,0,0,0.6);
-            backdrop-filter:blur(5px);
-            -webkit-backdrop-filter:blur(5px);
-            z-index:1000;align-items:center;justify-content:center;padding:16px;
-        }
-        .modal.show{display:flex;animation: fadeIn 0.2s ease}
-        .modal-box{
-            background:rgba(26,47,68,0.95);
-            backdrop-filter:blur(20px);
-            -webkit-backdrop-filter:blur(20px);
-            border:1px solid rgba(255,255,255,0.1);
-            border-radius:14px;max-width:450px;width:100%;
-            max-height:90vh;overflow-y:auto;padding:20px;
-            animation: scaleIn 0.3s ease;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-        }
-        .modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-        .modal-head h2{font-size:17px}
-        .close{
-            background:rgba(255,255,255,0.08);border:none;width:28px;height:28px;
-            border-radius:50%;font-size:16px;cursor:pointer;color:#fff;
-            min-height:28px;display:flex;align-items:center;justify-content:center;
-            transition: all 0.3s ease;
-        }
-        .close:hover{background:rgba(255,255,255,0.15);transform:rotate(90deg)}
-        
-        .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-        .form-grid label{font-size:11px;color:rgba(255,255,255,0.5);display:block;margin-bottom:3px}
-        .form-grid input,.form-grid select{
-            width:100%;padding:6px 10px;border:1px solid rgba(255,255,255,0.1);
-            border-radius:6px;font-size:16px;background:rgba(255,255,255,0.05);color:#fff;
-            min-height:44px;
-            transition: all 0.3s ease;
-        }
-        .form-grid input:focus,.form-grid select:focus{
-            border-color:rgba(246,211,101,0.5);
-            outline:none;
-        }
-        
-        .recipe-line{display:grid;grid-template-columns:1fr 70px 28px;gap:6px;align-items:end;margin-bottom:6px}
-        .recipe-line select,.recipe-line input{
-            width:100%;padding:4px 6px;border:1px solid rgba(255,255,255,0.1);
-            border-radius:5px;background:rgba(255,255,255,0.05);color:#fff;
-            font-size:16px;min-height:44px;
-        }
+        th{background:rgba(255,255,255,.03);padding:8px 10px;text-align:left;font-weight:600;color:rgba(255,255,255,.35);font-size:10px;letter-spacing:.5px;text-transform:uppercase}
+        td{padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.03);font-size:11px;transition:background .2s ease}
+        tr:hover td{background:rgba(255,255,255,.02)}
+        .filter-group{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+        .filter-group label{font-size:11px;color:rgba(255,255,255,.3);font-weight:500}
+        .filter-group input,.filter-group select{padding:6px 12px;border:1px solid rgba(255,255,255,.06);border-radius:16px;font-size:16px;background:rgba(255,255,255,.03);color:#fff;min-width:80px;min-height:44px;transition:all .3s ease}
+        .filter-group input:focus,.filter-group select:focus{border-color:rgba(246,211,101,.3);outline:none;box-shadow:0 0 20px rgba(246,211,101,.05)}
+        .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px}
+        .stat-card{background:rgba(255,255,255,.02);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);border:1px solid rgba(255,255,255,.04);border-radius:16px;padding:16px;text-align:center;transition:all .4s ease;animation:scaleIn .6s ease}
+        .stat-card:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,.3);border-color:rgba(255,255,255,.08)}
+        .stat-card span{font-size:10px;color:rgba(255,255,255,.3);display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:1px}
+        .stat-card b{font-size:24px;font-weight:700;background:linear-gradient(135deg,#f6d365,#fda085);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .period-group{display:flex;gap:4px;flex-wrap:wrap}
+        .period-btn{padding:5px 12px;border:1px solid rgba(255,255,255,.06);border-radius:16px;background:transparent;cursor:pointer;font-size:10px;color:rgba(255,255,255,.35);min-height:36px;letter-spacing:.3px;transition:all .3s ease}
+        .period-btn:hover{color:#fff;border-color:rgba(255,255,255,.2)}
+        .period-btn.active{background:linear-gradient(135deg,#f6d365,#fda085);color:#1a1a2e;border-color:transparent;font-weight:600}
+        .badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:9px;font-weight:600;letter-spacing:.3px}
+        .badge-good{background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.2)}
+        .badge-low{background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.2)}
+        .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:1000;align-items:center;justify-content:center;padding:16px}
+        .modal.show{display:flex;animation:fadeIn .3s ease}
+        .modal-box{background:rgba(20,30,50,.95);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border:1px solid rgba(255,255,255,.06);border-radius:20px;max-width:480px;width:100%;max-height:90vh;overflow-y:auto;padding:24px;animation:scaleIn .4s cubic-bezier(.25,.8,.25,1.2);box-shadow:0 30px 80px rgba(0,0,0,.6)}
+        .modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+        .modal-head h2{font-size:18px;font-weight:700}
+        .close{background:rgba(255,255,255,.06);border:none;width:32px;height:32px;border-radius:50%;font-size:16px;cursor:pointer;color:#fff;min-height:32px;display:flex;align-items:center;justify-content:center;transition:all .3s ease}
+        .close:hover{background:rgba(255,255,255,.12);transform:rotate(90deg)}
+        .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+        .form-grid label{font-size:11px;color:rgba(255,255,255,.35);display:block;margin-bottom:4px;font-weight:500;letter-spacing:.3px}
+        .form-grid input,.form-grid select{width:100%;padding:8px 12px;border:1px solid rgba(255,255,255,.06);border-radius:10px;font-size:16px;background:rgba(255,255,255,.03);color:#fff;min-height:44px;transition:all .3s ease}
+        .form-grid input:focus,.form-grid select:focus{border-color:rgba(246,211,101,.3);outline:none;box-shadow:0 0 20px rgba(246,211,101,.05)}
+        .recipe-line{display:grid;grid-template-columns:1fr 70px 30px;gap:8px;align-items:end;margin-bottom:8px}
+        .recipe-line select,.recipe-line input{width:100%;padding:6px 8px;border:1px solid rgba(255,255,255,.06);border-radius:8px;background:rgba(255,255,255,.03);color:#fff;font-size:16px;min-height:44px}
         .grid{display:grid}
-        
-        @media(max-width:600px){
-            body{font-size:14px}header h1{font-size:15px}
-            .form-grid{grid-template-columns:1fr}
-            .grid{grid-template-columns:1fr!important}
-            .products-grid{grid-template-columns:repeat(auto-fill,minmax(90px,1fr));max-height:300px}
-            .stat-grid{grid-template-columns:repeat(2,1fr)}
-            .recipe-line{grid-template-columns:1fr 60px 24px}
-            nav button{font-size:10px;padding:4px 8px;min-height:36px}
-            .card{padding:10px}main{padding:8px}
-            .product-card{min-height:90px;padding:12px 8px}
-            .product-card .name{font-size:12px}.product-card .price{font-size:14px}
-            .btn,.login-btn{min-height:44px}
-        }
+        @media(max-width:600px){body{font-size:14px}header h1{font-size:16px}.form-grid{grid-template-columns:1fr}.grid{grid-template-columns:1fr!important}.products-grid{grid-template-columns:repeat(auto-fill,minmax(95px,1fr));max-height:320px}.stat-grid{grid-template-columns:repeat(2,1fr)}.recipe-line{grid-template-columns:1fr 60px 26px}nav button{font-size:10px;padding:6px 10px;min-height:34px}.card{padding:12px}main{padding:10px}.product-card{min-height:95px;padding:12px 6px}.product-card .name{font-size:11px}.product-card .price{font-size:13px}.btn,.login-btn{min-height:44px}.btn{font-size:11px;padding:8px 16px}}
     </style>
 </head>
 <body>
@@ -448,20 +159,8 @@
     <main>
         <section id="cash" class="section active">
             <div class="grid" style="grid-template-columns:1.5fr 1fr;gap:12px">
-                <div class="card">
-                    <div class="card-header"><h2>📦 Товары</h2><select id="categoryFilter" style="min-width:80px;padding:4px 8px;border:1px solid rgba(255,255,255,0.1);border-radius:14px;background:rgba(255,255,255,0.05);color:#fff;font-size:16px;min-height:44px"><option value="">Все</option></select></div>
-                    <input id="cashSearch" placeholder="🔍 Поиск..." style="width:100%;padding:6px 12px;border:1px solid rgba(255,255,255,0.1);border-radius:16px;font-size:16px;margin-bottom:10px;background:rgba(255,255,255,0.05);color:#fff;min-height:44px">
-                    <div id="cashProducts" class="products-grid"></div>
-                </div>
-                <div class="card">
-                    <h2>🛒 Корзина</h2><div id="cart"></div>
-                    <div class="flex-between mt-12" style="font-size:16px;font-weight:700;padding-top:8px;border-top:1px solid rgba(255,255,255,0.06)"><span>Итого:</span><span id="cartTotal">0 ₽</span></div>
-                    <div class="flex-between mt-8"><label style="font-size:12px;color:rgba(255,255,255,0.5)">Внесено, ₽</label><input type="number" id="amountPaid" min="0" step="0.01" value="0" style="width:90px;padding:4px 8px;border:1px solid rgba(255,255,255,0.1);border-radius:6px;background:rgba(255,255,255,0.05);color:#fff;font-size:16px;min-height:44px"></div>
-                    <div class="flex-between mt-8" style="font-size:14px;font-weight:600"><span>Сдача:</span><span id="changeDisplay" style="color:#4ade80">0 ₽</span></div>
-                    <select id="payment" class="mt-8" style="width:100%;padding:6px 10px;border:1px solid rgba(255,255,255,0.1);border-radius:6px;background:rgba(255,255,255,0.05);color:#fff;font-size:16px;min-height:44px"><option value="Наличные">Наличные</option><option value="Карта">Карта</option><option value="Перевод">Перевод</option></select>
-                    <button class="btn btn-green btn-block mt-8" id="completeSaleBtn">✅ Оформить</button>
-                    <button class="btn btn-gray btn-block mt-8" id="clearCartBtn">🗑 Очистить</button>
-                </div>
+                <div class="card"><div class="card-header"><h2>📦 Товары</h2><select id="categoryFilter" style="min-width:80px;padding:4px 8px;border:1px solid rgba(255,255,255,0.1);border-radius:14px;background:rgba(255,255,255,0.05);color:#fff;font-size:16px;min-height:44px"><option value="">Все</option></select></div><input id="cashSearch" placeholder="🔍 Поиск..." style="width:100%;padding:6px 12px;border:1px solid rgba(255,255,255,0.1);border-radius:16px;font-size:16px;margin-bottom:10px;background:rgba(255,255,255,0.05);color:#fff;min-height:44px"><div id="cashProducts" class="products-grid"></div></div>
+                <div class="card"><h2>🛒 Корзина</h2><div id="cart"></div><div class="flex-between mt-12" style="font-size:16px;font-weight:700;padding-top:8px;border-top:1px solid rgba(255,255,255,0.06)"><span>Итого:</span><span id="cartTotal">0 ₽</span></div><div class="flex-between mt-8"><label style="font-size:12px;color:rgba(255,255,255,0.5)">Внесено, ₽</label><input type="number" id="amountPaid" min="0" step="0.01" value="0" style="width:90px;padding:4px 8px;border:1px solid rgba(255,255,255,0.1);border-radius:6px;background:rgba(255,255,255,0.05);color:#fff;font-size:16px;min-height:44px"></div><div class="flex-between mt-8" style="font-size:14px;font-weight:600"><span>Сдача:</span><span id="changeDisplay" style="color:#4ade80">0 ₽</span></div><select id="payment" class="mt-8" style="width:100%;padding:6px 10px;border:1px solid rgba(255,255,255,0.1);border-radius:6px;background:rgba(255,255,255,0.05);color:#fff;font-size:16px;min-height:44px"><option value="Наличные">Наличные</option><option value="Карта">Карта</option><option value="Перевод">Перевод</option></select><button class="btn btn-green btn-block mt-8" id="completeSaleBtn">✅ Оформить</button><button class="btn btn-gray btn-block mt-8" id="clearCartBtn">🗑 Очистить</button></div>
             </div>
         </section>
         <section id="products" class="section"><div class="card"><div class="card-header"><h2>📋 Товары</h2><div class="flex-center"><button class="btn btn-primary btn-sm" id="addProductBtn">+</button><button class="btn btn-export btn-sm" id="exportProductsBtn">📤</button><button class="btn btn-red btn-sm" id="resetProductsBtn">🔄 Сбросить</button></div></div><div class="table-wrap"><table><thead><tr><th>Название</th><th>Кат.</th><th>Цена</th><th>Себест.</th><th>Маржа</th><th>⚙️</th></tr></thead><tbody id="productsTable"></tbody></table></div></div></section>
@@ -479,9 +178,40 @@
 <div id="purchaseModal" class="modal"><div class="modal-box"><div class="modal-head"><h2>Добавить закупку</h2><button class="close" id="closePurchaseModal">✕</button></div><div class="form-grid"><div><label>Ингредиент</label><select id="purchaseIngredient"></select></div><div><label>Количество</label><input type="number" id="purchaseQty" min="0"></div><div><label>Цена за ед.</label><input type="number" id="purchasePrice" min="0" step="0.01"></div><div><label>Дата</label><input type="date" id="purchaseDate"></div></div><button class="btn btn-primary btn-block mt-12" id="savePurchaseBtn">💾 Сохранить</button></div></div>
 
 <script>
+// ============================================================
+// СИНХРОНИЗАЦИЯ С ОБЛАКОМ
+// ============================================================
+const JSONBIN_BIN_ID = "6a66026bda38895dfe91d972";
+const JSONBIN_API_KEY = "$2a$10$yxI8bHjs.nSk80JN6OANguc6vaoFnGdPICGSNgpeBJSEIhegKWtWO";
+const JSONBIN_URL = "https://api.jsonbin.io/v3/b/" + JSONBIN_BIN_ID;
+const SYNC_ENABLED = true;
+
+function syncToCloud(){
+    if(!SYNC_ENABLED)return;
+    var data={ingredients:ingredients,products:products,sales:sales,purchases:purchases,lastSync:new Date().toISOString()};
+    fetch(JSONBIN_URL,{method:"PUT",headers:{"Content-Type":"application/json","X-Master-Key":JSONBIN_API_KEY},body:JSON.stringify(data)})
+    .then(function(r){return r.json();})
+    .then(function(d){console.log("☁️ Синхронизировано");})
+    .catch(function(e){console.log("Ошибка синхронизации:",e);});
+}
+
+function loadFromCloud(callback){
+    if(!SYNC_ENABLED){if(callback)callback(false);return;}
+    fetch(JSONBIN_URL+"/latest",{method:"GET",headers:{"X-Master-Key":JSONBIN_API_KEY}})
+    .then(function(r){return r.json();})
+    .then(function(d){
+        var data=d.record;
+        if(data&&data.ingredients&&data.products){
+            ingredients=data.ingredients;products=data.products;
+            sales=data.sales||[];purchases=data.purchases||[];
+            saveData();console.log("☁️ Данные загружены из облака");
+            if(callback)callback(true);
+        }else{if(callback)callback(false);}
+    }).catch(function(e){console.log("Ошибка загрузки:",e);if(callback)callback(false);});
+}
+
 // ДАННЫЕ
 var defaultIngredients=[{id:1,name:"Кофе",unit:"г",stock:10000,min:2000,cost:1.8},{id:2,name:"Молоко",unit:"мл",stock:20000,min:5000,cost:0.09},{id:3,name:"Сахар",unit:"г",stock:5000,min:1000,cost:0.04},{id:4,name:"Стакан горячий маленький",unit:"шт",stock:500,min:50,cost:5},{id:5,name:"Стакан горячий большой",unit:"шт",stock:500,min:50,cost:6},{id:6,name:"Стакан холодный 300 мл",unit:"шт",stock:500,min:50,cost:5},{id:7,name:"Стакан холодный 450 мл",unit:"шт",stock:500,min:50,cost:6},{id:8,name:"Крышка маленькая",unit:"шт",stock:500,min:50,cost:2},{id:9,name:"Крышка большая",unit:"шт",stock:500,min:50,cost:2},{id:10,name:"Крышка купольная",unit:"шт",stock:500,min:50,cost:3},{id:11,name:"Сироп ванильный",unit:"мл",stock:3000,min:500,cost:0.41},{id:12,name:"Сироп карамельный",unit:"мл",stock:3000,min:500,cost:0.41},{id:13,name:"Сироп малиновый",unit:"мл",stock:2000,min:500,cost:0.41},{id:14,name:"Сироп солёная карамель",unit:"мл",stock:2000,min:500,cost:0.41},{id:15,name:"Сироп карамель (2 шт.)",unit:"мл",stock:4000,min:500,cost:0.41},{id:16,name:"Сироп кокос (2 шт.)",unit:"мл",stock:4000,min:500,cost:0.41},{id:17,name:"Сироп попкорн",unit:"мл",stock:2000,min:500,cost:0.41},{id:18,name:"Сироп шоколадное печенье",unit:"мл",stock:2000,min:500,cost:0.41},{id:19,name:"Сироп макадамия",unit:"мл",stock:2000,min:500,cost:0.41},{id:20,name:"Сироп ваниль (доп.)",unit:"мл",stock:2000,min:500,cost:0.41},{id:21,name:"Сироп кубинский мохито",unit:"мл",stock:2000,min:500,cost:0.41},{id:22,name:"Шоколадный сироп",unit:"мл",stock:2000,min:500,cost:0.41},{id:23,name:"Топинг карамель",unit:"мл",stock:1000,min:200,cost:0.4},{id:24,name:"Топинг шоколад",unit:"мл",stock:1000,min:200,cost:0.4},{id:25,name:"Сливки 10%",unit:"мл",stock:5000,min:1000,cost:0.17},{id:26,name:"Горячий шоколад",unit:"г",stock:3000,min:500,cost:1.8},{id:27,name:"Урбеч (паста)",unit:"г",stock:2000,min:500,cost:1.5},{id:28,name:"Мороженое пломбир",unit:"г",stock:5000,min:1000,cost:0.34},{id:29,name:"Тоник",unit:"мл",stock:5000,min:1000,cost:0.14},{id:30,name:"Сок апельсиновый",unit:"мл",stock:5000,min:1000,cost:0.2},{id:31,name:"Сок гранатовый",unit:"мл",stock:5000,min:1000,cost:0.15},{id:32,name:"Чай чёрный",unit:"г",stock:2000,min:500,cost:0.7},{id:33,name:"Ванильный сахар",unit:"г",stock:1000,min:100,cost:1},{id:34,name:"Сок лимонный",unit:"мл",stock:3000,min:500,cost:0.3},{id:35,name:"Сироп мятный",unit:"мл",stock:2000,min:500,cost:0.41},{id:36,name:"Нарзан",unit:"мл",stock:5000,min:1000,cost:0.0267},{id:37,name:"Лимон (дольки)",unit:"шт",stock:200,min:20,cost:15},{id:38,name:"Мята свежая",unit:"г",stock:500,min:50,cost:0.8},{id:39,name:"Клубника",unit:"г",stock:2000,min:200,cost:0.5},{id:40,name:"Банан",unit:"г",stock:2000,min:200,cost:0.4},{id:41,name:"Основа лимонада",unit:"г",stock:5000,min:1000,cost:0.52},{id:42,name:"Вода",unit:"л",stock:500,min:50,cost:40},{id:43,name:"Колд брю",unit:"г",stock:2000,min:500,cost:2.5},{id:44,name:"Мороженое ванильное",unit:"г",stock:3000,min:500,cost:0.35},{id:45,name:"Мороженое шоколадное",unit:"г",stock:3000,min:500,cost:0.35},{id:46,name:"Мороженое клубничное",unit:"г",stock:3000,min:500,cost:0.35},{id:47,name:"Лёд для милкшейка",unit:"г",stock:5000,min:1000,cost:0.01},{id:48,name:"Сироп банановый",unit:"мл",stock:2000,min:500,cost:0.41},{id:49,name:"Сироп клубничный",unit:"мл",stock:2000,min:500,cost:0.41},{id:50,name:"Топинг ванильный",unit:"мл",stock:1000,min:200,cost:0.4},{id:51,name:"Топинг клубничный",unit:"мл",stock:1000,min:200,cost:0.4}];
-
 var defaultProducts=[{id:1,name:"Эспрессо",category:"Кофе",price:100,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:4,amount:1},{ingredientId:8,amount:1}]},{id:2,name:"Американо",category:"Кофе",price:130,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:4,amount:1},{ingredientId:8,amount:1}]},{id:3,name:"Капучино маленький",category:"Кофе",price:170,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:2,amount:200},{ingredientId:4,amount:1},{ingredientId:8,amount:1}]},{id:4,name:"Капучино большой",category:"Кофе",price:200,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:2,amount:300},{ingredientId:5,amount:1},{ingredientId:9,amount:1}]},{id:5,name:"Флэт Уайт маленький",category:"Кофе",price:200,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:2,amount:200},{ingredientId:4,amount:1},{ingredientId:8,amount:1}]},{id:6,name:"Латте большой",category:"Кофе",price:200,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:2,amount:300},{ingredientId:5,amount:1},{ingredientId:9,amount:1}]},{id:7,name:"Раф маленький",category:"Кофе",price:200,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:25,amount:200},{ingredientId:4,amount:1},{ingredientId:8,amount:1}]},{id:8,name:"Раф большой",category:"Кофе",price:230,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:25,amount:300},{ingredientId:5,amount:1},{ingredientId:9,amount:1}]},{id:9,name:"Раф малиновый маленький",category:"Кофе",price:220,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:25,amount:200},{ingredientId:13,amount:10},{ingredientId:23,amount:3},{ingredientId:33,amount:5},{ingredientId:4,amount:1},{ingredientId:8,amount:1}]},{id:10,name:"Раф малиновый большой",category:"Кофе",price:250,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:25,amount:300},{ingredientId:13,amount:15},{ingredientId:23,amount:7},{ingredientId:33,amount:5},{ingredientId:5,amount:1},{ingredientId:9,amount:1}]},{id:11,name:"Горячий шоколад маленький",category:"Горячие напитки",price:200,image:"",recipe:[{ingredientId:26,amount:35},{ingredientId:2,amount:200},{ingredientId:4,amount:1},{ingredientId:8,amount:1}]},{id:12,name:"Горячий шоколад большой",category:"Горячие напитки",price:230,image:"",recipe:[{ingredientId:26,amount:50},{ingredientId:2,amount:300},{ingredientId:5,amount:1},{ingredientId:9,amount:1}]},{id:13,name:"Какао маленький",category:"Горячие напитки",price:170,image:"",recipe:[{ingredientId:26,amount:25},{ingredientId:2,amount:200},{ingredientId:4,amount:1},{ingredientId:8,amount:1}]},{id:14,name:"Какао большой",category:"Горячие напитки",price:200,image:"",recipe:[{ingredientId:26,amount:35},{ingredientId:2,amount:300},{ingredientId:5,amount:1},{ingredientId:9,amount:1}]},{id:15,name:"Раф урбеч маленький",category:"Кофе",price:250,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:25,amount:200},{ingredientId:27,amount:30},{ingredientId:33,amount:5},{ingredientId:4,amount:1},{ingredientId:8,amount:1}]},{id:16,name:"Раф урбеч большой",category:"Кофе",price:300,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:25,amount:300},{ingredientId:27,amount:40},{ingredientId:33,amount:5},{ingredientId:5,amount:1},{ingredientId:9,amount:1}]},{id:17,name:"Чай чёрный",category:"Чай",price:160,image:"",recipe:[{ingredientId:32,amount:5},{ingredientId:4,amount:1},{ingredientId:8,amount:1}]},{id:18,name:"Айс латте",category:"Холодные напитки",price:250,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:2,amount:250},{ingredientId:11,amount:15},{ingredientId:6,amount:1},{ingredientId:10,amount:1}]},{id:19,name:"Айс мокко латте",category:"Холодные напитки",price:280,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:2,amount:250},{ingredientId:22,amount:15},{ingredientId:24,amount:10},{ingredientId:26,amount:15},{ingredientId:6,amount:1},{ingredientId:10,amount:1}]},{id:20,name:"Айс кофе с урбечом большой",category:"Холодные напитки",price:300,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:27,amount:40},{ingredientId:28,amount:150},{ingredientId:11,amount:10},{ingredientId:2,amount:120},{ingredientId:7,amount:1},{ingredientId:10,amount:1}]},{id:21,name:"Бамбл апельсин маленький",category:"Холодные напитки",price:250,image:"",recipe:[{ingredientId:30,amount:250},{ingredientId:11,amount:15},{ingredientId:6,amount:1},{ingredientId:10,amount:1}]},{id:22,name:"Бамбл апельсин большой",category:"Холодные напитки",price:300,image:"",recipe:[{ingredientId:30,amount:350},{ingredientId:11,amount:15},{ingredientId:7,amount:1},{ingredientId:10,amount:1}]},{id:23,name:"Бамбл гранат маленький",category:"Холодные напитки",price:250,image:"",recipe:[{ingredientId:31,amount:250},{ingredientId:11,amount:15},{ingredientId:6,amount:1},{ingredientId:10,amount:1}]},{id:24,name:"Бамбл гранат большой",category:"Холодные напитки",price:300,image:"",recipe:[{ingredientId:31,amount:350},{ingredientId:11,amount:15},{ingredientId:7,amount:1},{ingredientId:10,amount:1}]},{id:25,name:"Эспрессо тоник",category:"Холодные напитки",price:250,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:29,amount:250},{ingredientId:11,amount:20},{ingredientId:6,amount:1},{ingredientId:10,amount:1}]},{id:26,name:"Фраппе",category:"Холодные напитки",price:300,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:11,amount:15},{ingredientId:28,amount:150},{ingredientId:2,amount:100},{ingredientId:6,amount:1},{ingredientId:10,amount:1}]},{id:27,name:"Раф 'тут кофе' маленький",category:"Кофе",price:300,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:25,amount:200},{ingredientId:12,amount:10},{ingredientId:4,amount:1},{ingredientId:8,amount:1}]},{id:28,name:"Раф 'тут кофе' большой",category:"Кофе",price:350,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:25,amount:300},{ingredientId:12,amount:15},{ingredientId:5,amount:1},{ingredientId:9,amount:1}]},{id:29,name:"Лимонад классический",category:"Лимонады",price:250,image:"",recipe:[{ingredientId:41,amount:50},{ingredientId:36,amount:300},{ingredientId:37,amount:1},{ingredientId:6,amount:1},{ingredientId:10,amount:1}]},{id:32,name:"Коктейль",category:"Коктейли",price:250,image:"",recipe:[{ingredientId:23,amount:20},{ingredientId:11,amount:15},{ingredientId:28,amount:150},{ingredientId:2,amount:100},{ingredientId:35,amount:15},{ingredientId:38,amount:5},{ingredientId:6,amount:1},{ingredientId:10,amount:1}]},{id:33,name:"Вода",category:"Напитки",price:60,image:"",recipe:[{ingredientId:42,amount:1},{ingredientId:6,amount:1},{ingredientId:10,amount:1}]},{id:34,name:"Колд брю",category:"Кофе",price:350,image:"",recipe:[{ingredientId:43,amount:20},{ingredientId:6,amount:1},{ingredientId:10,amount:1}]},{id:35,name:"Милкшейк ванильный",category:"Милкшейки",price:250,image:"",recipe:[{ingredientId:44,amount:130},{ingredientId:47,amount:120},{ingredientId:2,amount:110},{ingredientId:11,amount:10},{ingredientId:50,amount:5},{ingredientId:50,amount:5},{ingredientId:6,amount:1},{ingredientId:10,amount:1}]},{id:36,name:"Милкшейк шоколадный",category:"Милкшейки",price:250,image:"",recipe:[{ingredientId:45,amount:130},{ingredientId:47,amount:120},{ingredientId:2,amount:110},{ingredientId:24,amount:10},{ingredientId:24,amount:5},{ingredientId:6,amount:1},{ingredientId:10,amount:1}]},{id:37,name:"Милкшейк клубничный",category:"Милкшейки",price:250,image:"",recipe:[{ingredientId:46,amount:130},{ingredientId:47,amount:120},{ingredientId:2,amount:110},{ingredientId:49,amount:10},{ingredientId:51,amount:5},{ingredientId:51,amount:5},{ingredientId:6,amount:1},{ingredientId:10,amount:1}]},{id:38,name:"Милкшейк банановый",category:"Милкшейки",price:250,image:"",recipe:[{ingredientId:44,amount:130},{ingredientId:47,amount:120},{ingredientId:2,amount:110},{ingredientId:48,amount:10},{ingredientId:6,amount:1},{ingredientId:10,amount:1}]}];
 
 var ingredients=[],products=[],sales=[],purchases=[],cart=[],reportPeriod='today',currentImageData=null,currentImageUrl='';
@@ -491,11 +221,13 @@ function loadAllData(){
     if(si&&sp){try{ingredients=JSON.parse(si);products=JSON.parse(sp);sales=JSON.parse(localStorage.getItem("coffeeSales")||"[]");purchases=JSON.parse(localStorage.getItem("coffeePurchases")||"[]");if(products.length<38)mergeDefaultProducts();if(ingredients.length<51)mergeDefaultIngredients();}catch(e){loadDefaults();}}
     else{loadDefaults();}
     saveData();
+    loadFromCloud(function(success){if(success)renderAll();});
 }
 function loadDefaults(){ingredients=JSON.parse(JSON.stringify(defaultIngredients));products=JSON.parse(JSON.stringify(defaultProducts));sales=[];purchases=[];}
 function mergeDefaultProducts(){for(var i=0;i<defaultProducts.length;i++){var found=false;for(var j=0;j<products.length;j++){if(products[j].id===defaultProducts[i].id){found=true;break;}}if(!found)products.push(JSON.parse(JSON.stringify(defaultProducts[i])));}}
 function mergeDefaultIngredients(){for(var i=0;i<defaultIngredients.length;i++){var found=false;for(var j=0;j<ingredients.length;j++){if(ingredients[j].id===defaultIngredients[i].id){found=true;break;}}if(!found)ingredients.push(JSON.parse(JSON.stringify(defaultIngredients[i])));}}
 function saveData(){try{localStorage.setItem("coffeeIngredients",JSON.stringify(ingredients));localStorage.setItem("coffeeProducts",JSON.stringify(products));localStorage.setItem("coffeeSales",JSON.stringify(sales));localStorage.setItem("coffeePurchases",JSON.stringify(purchases));}catch(e){}}
+function saveAndSync(){saveData();syncToCloud();}
 function money(v){return Number(v||0).toLocaleString("ru-RU",{maximumFractionDigits:2})+" ₽";}
 function esc(v){return String(v||"").replace(/[&<>"']/g,function(m){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m];});}
 function calculateCost(p){if(!p.recipe||!p.recipe.length)return 0;var t=0;for(var i=0;i<p.recipe.length;i++){var r=p.recipe[i],ing=ingredients.find(function(x){return x.id===r.ingredientId;});if(ing)t+=Number(r.amount)*Number(ing.cost||0);}return t;}
@@ -508,28 +240,28 @@ function addToCart(id){var p=products.find(function(x){return x.id===id;});if(!p
 function changeQty(id,d){var item=cart.find(function(x){return x.id===id;});if(!item)return;item.qty+=d;if(item.qty<=0)cart=cart.filter(function(x){return x.id!==id;});renderCart();}
 function renderCart(){var box=document.getElementById("cart");if(!cart.length){box.innerHTML='<div class="text-center text-muted" style="padding:20px">Корзина пуста</div>';document.getElementById("cartTotal").textContent="0 ₽";updateChange();return;}var total=0;box.innerHTML=cart.map(function(item){var p=products.find(function(x){return x.id===item.id;});if(!p)return'';var sum=p.price*item.qty;total+=sum;return'<div class="cart-item"><div class="info"><strong>'+esc(p.name)+'</strong><small>'+money(p.price)+' × '+item.qty+'</small></div><div class="qty-control"><button onclick="changeQty('+p.id+',-1)">−</button><span>'+item.qty+'</span><button onclick="changeQty('+p.id+',1)">+</button></div><b>'+money(sum)+'</b></div>';}).join("");document.getElementById("cartTotal").textContent=money(total);updateChange();}
 function updateChange(){var total=parseFloat((document.getElementById('cartTotal').textContent||"0").replace(/[^0-9.,]/g,'').replace(',','.'))||0,paid=parseFloat(document.getElementById('amountPaid').value)||0,change=paid-total,d=document.getElementById('changeDisplay');if(change>=0){d.textContent=money(change);d.style.color='#4ade80';}else{d.textContent='Недостаточно: '+money(Math.abs(change));d.style.color='#f87171';}}
-function completeSale(){if(!cart.length){alert("Корзина пуста");return;}for(var i=0;i<cart.length;i++){var item=cart[i],p=products.find(function(x){return x.id===item.id;});if(!p)continue;for(var j=0;j<(p.recipe||[]).length;j++){var r=p.recipe[j],ing=ingredients.find(function(x){return x.id===r.ingredientId;});if(ing&&Number(ing.stock)<Number(r.amount)*item.qty){alert("Недостаточно: "+ing.name);return;}}}var total=0,items=[];cart.forEach(function(item){var p=products.find(function(x){return x.id===item.id;});if(!p)return;total+=p.price*item.qty;items.push({id:p.id,name:p.name,qty:item.qty,price:p.price});(p.recipe||[]).forEach(function(r){var ing=ingredients.find(function(x){return x.id===r.ingredientId;});if(ing)ing.stock=Number(ing.stock)-Number(r.amount)*item.qty;});});sales.unshift({id:Date.now(),date:new Date().toISOString(),items:items,total:total,payment:document.getElementById("payment").value});cart=[];document.getElementById('amountPaid').value=0;saveData();renderAll();alert('✅ Продажа оформлена! Сумма: '+money(total));}
+function completeSale(){if(!cart.length){alert("Корзина пуста");return;}for(var i=0;i<cart.length;i++){var item=cart[i],p=products.find(function(x){return x.id===item.id;});if(!p)continue;for(var j=0;j<(p.recipe||[]).length;j++){var r=p.recipe[j],ing=ingredients.find(function(x){return x.id===r.ingredientId;});if(ing&&Number(ing.stock)<Number(r.amount)*item.qty){alert("Недостаточно: "+ing.name);return;}}}var total=0,items=[];cart.forEach(function(item){var p=products.find(function(x){return x.id===item.id;});if(!p)return;total+=p.price*item.qty;items.push({id:p.id,name:p.name,qty:item.qty,price:p.price});(p.recipe||[]).forEach(function(r){var ing=ingredients.find(function(x){return x.id===r.ingredientId;});if(ing)ing.stock=Number(ing.stock)-Number(r.amount)*item.qty;});});sales.unshift({id:Date.now(),date:new Date().toISOString(),items:items,total:total,payment:document.getElementById("payment").value});cart=[];document.getElementById('amountPaid').value=0;saveAndSync();renderAll();alert('✅ Продажа оформлена! Сумма: '+money(total));}
 function openProductModal(id){document.getElementById("productId").value=id||"";document.getElementById("recipe").innerHTML="";currentImageData=null;currentImageUrl='';document.getElementById('productImagePreview').style.display='none';document.getElementById('imagePreviewContainer').style.display='none';document.getElementById('productImageInput').value='';document.getElementById('productImageUrl').value='';if(id){var p=products.find(function(x){return x.id===id;});if(!p)return;document.getElementById("productModalTitle").textContent="Редактировать товар";document.getElementById("productName").value=p.name;document.getElementById("productCategory").value=p.category||"";document.getElementById("productPrice").value=p.price;if(p.image){var preview=document.getElementById('productImagePreview');preview.src=p.image;preview.style.display='block';document.getElementById('imagePreviewContainer').style.display='block';if(p.image.startsWith('http')){currentImageUrl=p.image;document.getElementById('productImageUrl').value=p.image;}else{currentImageData=p.image;}}(p.recipe||[]).forEach(function(r){addRecipeLine(r.ingredientId,r.amount);});}else{document.getElementById("productModalTitle").textContent="Добавить товар";document.getElementById("productName").value="";document.getElementById("productCategory").value="";document.getElementById("productPrice").value="";addRecipeLine();}document.getElementById("productModal").classList.add("show");}
 function addRecipeLine(iid,amt){var box=document.getElementById("recipe"),line=document.createElement("div");line.className="recipe-line";line.innerHTML='<select class="recipe-ing" style="width:100%;padding:4px 6px;border:1px solid rgba(255,255,255,0.1);border-radius:5px;background:rgba(255,255,255,0.05);color:#fff;font-size:16px;min-height:44px"><option value="">Выберите</option>'+ingredients.map(function(i){return'<option value="'+i.id+'" '+(String(i.id)===String(iid||"")?"selected":"")+'>'+esc(i.name)+' ('+i.unit+')</option>';}).join("")+'</select><input class="recipe-amount" type="number" min="0" step="0.01" value="'+(amt||"")+'" placeholder="Кол-во" style="width:100%;padding:4px 6px;border:1px solid rgba(255,255,255,0.1);border-radius:5px;background:rgba(255,255,255,0.05);color:#fff;font-size:16px;min-height:44px"><button class="btn btn-sm btn-red" onclick="this.parentElement.remove()" style="padding:1px 6px;font-size:14px;min-height:28px">×</button>';box.appendChild(line);}
-function saveProduct(){var name=document.getElementById("productName").value.trim(),cat=document.getElementById("productCategory").value.trim(),price=Number(document.getElementById("productPrice").value),id=Number(document.getElementById("productId").value);if(!name||price<0){alert("Заполните название и цену");return;}var recipe=[...document.querySelectorAll(".recipe-line")].map(function(l){return{ingredientId:Number(l.querySelector(".recipe-ing").value),amount:Number(l.querySelector(".recipe-amount").value)};}).filter(function(x){return x.ingredientId&&x.amount>0;});var img='';if(currentImageData)img=currentImageData;else if(currentImageUrl)img=currentImageUrl;if(id){var p=products.find(function(x){return x.id===id;});if(p){p.name=name;p.category=cat;p.price=price;p.recipe=recipe;p.image=img;}}else{products.push({id:Date.now(),name:name,category:cat,price:price,recipe:recipe,image:img});}saveData();document.getElementById("productModal").classList.remove("show");renderAll();}
-function deleteProduct(id){var p=products.find(function(x){return x.id===id;});if(!p)return;if(confirm("Удалить «"+p.name+"»?")){products=products.filter(function(x){return x.id!==id;});cart=cart.filter(function(x){return x.id!==id;});saveData();renderAll();}}
+function saveProduct(){var name=document.getElementById("productName").value.trim(),cat=document.getElementById("productCategory").value.trim(),price=Number(document.getElementById("productPrice").value),id=Number(document.getElementById("productId").value);if(!name||price<0){alert("Заполните название и цену");return;}var recipe=[...document.querySelectorAll(".recipe-line")].map(function(l){return{ingredientId:Number(l.querySelector(".recipe-ing").value),amount:Number(l.querySelector(".recipe-amount").value)};}).filter(function(x){return x.ingredientId&&x.amount>0;});var img='';if(currentImageData)img=currentImageData;else if(currentImageUrl)img=currentImageUrl;if(id){var p=products.find(function(x){return x.id===id;});if(p){p.name=name;p.category=cat;p.price=price;p.recipe=recipe;p.image=img;}}else{products.push({id:Date.now(),name:name,category:cat,price:price,recipe:recipe,image:img});}saveAndSync();document.getElementById("productModal").classList.remove("show");renderAll();}
+function deleteProduct(id){var p=products.find(function(x){return x.id===id;});if(!p)return;if(confirm("Удалить «"+p.name+"»?")){products=products.filter(function(x){return x.id!==id;});cart=cart.filter(function(x){return x.id!==id;});saveAndSync();renderAll();}}
 function renderProducts(){var tbody=document.getElementById("productsTable");if(!products.length){tbody.innerHTML='<tr><td colspan="6" class="text-center text-muted">Нет товаров</td></tr>';return;}tbody.innerHTML=products.map(function(p){var cost=calculateCost(p),margin=calculateMargin(p),mc=margin>50?'badge-good':'badge-low';return'<tr><td><b>'+esc(p.name)+'</b></td><td>'+esc(p.category||"")+'</td><td>'+money(p.price)+'</td><td>'+money(cost)+'</td><td><span class="badge '+mc+'">'+margin.toFixed(1)+'%</span></td><td><button class="btn btn-sm btn-blue" onclick="openProductModal('+p.id+')">✏️</button><button class="btn btn-sm btn-red" onclick="deleteProduct('+p.id+')">🗑</button></td></tr>';}).join("");}
-function resetProducts(){if(confirm('Сбросить ВСЕ товары до стандартных 38 штук?')){products=JSON.parse(JSON.stringify(defaultProducts));saveData();renderAll();alert('✅ Товары сброшены! '+products.length+' шт.');}}
+function resetProducts(){if(confirm('Сбросить ВСЕ товары до стандартных 38 штук?')){products=JSON.parse(JSON.stringify(defaultProducts));saveAndSync();renderAll();alert('✅ Товары сброшены! '+products.length+' шт.');}}
 function renderIngredients(){var tbody=document.getElementById("ingredientsTable");if(!ingredients.length){tbody.innerHTML='<tr><td colspan="6" class="text-center text-muted">Нет ингредиентов</td></tr>';return;}tbody.innerHTML=ingredients.map(function(i){return'<tr><td><b>'+esc(i.name)+'</b></td><td>'+esc(i.unit)+'</td><td>'+i.stock+'</td><td>'+i.min+'</td><td>'+money(i.cost)+'</td><td><button class="btn btn-sm btn-blue" onclick="openIngredientModal('+i.id+')">✏️</button><button class="btn btn-sm btn-red" onclick="deleteIngredient('+i.id+')">🗑</button></td></tr>';}).join("");}
 function openIngredientModal(id){document.getElementById("ingredientId").value=id||"";if(id){var i=ingredients.find(function(x){return x.id===id;});if(!i)return;document.getElementById("ingredientModalTitle").textContent="Редактировать";document.getElementById("ingredientName").value=i.name;document.getElementById("ingredientUnit").value=i.unit;document.getElementById("ingredientStock").value=i.stock;document.getElementById("ingredientMin").value=i.min;document.getElementById("ingredientCost").value=i.cost;}else{document.getElementById("ingredientModalTitle").textContent="Добавить";document.getElementById("ingredientName").value="";document.getElementById("ingredientUnit").value="мл";document.getElementById("ingredientStock").value=0;document.getElementById("ingredientMin").value=0;document.getElementById("ingredientCost").value=0;}document.getElementById("ingredientModal").classList.add("show");}
-function saveIngredient(){var name=document.getElementById("ingredientName").value.trim(),unit=document.getElementById("ingredientUnit").value,stock=Number(document.getElementById("ingredientStock").value),min=Number(document.getElementById("ingredientMin").value),cost=Number(document.getElementById("ingredientCost").value),id=Number(document.getElementById("ingredientId").value);if(!name){alert("Введите название");return;}if(id){var i=ingredients.find(function(x){return x.id===id;});if(i){i.name=name;i.unit=unit;i.stock=stock;i.min=min;i.cost=cost;}}else{ingredients.push({id:Date.now(),name:name,unit:unit,stock:stock,min:min,cost:cost});}saveData();document.getElementById("ingredientModal").classList.remove("show");renderAll();}
-function deleteIngredient(id){var ing=ingredients.find(function(x){return x.id===id;});if(!ing)return;if(confirm("Удалить «"+ing.name+"»?")){ingredients=ingredients.filter(function(x){return x.id!==id;});saveData();renderAll();}}
+function saveIngredient(){var name=document.getElementById("ingredientName").value.trim(),unit=document.getElementById("ingredientUnit").value,stock=Number(document.getElementById("ingredientStock").value),min=Number(document.getElementById("ingredientMin").value),cost=Number(document.getElementById("ingredientCost").value),id=Number(document.getElementById("ingredientId").value);if(!name){alert("Введите название");return;}if(id){var i=ingredients.find(function(x){return x.id===id;});if(i){i.name=name;i.unit=unit;i.stock=stock;i.min=min;i.cost=cost;}}else{ingredients.push({id:Date.now(),name:name,unit:unit,stock:stock,min:min,cost:cost});}saveAndSync();document.getElementById("ingredientModal").classList.remove("show");renderAll();}
+function deleteIngredient(id){var ing=ingredients.find(function(x){return x.id===id;});if(!ing)return;if(confirm("Удалить «"+ing.name+"»?")){ingredients=ingredients.filter(function(x){return x.id!==id;});saveAndSync();renderAll();}}
 function renderStock(){var tbody=document.getElementById("stockTable");tbody.innerHTML=ingredients.map(function(i){var isLow=Number(i.stock)<=Number(i.min);return'<tr><td>'+esc(i.name)+'</td><td><b style="color:'+(isLow?'#f87171':'#4ade80')+'">'+i.stock+'</b></td><td>'+i.unit+'</td><td><span class="badge '+(isLow?'badge-low':'badge-good')+'">'+(isLow?"Мало":"Норма")+'</span></td><td><input id="stock-'+i.id+'" type="number" min="0" value="'+i.stock+'" style="width:70px;padding:3px 6px;border:1px solid rgba(255,255,255,0.1);border-radius:4px;background:rgba(255,255,255,0.05);color:#fff;font-size:16px;min-height:44px"><button class="btn btn-sm btn-green" onclick="updateStock('+i.id+')">✓</button></td></tr>';}).join("");}
-function updateStock(id){var v=Number(document.getElementById("stock-"+id).value);if(v<0)return;var ing=ingredients.find(function(i){return i.id===id;});if(ing){ing.stock=v;saveData();renderAll();}}
+function updateStock(id){var v=Number(document.getElementById("stock-"+id).value);if(v<0)return;var ing=ingredients.find(function(i){return i.id===id;});if(ing){ing.stock=v;saveAndSync();renderAll();}}
 function renderSupplierOrder(){var container=document.getElementById('supplierOrderList'),low=ingredients.filter(function(i){return i.stock<=i.min;});if(low.length===0){container.innerHTML='<p class="text-muted">✅ Все в достатке</p>';document.getElementById('supplierTotal').textContent='';return;}var html='<div class="table-wrap"><table><thead><tr><th>Ингредиент</th><th>Остаток</th><th>Мин.</th><th>Заказать</th><th>Цена</th><th>Сумма</th></tr></thead><tbody>',total=0;low.forEach(function(i){var need=i.min*2-i.stock;if(need<=0)return;var sum=need*i.cost;total+=sum;html+='<tr><td><b>'+esc(i.name)+'</b></td><td>'+i.stock+'</td><td>'+i.min+'</td><td>'+need+' '+i.unit+'</td><td>'+money(i.cost)+'</td><td>'+money(sum)+'</td></tr>';});html+='</tbody></table></div>';container.innerHTML=html;document.getElementById('supplierTotal').textContent='💰 Общая сумма: '+money(total);}
 function exportSupplierOrder(){var low=ingredients.filter(function(i){return i.stock<=i.min;});if(low.length===0){alert('Нет позиций');return;}var data=low.map(function(i){var need=i.min*2-i.stock;return{'Ингредиент':i.name,'Остаток':i.stock,'Заказать':need,'Цена':i.cost,'Сумма':need*i.cost};});exportToCSV(data,'Заказ_поставщику');}
-function returnSale(saleId){var sale=sales.find(function(s){return s.id===saleId;});if(!sale||sale.returned)return;if(!confirm("Вернуть на "+money(sale.total)+"?"))return;for(var i=0;i<sale.items.length;i++){var item=sale.items[i],product=products.find(function(p){return p.id===item.id;});if(!product)continue;for(var j=0;j<(product.recipe||[]).length;j++){var r=product.recipe[j],ing=ingredients.find(function(x){return x.id===r.ingredientId;});if(ing)ing.stock=Number(ing.stock)+Number(r.amount)*item.qty;}}sale.returned=true;saveData();renderAll();alert('✅ Возврат выполнен');}
+function returnSale(saleId){var sale=sales.find(function(s){return s.id===saleId;});if(!sale||sale.returned)return;if(!confirm("Вернуть на "+money(sale.total)+"?"))return;for(var i=0;i<sale.items.length;i++){var item=sale.items[i],product=products.find(function(p){return p.id===item.id;});if(!product)continue;for(var j=0;j<(product.recipe||[]).length;j++){var r=product.recipe[j],ing=ingredients.find(function(x){return x.id===r.ingredientId;});if(ing)ing.stock=Number(ing.stock)+Number(r.amount)*item.qty;}}sale.returned=true;saveAndSync();renderAll();alert('✅ Возврат выполнен');}
 function renderHistory(){var tbody=document.getElementById("historyTable"),df=document.getElementById("historyDateFrom").value,dt=document.getElementById("historyDateTo").value,pf=document.getElementById("historyPaymentFilter").value,filtered=sales.slice();if(df){var f=new Date(df);f.setHours(0,0,0,0);filtered=filtered.filter(function(s){return new Date(s.date)>=f;});}if(dt){var t=new Date(dt);t.setHours(23,59,59,999);filtered=filtered.filter(function(s){return new Date(s.date)<=t;});}if(pf)filtered=filtered.filter(function(s){return s.payment===pf;});if(!filtered.length){tbody.innerHTML='<tr><td colspan="5" class="text-center text-muted">Нет продаж</td></tr>';return;}tbody.innerHTML=filtered.map(function(s){var itemsStr=s.items.map(function(i){return esc(i.name)+' × '+i.qty;}).join("<br>"),rb=s.returned?'<span class="badge badge-low">Возвращён</span>':'<button class="btn btn-sm btn-red" onclick="returnSale('+s.id+')">↩️</button>';return'<tr><td>'+new Date(s.date).toLocaleString("ru-RU")+'</td><td>'+itemsStr+'</td><td><b>'+money(s.total)+'</b></td><td>'+esc(s.payment)+'</td><td>'+rb+'</td></tr>';}).join("");}
 function setReportPeriod(p){reportPeriod=p;document.querySelectorAll('#periodGroup button').forEach(function(b){b.classList.remove('active');});var btn=document.querySelector('#periodGroup button[data-period="'+p+'"]');if(btn)btn.classList.add('active');renderReports();}
 function renderReports(){var range=getDateRange(reportPeriod),periodSales=sales.filter(function(s){var d=new Date(s.date);return d>=range.from&&d<=range.to;}),revenue=periodSales.reduce(function(sum,s){return sum+s.total;},0);document.getElementById("reportRevenue").textContent=money(revenue);document.getElementById("reportSales").textContent=periodSales.length;document.getElementById("reportItems").textContent=periodSales.reduce(function(sum,s){return sum+s.items.reduce(function(a,i){return a+i.qty;},0);},0);document.getElementById("reportLowStock").textContent=ingredients.filter(function(i){return Number(i.stock)<=Number(i.min);}).length;var map={};periodSales.forEach(function(s){s.items.forEach(function(i){if(!map[i.name])map[i.name]={qty:0,revenue:0};map[i.name].qty+=i.qty;map[i.name].revenue+=i.qty*i.price;});});var tbody=document.getElementById("reportTable"),rows=Object.entries(map);tbody.innerHTML=rows.length?rows.map(function(r){return'<tr><td>'+esc(r[0])+'</td><td>'+r[1].qty+'</td><td>'+money(r[1].revenue)+'</td></tr>';}).join(""):'<tr><td colspan="3" class="text-center text-muted">Нет продаж</td></tr>';var marginData=products.map(function(p){var cost=calculateCost(p),profit=p.price-cost,margin=cost===0?0:(profit/p.price*100);return{name:p.name,price:p.price,cost:cost,profit:profit,margin:margin};}).sort(function(a,b){return a.name.localeCompare(b.name);}),marginHtml='<div class="card"><h3>📈 Маржинальность товаров</h3><div class="table-wrap"><table><thead><tr><th>Товар</th><th>Цена</th><th>Себест.</th><th>Прибыль</th><th>Маржа</th></tr></thead><tbody>';marginData.forEach(function(p){var mc=p.margin>50?'badge-good':'badge-low';marginHtml+='<tr><td><b>'+esc(p.name)+'</b></td><td>'+money(p.price)+'</td><td>'+money(p.cost)+'</td><td style="color:'+(p.profit>=0?'#4ade80':'#f87171')+'">'+money(p.profit)+'</td><td><span class="badge '+mc+'">'+p.margin.toFixed(1)+'%</span></td></tr>';});marginHtml+='</tbody></table></div></div>';document.getElementById("profitReports").innerHTML=marginHtml;var fixedExpenses=Number(document.getElementById('fixedExpenses').value)||0,dailySalary=Number(document.getElementById('salaryExpense').value)||0,daysInPeriod=Math.max(1,Math.ceil((range.to-range.from)/(1000*60*60*24))+1),salaryTotal=dailySalary*daysInPeriod,grossProfit=periodSales.reduce(function(sum,s){return sum+(s.total-calculateCostSale(s));},0),periodPurchases=purchases.filter(function(p){var d=new Date(p.date);return d>=range.from&&d<=range.to;}),purchaseCost=periodPurchases.reduce(function(sum,p){return sum+(p.qty*p.price);},0),personalProfit=revenue-purchaseCost-fixedExpenses-salaryTotal;document.getElementById('grossProfitDisplay').textContent=money(grossProfit);document.getElementById('purchaseCostDisplay').textContent=money(purchaseCost);var personalDisplay=document.getElementById('personalProfitDisplay');personalDisplay.textContent=money(personalProfit);personalDisplay.style.color=personalProfit>=0?'#4ade80':'#f87171';function calculateCostSale(sale){var totalCost=0;for(var i=0;i<sale.items.length;i++){var item=sale.items[i],product=products.find(function(p){return p.id===item.id;});if(product)totalCost+=calculateCost(product)*item.qty;}return totalCost;}}
 function renderPurchases(){var tbody=document.getElementById("purchasesTable");if(!purchases.length){tbody.innerHTML='<tr><td colspan="5" class="text-center text-muted">Нет закупок</td></tr>';return;}tbody.innerHTML=purchases.map(function(p){return'<tr><td>'+new Date(p.date).toLocaleString("ru-RU")+'</td><td>'+esc(p.ingredientName)+'</td><td>'+p.qty+' '+p.unit+'</td><td>'+money(p.price)+'</td><td>'+money(p.qty*p.price)+'</td></tr>';}).join("");}
 function openPurchaseModal(){var select=document.getElementById('purchaseIngredient');select.innerHTML='<option value="">Выберите</option>';ingredients.forEach(function(i){var o=document.createElement('option');o.value=i.id;o.textContent=i.name+' ('+i.unit+')';select.appendChild(o);});document.getElementById('purchaseQty').value='';document.getElementById('purchasePrice').value='';document.getElementById('purchaseDate').value=new Date().toISOString().split('T')[0];document.getElementById('purchaseModal').classList.add('show');}
-function savePurchase(){var iid=Number(document.getElementById('purchaseIngredient').value),qty=Number(document.getElementById('purchaseQty').value),price=Number(document.getElementById('purchasePrice').value),date=document.getElementById('purchaseDate').value;if(!iid||qty<=0||!date){alert('Заполните все поля');return;}var ing=ingredients.find(function(i){return i.id===iid;});if(!ing)return;ing.stock=Number(ing.stock)+qty;purchases.push({id:Date.now(),date:new Date(date).toISOString(),ingredientId:ing.id,ingredientName:ing.name,unit:ing.unit,qty:qty,price:price});saveData();document.getElementById('purchaseModal').classList.remove('show');renderAll();alert('✅ Закупка добавлена!');}
+function savePurchase(){var iid=Number(document.getElementById('purchaseIngredient').value),qty=Number(document.getElementById('purchaseQty').value),price=Number(document.getElementById('purchasePrice').value),date=document.getElementById('purchaseDate').value;if(!iid||qty<=0||!date){alert('Заполните все поля');return;}var ing=ingredients.find(function(i){return i.id===iid;});if(!ing)return;ing.stock=Number(ing.stock)+qty;purchases.push({id:Date.now(),date:new Date(date).toISOString(),ingredientId:ing.id,ingredientName:ing.name,unit:ing.unit,qty:qty,price:price});saveAndSync();document.getElementById('purchaseModal').classList.remove('show');renderAll();alert('✅ Закупка добавлена!');}
 function exportToCSV(data,filename){if(!data.length){alert('Нет данных');return;}var headers=Object.keys(data[0]),csv='\uFEFF'+headers.join(';')+'\n';data.forEach(function(row){csv+=headers.map(function(h){var val=row[h]!==undefined?row[h]:'';if(typeof val==='string'&&val.includes(';'))val='"'+val+'"';return val;}).join(';')+'\n';});var blob=new Blob([csv],{type:'text/csv;charset=utf-8;'}),link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download=filename+'.csv';document.body.appendChild(link);link.click();document.body.removeChild(link);URL.revokeObjectURL(link.href);}
 function exportProducts(){exportToCSV(products.map(function(p){return{'Название':p.name,'Категория':p.category,'Цена':p.price,'Себестоимость':calculateCost(p).toFixed(2),'Маржа':calculateMargin(p).toFixed(1)+'%'};}),'Товары');}
 function exportIngredients(){exportToCSV(ingredients.map(function(i){return{'Название':i.name,'Ед.':i.unit,'Остаток':i.stock,'Мин.':i.min,'Цена':i.cost};}),'Ингредиенты');}
@@ -537,9 +269,9 @@ function exportSales(){if(!sales.length){alert('Нет продаж');return;}ex
 function exportReport(){var range=getDateRange(reportPeriod),periodSales=sales.filter(function(s){var d=new Date(s.date);return d>=range.from&&d<=range.to;});if(!periodSales.length){alert('Нет продаж за период');return;}var map={};periodSales.forEach(function(s){s.items.forEach(function(i){if(!map[i.name])map[i.name]={qty:0,revenue:0};map[i.name].qty+=i.qty;map[i.name].revenue+=i.qty*i.price;});});exportToCSV(Object.keys(map).map(function(name){return{'Товар':name,'Количество':map[name].qty,'Выручка':map[name].revenue};}),'Отчёт_за_период');}
 
 document.addEventListener('DOMContentLoaded',function(){
-    if(localStorage.getItem('coffeeAuth')==='true'){document.getElementById('loginScreen').style.display='none';document.getElementById('appContent').style.display='block';loadAllData();renderAll();}
+    if(localStorage.getItem('coffeeAuth')==='true'){document.getElementById('loginScreen').style.display='none';document.getElementById('appContent').style.display='block';loadAllData();}
     document.getElementById('loginButton').addEventListener('click',function(){if(document.getElementById('loginUsername').value.trim()==='admin'&&document.getElementById('loginPassword').value.trim()==='admin123'){localStorage.setItem('coffeeAuth','true');document.getElementById('loginScreen').style.display='none';document.getElementById('appContent').style.display='block';loadAllData();renderAll();}else{document.getElementById('loginError').classList.add('show');setTimeout(function(){document.getElementById('loginError').classList.remove('show');},3000);}});
-    document.getElementById('logoutButton').addEventListener('click',function(){if(confirm('Выйти?')){saveData();localStorage.removeItem('coffeeAuth');location.reload();}});
+    document.getElementById('logoutButton').addEventListener('click',function(){if(confirm('Выйти?')){saveAndSync();localStorage.removeItem('coffeeAuth');location.reload();}});
     document.querySelectorAll('#mainNav button').forEach(function(btn){btn.addEventListener('click',function(){document.querySelectorAll('#mainNav button').forEach(function(b){b.classList.remove('active');});document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active');});this.classList.add('active');document.getElementById(this.dataset.tab).classList.add('active');renderAll();});});
     document.getElementById('categoryFilter').addEventListener('change',renderCash);
     document.getElementById('cashSearch').addEventListener('input',renderCash);
@@ -560,170 +292,7 @@ document.addEventListener('DOMContentLoaded',function(){
     document.getElementById('closeIngredientModal').addEventListener('click',function(){document.getElementById('ingredientModal').classList.remove('show');});
     document.getElementById('saveIngredientBtn').addEventListener('click',saveIngredient);
     document.getElementById('checkLowStockBtn').addEventListener('click',function(){var low=ingredients.filter(function(i){return i.stock<=i.min;});if(low.length===0)alert('✅ Все в достатке!');else alert('⚠️ Низкий остаток:\n'+low.map(function(i){return i.name+' ('+i.stock+')';}).join(', '));});
-    document.getElementById('clearHistoryBtn').addEventListener('click',function(){if(confirm('Удалить всю историю?')){sales=[];saveData();renderAll();}});
-    document.getElementById('exportSalesBtn').addEventListener('click',exportSales);
-    document.getElementById('historyDateFrom').addEventListener('change',renderHistory);
-    document.getElementById('historyDateTo').addEventListener('change',renderHistory);
-    document.getElementById('historyPaymentFilter').addEventListener('change',renderHistory);
-    document.querySelectorAll('#periodGroup button').forEach(function(btn){btn.addEventListener('click',function(){setReportPeriod(this.dataset.period);});});
-    document.getElementById('exportReportBtn').addEventListener('click',exportReport);
-    document.getElementById('fixedExpenses').addEventListener('change',renderReports);
-    document.getElementById('salaryExpense').addEventListener('change',renderReports);
-    document.getElementById('addPurchaseBtn').addEventListener('click',openPurchaseModal);
-    document.getElementById('closePurchaseModal').addEventListener('click',function(){document.getElementById('purchaseModal').classList.remove('show');});
-    document.getElementById('savePurchaseBtn').addEventListener('click',savePurchase);
-    document.getElementById('exportSupplierOrderBtn').addEventListener('click',exportSupplierOrder);
-    document.querySelectorAll('.modal').forEach(function(modal){modal.addEventListener('click',function(e){if(e.target===this)this.classList.remove('show');});});
-});
-
-loadAllData();
-if(localStorage.getItem('coffeeAuth')==='true'){document.getElementById('loginScreen').style.display='none';document.getElementById('appContent').style.display='block';renderAll();}
-</script>
-</body>
-</html>
-    </style>
-</head>
-<body>
-<div id="loginScreen">
-    <div class="login-box">
-        <div class="logo">☕</div>
-        <h2>Вход в кассу</h2>
-        <p>Введите логин и пароль</p>
-        <input type="text" id="loginUsername" placeholder="Логин (admin)" value="admin">
-        <input type="password" id="loginPassword" placeholder="Пароль (admin123)" value="admin123">
-        <button class="login-btn" id="loginButton">Войти</button>
-        <div class="error-msg" id="loginError">Неверный логин или пароль</div>
-    </div>
-</div>
-
-<div id="appContent">
-    <header><div><h1>☕ Касса</h1><p>Продажи, товары, ингредиенты</p></div><div class="header-right"><button id="logoutButton">🚪 Выйти</button></div></header>
-    <nav id="mainNav">
-        <button class="active" data-tab="cash">Касса</button>
-        <button data-tab="products">Товары</button>
-        <button data-tab="ingredients">Ингредиенты</button>
-        <button data-tab="stock">Остатки</button>
-        <button data-tab="history">История</button>
-        <button data-tab="reports">Отчёт</button>
-        <button data-tab="purchases">Закупки</button>
-        <button data-tab="supplier">📦 Заказ</button>
-    </nav>
-    <main>
-        <section id="cash" class="section active">
-            <div class="grid" style="grid-template-columns:1.5fr 1fr;gap:12px">
-                <div class="card">
-                    <div class="card-header"><h2>📦 Товары</h2><select id="categoryFilter" style="min-width:80px;padding:4px 8px;border:1px solid rgba(255,255,255,0.1);border-radius:14px;background:rgba(255,255,255,0.05);color:#fff;font-size:16px;min-height:44px"><option value="">Все</option></select></div>
-                    <input id="cashSearch" placeholder="🔍 Поиск..." style="width:100%;padding:6px 12px;border:1px solid rgba(255,255,255,0.1);border-radius:16px;font-size:16px;margin-bottom:10px;background:rgba(255,255,255,0.05);color:#fff;min-height:44px">
-                    <div id="cashProducts" class="products-grid"></div>
-                </div>
-                <div class="card">
-                    <h2>🛒 Корзина</h2><div id="cart"></div>
-                    <div class="flex-between mt-12" style="font-size:16px;font-weight:700;padding-top:8px;border-top:1px solid rgba(255,255,255,0.06)"><span>Итого:</span><span id="cartTotal">0 ₽</span></div>
-                    <div class="flex-between mt-8"><label style="font-size:12px;color:rgba(255,255,255,0.5)">Внесено, ₽</label><input type="number" id="amountPaid" min="0" step="0.01" value="0" style="width:90px;padding:4px 8px;border:1px solid rgba(255,255,255,0.1);border-radius:6px;background:rgba(255,255,255,0.05);color:#fff;font-size:16px;min-height:44px"></div>
-                    <div class="flex-between mt-8" style="font-size:14px;font-weight:600"><span>Сдача:</span><span id="changeDisplay" style="color:#4ade80">0 ₽</span></div>
-                    <select id="payment" class="mt-8" style="width:100%;padding:6px 10px;border:1px solid rgba(255,255,255,0.1);border-radius:6px;background:rgba(255,255,255,0.05);color:#fff;font-size:16px;min-height:44px"><option value="Наличные">Наличные</option><option value="Карта">Карта</option><option value="Перевод">Перевод</option></select>
-                    <button class="btn btn-green btn-block mt-8" id="completeSaleBtn">✅ Оформить</button>
-                    <button class="btn btn-gray btn-block mt-8" id="clearCartBtn">🗑 Очистить</button>
-                </div>
-            </div>
-        </section>
-        <section id="products" class="section"><div class="card"><div class="card-header"><h2>📋 Товары</h2><div class="flex-center"><button class="btn btn-primary btn-sm" id="addProductBtn">+</button><button class="btn btn-export btn-sm" id="exportProductsBtn">📤</button><button class="btn btn-red btn-sm" id="resetProductsBtn">🔄 Сбросить</button></div></div><div class="table-wrap"><table><thead><tr><th>Название</th><th>Кат.</th><th>Цена</th><th>Себест.</th><th>Маржа</th><th>⚙️</th></tr></thead><tbody id="productsTable"></tbody></table></div></div></section>
-        <section id="ingredients" class="section"><div class="card"><div class="card-header"><h2>🧂 Ингредиенты</h2><div class="flex-center"><button class="btn btn-primary btn-sm" id="addIngredientBtn">+</button><button class="btn btn-export btn-sm" id="exportIngredientsBtn">📤</button></div></div><div class="table-wrap"><table><thead><tr><th>Название</th><th>Ед.</th><th>Остаток</th><th>Мин.</th><th>Цена</th><th>⚙️</th></tr></thead><tbody id="ingredientsTable"></tbody></table></div></div></section>
-        <section id="stock" class="section"><div class="card"><div class="card-header"><h2>📊 Остатки</h2><button class="btn btn-primary btn-sm" id="checkLowStockBtn">🔔</button></div><div class="table-wrap"><table><thead><tr><th>Ингредиент</th><th>Остаток</th><th>Ед.</th><th>Статус</th><th>Изменить</th></tr></thead><tbody id="stockTable"></tbody></table></div></div></section>
-        <section id="history" class="section"><div class="card"><div class="card-header"><h2>📜 История</h2><div class="flex-center"><button class="btn btn-red btn-sm" id="clearHistoryBtn">🗑</button><button class="btn btn-export btn-sm" id="exportSalesBtn">📤</button></div></div><div class="filter-group"><label>От:</label><input type="date" id="historyDateFrom"><label>До:</label><input type="date" id="historyDateTo"><label>Оплата:</label><select id="historyPaymentFilter" style="min-width:80px"><option value="">Все</option><option value="Наличные">Наличные</option><option value="Карта">Карта</option><option value="Перевод">Перевод</option></select></div><div class="table-wrap"><table><thead><tr><th>Дата</th><th>Товары</th><th>Сумма</th><th>Оплата</th><th>Возврат</th></tr></thead><tbody id="historyTable"></tbody></table></div></div></section>
-        <section id="reports" class="section"><div class="stat-grid"><div class="stat-card"><span>Выручка</span><b id="reportRevenue">0 ₽</b></div><div class="stat-card"><span>Продаж</span><b id="reportSales">0</b></div><div class="stat-card"><span>Продано</span><b id="reportItems">0</b></div><div class="stat-card"><span>Низкий остаток</span><b id="reportLowStock">0</b></div></div><div class="card"><div class="card-header"><h2>📈 Продажи по товарам</h2><div class="flex-center"><div class="period-group" id="periodGroup"><button class="period-btn active" data-period="today">Сегодня</button><button class="period-btn" data-period="yesterday">Вчера</button><button class="period-btn" data-period="2days">Позавчера</button><button class="period-btn" data-period="week">Неделя</button><button class="period-btn" data-period="month">Месяц</button></div><button class="btn btn-export btn-sm" id="exportReportBtn">📤</button></div></div><div class="table-wrap"><table><thead><tr><th>Товар</th><th>Кол-во</th><th>Выручка</th></tr></thead><tbody id="reportTable"></tbody></table></div></div><div id="profitReports"></div><div class="card"><h3>💰 Финансы</h3><div class="flex-between" style="flex-wrap:wrap;gap:8px;padding:4px 0"><div style="display:flex;gap:8px;flex-wrap:wrap"><label style="font-size:11px;color:rgba(255,255,255,0.5)">Аренда: <input type="number" id="fixedExpenses" value="10000" min="0" step="100" style="width:70px;padding:3px 6px;border:1px solid rgba(255,255,255,0.1);border-radius:5px;background:rgba(255,255,255,0.05);color:#fff;font-size:16px;min-height:44px"></label><label style="font-size:11px;color:rgba(255,255,255,0.5)">З/п день: <input type="number" id="salaryExpense" value="600" min="0" step="50" style="width:70px;padding:3px 6px;border:1px solid rgba(255,255,255,0.1);border-radius:5px;background:rgba(255,255,255,0.05);color:#fff;font-size:16px;min-height:44px"></label></div><div style="display:flex;gap:12px;flex-wrap:wrap;font-size:12px"><span><strong>Валовая:</strong> <span style="color:#4ade80" id="grossProfitDisplay">0 ₽</span></span><span><strong>Закупки:</strong> <span style="color:#60a5fa" id="purchaseCostDisplay">0 ₽</span></span><span><strong>Личная:</strong> <span id="personalProfitDisplay" style="color:#4ade80">0 ₽</span></span></div></div></div></section>
-        <section id="purchases" class="section"><div class="card"><div class="card-header"><h2>📦 Закупки</h2><button class="btn btn-primary btn-sm" id="addPurchaseBtn">+</button></div><div class="table-wrap"><table><thead><tr><th>Дата</th><th>Ингредиент</th><th>Кол-во</th><th>Цена</th><th>Сумма</th></tr></thead><tbody id="purchasesTable"></tbody></table></div></div></section>
-        <section id="supplier" class="section"><div class="card"><h2>📦 Заказ поставщику</h2><p class="text-muted">Рекомендуемое количество до двойного минимума</p><div id="supplierOrderList"></div><div id="supplierTotal" style="font-size:15px;font-weight:700;margin-top:10px"></div><button class="btn btn-export btn-sm mt-8" id="exportSupplierOrderBtn">📤 Экспорт CSV</button></div></section>
-    </main>
-</div>
-
-<div id="productModal" class="modal"><div class="modal-box"><div class="modal-head"><h2 id="productModalTitle">Добавить товар</h2><button class="close" id="closeProductModal">✕</button></div><div class="form-grid"><div><label>Название</label><input id="productName"></div><div><label>Категория</label><input id="productCategory"></div><div><label>Цена</label><input type="number" id="productPrice" min="0"></div><div><label>Изображение (файл)</label><input type="file" id="productImageInput" accept="image/*"></div><div><label>или URL</label><input type="url" id="productImageUrl" placeholder="https://..."></div><div id="imagePreviewContainer" style="grid-column:1/-1;display:none"><img id="productImagePreview" style="max-width:100px;max-height:100px;border-radius:8px;display:block"><button class="btn btn-sm btn-red mt-8" id="removeProductImageBtn">Удалить фото</button></div></div><input type="hidden" id="productId"><h3 style="margin-top:12px;font-size:13px">Рецепт</h3><div id="recipe"></div><button class="btn btn-sm btn-blue mt-8" id="addRecipeLineBtn">+ Ингредиент</button><button class="btn btn-primary btn-block mt-12" id="saveProductBtn">💾 Сохранить</button></div></div>
-<div id="ingredientModal" class="modal"><div class="modal-box"><div class="modal-head"><h2 id="ingredientModalTitle">Добавить ингредиент</h2><button class="close" id="closeIngredientModal">✕</button></div><div class="form-grid"><div><label>Название</label><input id="ingredientName"></div><div><label>Единица</label><select id="ingredientUnit"><option value="мл">мл</option><option value="г">г</option><option value="шт">шт</option><option value="л">л</option></select></div><div><label>Остаток</label><input type="number" id="ingredientStock" min="0"></div><div><label>Мин. остаток</label><input type="number" id="ingredientMin" min="0"></div><div><label>Закупочная цена</label><input type="number" id="ingredientCost" min="0" step="0.01"></div></div><input type="hidden" id="ingredientId"><button class="btn btn-primary btn-block mt-12" id="saveIngredientBtn">💾 Сохранить</button></div></div>
-<div id="purchaseModal" class="modal"><div class="modal-box"><div class="modal-head"><h2>Добавить закупку</h2><button class="close" id="closePurchaseModal">✕</button></div><div class="form-grid"><div><label>Ингредиент</label><select id="purchaseIngredient"></select></div><div><label>Количество</label><input type="number" id="purchaseQty" min="0"></div><div><label>Цена за ед.</label><input type="number" id="purchasePrice" min="0" step="0.01"></div><div><label>Дата</label><input type="date" id="purchaseDate"></div></div><button class="btn btn-primary btn-block mt-12" id="savePurchaseBtn">💾 Сохранить</button></div></div>
-
-<script>
-// ДАННЫЕ
-var defaultIngredients=[{id:1,name:"Кофе",unit:"г",stock:10000,min:2000,cost:1.8},{id:2,name:"Молоко",unit:"мл",stock:20000,min:5000,cost:0.09},{id:3,name:"Сахар",unit:"г",stock:5000,min:1000,cost:0.04},{id:4,name:"Стакан горячий маленький",unit:"шт",stock:500,min:50,cost:5},{id:5,name:"Стакан горячий большой",unit:"шт",stock:500,min:50,cost:6},{id:6,name:"Стакан холодный 300 мл",unit:"шт",stock:500,min:50,cost:5},{id:7,name:"Стакан холодный 450 мл",unit:"шт",stock:500,min:50,cost:6},{id:8,name:"Крышка маленькая",unit:"шт",stock:500,min:50,cost:2},{id:9,name:"Крышка большая",unit:"шт",stock:500,min:50,cost:2},{id:10,name:"Крышка купольная",unit:"шт",stock:500,min:50,cost:3},{id:11,name:"Сироп ванильный",unit:"мл",stock:3000,min:500,cost:0.41},{id:12,name:"Сироп карамельный",unit:"мл",stock:3000,min:500,cost:0.41},{id:13,name:"Сироп малиновый",unit:"мл",stock:2000,min:500,cost:0.41},{id:14,name:"Сироп солёная карамель",unit:"мл",stock:2000,min:500,cost:0.41},{id:15,name:"Сироп карамель (2 шт.)",unit:"мл",stock:4000,min:500,cost:0.41},{id:16,name:"Сироп кокос (2 шт.)",unit:"мл",stock:4000,min:500,cost:0.41},{id:17,name:"Сироп попкорн",unit:"мл",stock:2000,min:500,cost:0.41},{id:18,name:"Сироп шоколадное печенье",unit:"мл",stock:2000,min:500,cost:0.41},{id:19,name:"Сироп макадамия",unit:"мл",stock:2000,min:500,cost:0.41},{id:20,name:"Сироп ваниль (доп.)",unit:"мл",stock:2000,min:500,cost:0.41},{id:21,name:"Сироп кубинский мохито",unit:"мл",stock:2000,min:500,cost:0.41},{id:22,name:"Шоколадный сироп",unit:"мл",stock:2000,min:500,cost:0.41},{id:23,name:"Топинг карамель",unit:"мл",stock:1000,min:200,cost:0.4},{id:24,name:"Топинг шоколад",unit:"мл",stock:1000,min:200,cost:0.4},{id:25,name:"Сливки 10%",unit:"мл",stock:5000,min:1000,cost:0.17},{id:26,name:"Горячий шоколад",unit:"г",stock:3000,min:500,cost:1.8},{id:27,name:"Урбеч (паста)",unit:"г",stock:2000,min:500,cost:1.5},{id:28,name:"Мороженое пломбир",unit:"г",stock:5000,min:1000,cost:0.34},{id:29,name:"Тоник",unit:"мл",stock:5000,min:1000,cost:0.14},{id:30,name:"Сок апельсиновый",unit:"мл",stock:5000,min:1000,cost:0.2},{id:31,name:"Сок гранатовый",unit:"мл",stock:5000,min:1000,cost:0.15},{id:32,name:"Чай чёрный",unit:"г",stock:2000,min:500,cost:0.7},{id:33,name:"Ванильный сахар",unit:"г",stock:1000,min:100,cost:1},{id:34,name:"Сок лимонный",unit:"мл",stock:3000,min:500,cost:0.3},{id:35,name:"Сироп мятный",unit:"мл",stock:2000,min:500,cost:0.41},{id:36,name:"Нарзан",unit:"мл",stock:5000,min:1000,cost:0.0267},{id:37,name:"Лимон (дольки)",unit:"шт",stock:200,min:20,cost:15},{id:38,name:"Мята свежая",unit:"г",stock:500,min:50,cost:0.8},{id:39,name:"Клубника",unit:"г",stock:2000,min:200,cost:0.5},{id:40,name:"Банан",unit:"г",stock:2000,min:200,cost:0.4},{id:41,name:"Основа лимонада",unit:"г",stock:5000,min:1000,cost:0.52},{id:42,name:"Вода",unit:"л",stock:500,min:50,cost:40},{id:43,name:"Колд брю",unit:"г",stock:2000,min:500,cost:2.5},{id:44,name:"Мороженое ванильное",unit:"г",stock:3000,min:500,cost:0.35},{id:45,name:"Мороженое шоколадное",unit:"г",stock:3000,min:500,cost:0.35},{id:46,name:"Мороженое клубничное",unit:"г",stock:3000,min:500,cost:0.35},{id:47,name:"Лёд для милкшейка",unit:"г",stock:5000,min:1000,cost:0.01},{id:48,name:"Сироп банановый",unit:"мл",stock:2000,min:500,cost:0.41},{id:49,name:"Сироп клубничный",unit:"мл",stock:2000,min:500,cost:0.41},{id:50,name:"Топинг ванильный",unit:"мл",stock:1000,min:200,cost:0.4},{id:51,name:"Топинг клубничный",unit:"мл",stock:1000,min:200,cost:0.4}];
-
-var defaultProducts=[{id:1,name:"Эспрессо",category:"Кофе",price:100,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:4,amount:1},{ingredientId:8,amount:1}]},{id:2,name:"Американо",category:"Кофе",price:130,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:4,amount:1},{ingredientId:8,amount:1}]},{id:3,name:"Капучино маленький",category:"Кофе",price:170,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:2,amount:200},{ingredientId:4,amount:1},{ingredientId:8,amount:1}]},{id:4,name:"Капучино большой",category:"Кофе",price:200,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:2,amount:300},{ingredientId:5,amount:1},{ingredientId:9,amount:1}]},{id:5,name:"Флэт Уайт маленький",category:"Кофе",price:200,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:2,amount:200},{ingredientId:4,amount:1},{ingredientId:8,amount:1}]},{id:6,name:"Латте большой",category:"Кофе",price:200,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:2,amount:300},{ingredientId:5,amount:1},{ingredientId:9,amount:1}]},{id:7,name:"Раф маленький",category:"Кофе",price:200,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:25,amount:200},{ingredientId:4,amount:1},{ingredientId:8,amount:1}]},{id:8,name:"Раф большой",category:"Кофе",price:230,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:25,amount:300},{ingredientId:5,amount:1},{ingredientId:9,amount:1}]},{id:9,name:"Раф малиновый маленький",category:"Кофе",price:220,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:25,amount:200},{ingredientId:13,amount:10},{ingredientId:23,amount:3},{ingredientId:33,amount:5},{ingredientId:4,amount:1},{ingredientId:8,amount:1}]},{id:10,name:"Раф малиновый большой",category:"Кофе",price:250,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:25,amount:300},{ingredientId:13,amount:15},{ingredientId:23,amount:7},{ingredientId:33,amount:5},{ingredientId:5,amount:1},{ingredientId:9,amount:1}]},{id:11,name:"Горячий шоколад маленький",category:"Горячие напитки",price:200,image:"",recipe:[{ingredientId:26,amount:35},{ingredientId:2,amount:200},{ingredientId:4,amount:1},{ingredientId:8,amount:1}]},{id:12,name:"Горячий шоколад большой",category:"Горячие напитки",price:230,image:"",recipe:[{ingredientId:26,amount:50},{ingredientId:2,amount:300},{ingredientId:5,amount:1},{ingredientId:9,amount:1}]},{id:13,name:"Какао маленький",category:"Горячие напитки",price:170,image:"",recipe:[{ingredientId:26,amount:25},{ingredientId:2,amount:200},{ingredientId:4,amount:1},{ingredientId:8,amount:1}]},{id:14,name:"Какао большой",category:"Горячие напитки",price:200,image:"",recipe:[{ingredientId:26,amount:35},{ingredientId:2,amount:300},{ingredientId:5,amount:1},{ingredientId:9,amount:1}]},{id:15,name:"Раф урбеч маленький",category:"Кофе",price:250,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:25,amount:200},{ingredientId:27,amount:30},{ingredientId:33,amount:5},{ingredientId:4,amount:1},{ingredientId:8,amount:1}]},{id:16,name:"Раф урбеч большой",category:"Кофе",price:300,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:25,amount:300},{ingredientId:27,amount:40},{ingredientId:33,amount:5},{ingredientId:5,amount:1},{ingredientId:9,amount:1}]},{id:17,name:"Чай чёрный",category:"Чай",price:160,image:"",recipe:[{ingredientId:32,amount:5},{ingredientId:4,amount:1},{ingredientId:8,amount:1}]},{id:18,name:"Айс латте",category:"Холодные напитки",price:250,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:2,amount:250},{ingredientId:11,amount:15},{ingredientId:6,amount:1},{ingredientId:10,amount:1}]},{id:19,name:"Айс мокко латте",category:"Холодные напитки",price:280,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:2,amount:250},{ingredientId:22,amount:15},{ingredientId:24,amount:10},{ingredientId:26,amount:15},{ingredientId:6,amount:1},{ingredientId:10,amount:1}]},{id:20,name:"Айс кофе с урбечом большой",category:"Холодные напитки",price:300,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:27,amount:40},{ingredientId:28,amount:150},{ingredientId:11,amount:10},{ingredientId:2,amount:120},{ingredientId:7,amount:1},{ingredientId:10,amount:1}]},{id:21,name:"Бамбл апельсин маленький",category:"Холодные напитки",price:250,image:"",recipe:[{ingredientId:30,amount:250},{ingredientId:11,amount:15},{ingredientId:6,amount:1},{ingredientId:10,amount:1}]},{id:22,name:"Бамбл апельсин большой",category:"Холодные напитки",price:300,image:"",recipe:[{ingredientId:30,amount:350},{ingredientId:11,amount:15},{ingredientId:7,amount:1},{ingredientId:10,amount:1}]},{id:23,name:"Бамбл гранат маленький",category:"Холодные напитки",price:250,image:"",recipe:[{ingredientId:31,amount:250},{ingredientId:11,amount:15},{ingredientId:6,amount:1},{ingredientId:10,amount:1}]},{id:24,name:"Бамбл гранат большой",category:"Холодные напитки",price:300,image:"",recipe:[{ingredientId:31,amount:350},{ingredientId:11,amount:15},{ingredientId:7,amount:1},{ingredientId:10,amount:1}]},{id:25,name:"Эспрессо тоник",category:"Холодные напитки",price:250,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:29,amount:250},{ingredientId:11,amount:20},{ingredientId:6,amount:1},{ingredientId:10,amount:1}]},{id:26,name:"Фраппе",category:"Холодные напитки",price:300,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:11,amount:15},{ingredientId:28,amount:150},{ingredientId:2,amount:100},{ingredientId:6,amount:1},{ingredientId:10,amount:1}]},{id:27,name:"Раф 'тут кофе' маленький",category:"Кофе",price:300,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:25,amount:200},{ingredientId:12,amount:10},{ingredientId:4,amount:1},{ingredientId:8,amount:1}]},{id:28,name:"Раф 'тут кофе' большой",category:"Кофе",price:350,image:"",recipe:[{ingredientId:1,amount:20},{ingredientId:25,amount:300},{ingredientId:12,amount:15},{ingredientId:5,amount:1},{ingredientId:9,amount:1}]},{id:29,name:"Лимонад классический",category:"Лимонады",price:250,image:"",recipe:[{ingredientId:41,amount:50},{ingredientId:36,amount:300},{ingredientId:37,amount:1},{ingredientId:6,amount:1},{ingredientId:10,amount:1}]},{id:32,name:"Коктейль",category:"Коктейли",price:250,image:"",recipe:[{ingredientId:23,amount:20},{ingredientId:11,amount:15},{ingredientId:28,amount:150},{ingredientId:2,amount:100},{ingredientId:35,amount:15},{ingredientId:38,amount:5},{ingredientId:6,amount:1},{ingredientId:10,amount:1}]},{id:33,name:"Вода",category:"Напитки",price:60,image:"",recipe:[{ingredientId:42,amount:1},{ingredientId:6,amount:1},{ingredientId:10,amount:1}]},{id:34,name:"Колд брю",category:"Кофе",price:350,image:"",recipe:[{ingredientId:43,amount:20},{ingredientId:6,amount:1},{ingredientId:10,amount:1}]},{id:35,name:"Милкшейк ванильный",category:"Милкшейки",price:250,image:"",recipe:[{ingredientId:44,amount:130},{ingredientId:47,amount:120},{ingredientId:2,amount:110},{ingredientId:11,amount:10},{ingredientId:50,amount:5},{ingredientId:50,amount:5},{ingredientId:6,amount:1},{ingredientId:10,amount:1}]},{id:36,name:"Милкшейк шоколадный",category:"Милкшейки",price:250,image:"",recipe:[{ingredientId:45,amount:130},{ingredientId:47,amount:120},{ingredientId:2,amount:110},{ingredientId:24,amount:10},{ingredientId:24,amount:5},{ingredientId:6,amount:1},{ingredientId:10,amount:1}]},{id:37,name:"Милкшейк клубничный",category:"Милкшейки",price:250,image:"",recipe:[{ingredientId:46,amount:130},{ingredientId:47,amount:120},{ingredientId:2,amount:110},{ingredientId:49,amount:10},{ingredientId:51,amount:5},{ingredientId:51,amount:5},{ingredientId:6,amount:1},{ingredientId:10,amount:1}]},{id:38,name:"Милкшейк банановый",category:"Милкшейки",price:250,image:"",recipe:[{ingredientId:44,amount:130},{ingredientId:47,amount:120},{ingredientId:2,amount:110},{ingredientId:48,amount:10},{ingredientId:6,amount:1},{ingredientId:10,amount:1}]}];
-
-var ingredients=[],products=[],sales=[],purchases=[],cart=[],reportPeriod='today',currentImageData=null,currentImageUrl='';
-
-function loadAllData(){
-    var si=localStorage.getItem("coffeeIngredients"),sp=localStorage.getItem("coffeeProducts");
-    if(si&&sp){try{ingredients=JSON.parse(si);products=JSON.parse(sp);sales=JSON.parse(localStorage.getItem("coffeeSales")||"[]");purchases=JSON.parse(localStorage.getItem("coffeePurchases")||"[]");if(products.length<38)mergeDefaultProducts();if(ingredients.length<51)mergeDefaultIngredients();}catch(e){loadDefaults();}}
-    else{loadDefaults();}
-    saveData();
-}
-function loadDefaults(){ingredients=JSON.parse(JSON.stringify(defaultIngredients));products=JSON.parse(JSON.stringify(defaultProducts));sales=[];purchases=[];}
-function mergeDefaultProducts(){for(var i=0;i<defaultProducts.length;i++){var found=false;for(var j=0;j<products.length;j++){if(products[j].id===defaultProducts[i].id){found=true;break;}}if(!found)products.push(JSON.parse(JSON.stringify(defaultProducts[i])));}}
-function mergeDefaultIngredients(){for(var i=0;i<defaultIngredients.length;i++){var found=false;for(var j=0;j<ingredients.length;j++){if(ingredients[j].id===defaultIngredients[i].id){found=true;break;}}if(!found)ingredients.push(JSON.parse(JSON.stringify(defaultIngredients[i])));}}
-function saveData(){try{localStorage.setItem("coffeeIngredients",JSON.stringify(ingredients));localStorage.setItem("coffeeProducts",JSON.stringify(products));localStorage.setItem("coffeeSales",JSON.stringify(sales));localStorage.setItem("coffeePurchases",JSON.stringify(purchases));}catch(e){}}
-function money(v){return Number(v||0).toLocaleString("ru-RU",{maximumFractionDigits:2})+" ₽";}
-function esc(v){return String(v||"").replace(/[&<>"']/g,function(m){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m];});}
-function calculateCost(p){if(!p.recipe||!p.recipe.length)return 0;var t=0;for(var i=0;i<p.recipe.length;i++){var r=p.recipe[i],ing=ingredients.find(function(x){return x.id===r.ingredientId;});if(ing)t+=Number(r.amount)*Number(ing.cost||0);}return t;}
-function calculateMargin(p){var c=calculateCost(p);return c===0?0:((p.price-c)/p.price)*100;}
-function getDateRange(period){var now=new Date(),from=new Date(),to=new Date();if(period==='today'){from.setHours(0,0,0,0);to.setHours(23,59,59,999);}else if(period==='yesterday'){from.setDate(now.getDate()-1);from.setHours(0,0,0,0);to=new Date(from);to.setHours(23,59,59,999);}else if(period==='2days'){from.setDate(now.getDate()-2);from.setHours(0,0,0,0);to=new Date(from);to.setHours(23,59,59,999);}else if(period==='week'){from.setDate(now.getDate()-now.getDay());from.setHours(0,0,0,0);to=new Date(from);to.setDate(from.getDate()+6);to.setHours(23,59,59,999);}else{from.setDate(1);from.setHours(0,0,0,0);to=new Date(now.getFullYear(),now.getMonth()+1,0);to.setHours(23,59,59,999);}return{from:from,to:to};}
-function renderAll(){renderCash();renderCart();renderProducts();renderIngredients();renderStock();renderHistory();renderReports();renderPurchases();renderSupplierOrder();updateCategoryFilter();updateChange();}
-function updateCategoryFilter(){var s=document.getElementById('categoryFilter'),cats=[...new Set(products.map(function(p){return p.category;}).filter(Boolean))];s.innerHTML='<option value="">Все</option>';cats.forEach(function(c){var o=document.createElement('option');o.value=c;o.textContent=c;s.appendChild(o);});}
-function renderCash(){var search=(document.getElementById("cashSearch")?.value||"").toLowerCase(),cat=document.getElementById("categoryFilter").value,list=products.filter(function(p){return p.name.toLowerCase().includes(search);});if(cat)list=list.filter(function(p){return p.category===cat;});var box=document.getElementById("cashProducts");if(!list.length){box.innerHTML='<div class="text-center text-muted" style="padding:20px">Товары не найдены</div>';return;}box.innerHTML=list.map(function(p){return'<div class="product-card" onclick="addToCart('+p.id+')"><img src="'+(p.image||'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\' viewBox=\'0 0 100 100\'%3E%3Crect width=\'100\' height=\'100\' fill=\'%23eee\'/%3E%3Ctext x=\'50\' y=\'55\' font-size=\'14\' text-anchor=\'middle\' fill=\'%23999\'%3EНет фото%3C/text%3E%3C/svg%3E')+'" alt="'+esc(p.name)+'"><div class="name">'+esc(p.name)+'</div><div class="price">'+money(p.price)+'</div><div class="category-tag">'+esc(p.category||"Без категории")+'</div></div>';}).join("");}
-function addToCart(id){var p=products.find(function(x){return x.id===id;});if(!p)return;var item=cart.find(function(x){return x.id===id;});if(item)item.qty++;else cart.push({id:id,qty:1});renderCart();}
-function changeQty(id,d){var item=cart.find(function(x){return x.id===id;});if(!item)return;item.qty+=d;if(item.qty<=0)cart=cart.filter(function(x){return x.id!==id;});renderCart();}
-function renderCart(){var box=document.getElementById("cart");if(!cart.length){box.innerHTML='<div class="text-center text-muted" style="padding:20px">Корзина пуста</div>';document.getElementById("cartTotal").textContent="0 ₽";updateChange();return;}var total=0;box.innerHTML=cart.map(function(item){var p=products.find(function(x){return x.id===item.id;});if(!p)return'';var sum=p.price*item.qty;total+=sum;return'<div class="cart-item"><div class="info"><strong>'+esc(p.name)+'</strong><small>'+money(p.price)+' × '+item.qty+'</small></div><div class="qty-control"><button onclick="changeQty('+p.id+',-1)">−</button><span>'+item.qty+'</span><button onclick="changeQty('+p.id+',1)">+</button></div><b>'+money(sum)+'</b></div>';}).join("");document.getElementById("cartTotal").textContent=money(total);updateChange();}
-function updateChange(){var total=parseFloat((document.getElementById('cartTotal').textContent||"0").replace(/[^0-9.,]/g,'').replace(',','.'))||0,paid=parseFloat(document.getElementById('amountPaid').value)||0,change=paid-total,d=document.getElementById('changeDisplay');if(change>=0){d.textContent=money(change);d.style.color='#4ade80';}else{d.textContent='Недостаточно: '+money(Math.abs(change));d.style.color='#f87171';}}
-function completeSale(){if(!cart.length){alert("Корзина пуста");return;}for(var i=0;i<cart.length;i++){var item=cart[i],p=products.find(function(x){return x.id===item.id;});if(!p)continue;for(var j=0;j<(p.recipe||[]).length;j++){var r=p.recipe[j],ing=ingredients.find(function(x){return x.id===r.ingredientId;});if(ing&&Number(ing.stock)<Number(r.amount)*item.qty){alert("Недостаточно: "+ing.name);return;}}}var total=0,items=[];cart.forEach(function(item){var p=products.find(function(x){return x.id===item.id;});if(!p)return;total+=p.price*item.qty;items.push({id:p.id,name:p.name,qty:item.qty,price:p.price});(p.recipe||[]).forEach(function(r){var ing=ingredients.find(function(x){return x.id===r.ingredientId;});if(ing)ing.stock=Number(ing.stock)-Number(r.amount)*item.qty;});});sales.unshift({id:Date.now(),date:new Date().toISOString(),items:items,total:total,payment:document.getElementById("payment").value});cart=[];document.getElementById('amountPaid').value=0;saveData();renderAll();alert('✅ Продажа оформлена! Сумма: '+money(total));}
-function openProductModal(id){document.getElementById("productId").value=id||"";document.getElementById("recipe").innerHTML="";currentImageData=null;currentImageUrl='';document.getElementById('productImagePreview').style.display='none';document.getElementById('imagePreviewContainer').style.display='none';document.getElementById('productImageInput').value='';document.getElementById('productImageUrl').value='';if(id){var p=products.find(function(x){return x.id===id;});if(!p)return;document.getElementById("productModalTitle").textContent="Редактировать товар";document.getElementById("productName").value=p.name;document.getElementById("productCategory").value=p.category||"";document.getElementById("productPrice").value=p.price;if(p.image){var preview=document.getElementById('productImagePreview');preview.src=p.image;preview.style.display='block';document.getElementById('imagePreviewContainer').style.display='block';if(p.image.startsWith('http')){currentImageUrl=p.image;document.getElementById('productImageUrl').value=p.image;}else{currentImageData=p.image;}}(p.recipe||[]).forEach(function(r){addRecipeLine(r.ingredientId,r.amount);});}else{document.getElementById("productModalTitle").textContent="Добавить товар";document.getElementById("productName").value="";document.getElementById("productCategory").value="";document.getElementById("productPrice").value="";addRecipeLine();}document.getElementById("productModal").classList.add("show");}
-function addRecipeLine(iid,amt){var box=document.getElementById("recipe"),line=document.createElement("div");line.className="recipe-line";line.innerHTML='<select class="recipe-ing" style="width:100%;padding:4px 6px;border:1px solid rgba(255,255,255,0.1);border-radius:5px;background:rgba(255,255,255,0.05);color:#fff;font-size:16px;min-height:44px"><option value="">Выберите</option>'+ingredients.map(function(i){return'<option value="'+i.id+'" '+(String(i.id)===String(iid||"")?"selected":"")+'>'+esc(i.name)+' ('+i.unit+')</option>';}).join("")+'</select><input class="recipe-amount" type="number" min="0" step="0.01" value="'+(amt||"")+'" placeholder="Кол-во" style="width:100%;padding:4px 6px;border:1px solid rgba(255,255,255,0.1);border-radius:5px;background:rgba(255,255,255,0.05);color:#fff;font-size:16px;min-height:44px"><button class="btn btn-sm btn-red" onclick="this.parentElement.remove()" style="padding:1px 6px;font-size:14px;min-height:28px">×</button>';box.appendChild(line);}
-function saveProduct(){var name=document.getElementById("productName").value.trim(),cat=document.getElementById("productCategory").value.trim(),price=Number(document.getElementById("productPrice").value),id=Number(document.getElementById("productId").value);if(!name||price<0){alert("Заполните название и цену");return;}var recipe=[...document.querySelectorAll(".recipe-line")].map(function(l){return{ingredientId:Number(l.querySelector(".recipe-ing").value),amount:Number(l.querySelector(".recipe-amount").value)};}).filter(function(x){return x.ingredientId&&x.amount>0;});var img='';if(currentImageData)img=currentImageData;else if(currentImageUrl)img=currentImageUrl;if(id){var p=products.find(function(x){return x.id===id;});if(p){p.name=name;p.category=cat;p.price=price;p.recipe=recipe;p.image=img;}}else{products.push({id:Date.now(),name:name,category:cat,price:price,recipe:recipe,image:img});}saveData();document.getElementById("productModal").classList.remove("show");renderAll();}
-function deleteProduct(id){var p=products.find(function(x){return x.id===id;});if(!p)return;if(confirm("Удалить «"+p.name+"»?")){products=products.filter(function(x){return x.id!==id;});cart=cart.filter(function(x){return x.id!==id;});saveData();renderAll();}}
-function renderProducts(){var tbody=document.getElementById("productsTable");if(!products.length){tbody.innerHTML='<tr><td colspan="6" class="text-center text-muted">Нет товаров</td></tr>';return;}tbody.innerHTML=products.map(function(p){var cost=calculateCost(p),margin=calculateMargin(p),mc=margin>50?'badge-good':'badge-low';return'<tr><td><b>'+esc(p.name)+'</b></td><td>'+esc(p.category||"")+'</td><td>'+money(p.price)+'</td><td>'+money(cost)+'</td><td><span class="badge '+mc+'">'+margin.toFixed(1)+'%</span></td><td><button class="btn btn-sm btn-blue" onclick="openProductModal('+p.id+')">✏️</button><button class="btn btn-sm btn-red" onclick="deleteProduct('+p.id+')">🗑</button></td></tr>';}).join("");}
-function resetProducts(){if(confirm('Сбросить ВСЕ товары до стандартных 38 штук?')){products=JSON.parse(JSON.stringify(defaultProducts));saveData();renderAll();alert('✅ Товары сброшены! '+products.length+' шт.');}}
-function renderIngredients(){var tbody=document.getElementById("ingredientsTable");if(!ingredients.length){tbody.innerHTML='<tr><td colspan="6" class="text-center text-muted">Нет ингредиентов</td></tr>';return;}tbody.innerHTML=ingredients.map(function(i){return'<tr><td><b>'+esc(i.name)+'</b></td><td>'+esc(i.unit)+'</td><td>'+i.stock+'</td><td>'+i.min+'</td><td>'+money(i.cost)+'</td><td><button class="btn btn-sm btn-blue" onclick="openIngredientModal('+i.id+')">✏️</button><button class="btn btn-sm btn-red" onclick="deleteIngredient('+i.id+')">🗑</button></td></tr>';}).join("");}
-function openIngredientModal(id){document.getElementById("ingredientId").value=id||"";if(id){var i=ingredients.find(function(x){return x.id===id;});if(!i)return;document.getElementById("ingredientModalTitle").textContent="Редактировать";document.getElementById("ingredientName").value=i.name;document.getElementById("ingredientUnit").value=i.unit;document.getElementById("ingredientStock").value=i.stock;document.getElementById("ingredientMin").value=i.min;document.getElementById("ingredientCost").value=i.cost;}else{document.getElementById("ingredientModalTitle").textContent="Добавить";document.getElementById("ingredientName").value="";document.getElementById("ingredientUnit").value="мл";document.getElementById("ingredientStock").value=0;document.getElementById("ingredientMin").value=0;document.getElementById("ingredientCost").value=0;}document.getElementById("ingredientModal").classList.add("show");}
-function saveIngredient(){var name=document.getElementById("ingredientName").value.trim(),unit=document.getElementById("ingredientUnit").value,stock=Number(document.getElementById("ingredientStock").value),min=Number(document.getElementById("ingredientMin").value),cost=Number(document.getElementById("ingredientCost").value),id=Number(document.getElementById("ingredientId").value);if(!name){alert("Введите название");return;}if(id){var i=ingredients.find(function(x){return x.id===id;});if(i){i.name=name;i.unit=unit;i.stock=stock;i.min=min;i.cost=cost;}}else{ingredients.push({id:Date.now(),name:name,unit:unit,stock:stock,min:min,cost:cost});}saveData();document.getElementById("ingredientModal").classList.remove("show");renderAll();}
-function deleteIngredient(id){var ing=ingredients.find(function(x){return x.id===id;});if(!ing)return;if(confirm("Удалить «"+ing.name+"»?")){ingredients=ingredients.filter(function(x){return x.id!==id;});saveData();renderAll();}}
-function renderStock(){var tbody=document.getElementById("stockTable");tbody.innerHTML=ingredients.map(function(i){var isLow=Number(i.stock)<=Number(i.min);return'<tr><td>'+esc(i.name)+'</td><td><b style="color:'+(isLow?'#f87171':'#4ade80')+'">'+i.stock+'</b></td><td>'+i.unit+'</td><td><span class="badge '+(isLow?'badge-low':'badge-good')+'">'+(isLow?"Мало":"Норма")+'</span></td><td><input id="stock-'+i.id+'" type="number" min="0" value="'+i.stock+'" style="width:70px;padding:3px 6px;border:1px solid rgba(255,255,255,0.1);border-radius:4px;background:rgba(255,255,255,0.05);color:#fff;font-size:16px;min-height:44px"><button class="btn btn-sm btn-green" onclick="updateStock('+i.id+')">✓</button></td></tr>';}).join("");}
-function updateStock(id){var v=Number(document.getElementById("stock-"+id).value);if(v<0)return;var ing=ingredients.find(function(i){return i.id===id;});if(ing){ing.stock=v;saveData();renderAll();}}
-function renderSupplierOrder(){var container=document.getElementById('supplierOrderList'),low=ingredients.filter(function(i){return i.stock<=i.min;});if(low.length===0){container.innerHTML='<p class="text-muted">✅ Все в достатке</p>';document.getElementById('supplierTotal').textContent='';return;}var html='<div class="table-wrap"><table><thead><tr><th>Ингредиент</th><th>Остаток</th><th>Мин.</th><th>Заказать</th><th>Цена</th><th>Сумма</th></tr></thead><tbody>',total=0;low.forEach(function(i){var need=i.min*2-i.stock;if(need<=0)return;var sum=need*i.cost;total+=sum;html+='<tr><td><b>'+esc(i.name)+'</b></td><td>'+i.stock+'</td><td>'+i.min+'</td><td>'+need+' '+i.unit+'</td><td>'+money(i.cost)+'</td><td>'+money(sum)+'</td></tr>';});html+='</tbody></table></div>';container.innerHTML=html;document.getElementById('supplierTotal').textContent='💰 Общая сумма: '+money(total);}
-function exportSupplierOrder(){var low=ingredients.filter(function(i){return i.stock<=i.min;});if(low.length===0){alert('Нет позиций');return;}var data=low.map(function(i){var need=i.min*2-i.stock;return{'Ингредиент':i.name,'Остаток':i.stock,'Заказать':need,'Цена':i.cost,'Сумма':need*i.cost};});exportToCSV(data,'Заказ_поставщику');}
-function returnSale(saleId){var sale=sales.find(function(s){return s.id===saleId;});if(!sale||sale.returned)return;if(!confirm("Вернуть на "+money(sale.total)+"?"))return;for(var i=0;i<sale.items.length;i++){var item=sale.items[i],product=products.find(function(p){return p.id===item.id;});if(!product)continue;for(var j=0;j<(product.recipe||[]).length;j++){var r=product.recipe[j],ing=ingredients.find(function(x){return x.id===r.ingredientId;});if(ing)ing.stock=Number(ing.stock)+Number(r.amount)*item.qty;}}sale.returned=true;saveData();renderAll();alert('✅ Возврат выполнен');}
-function renderHistory(){var tbody=document.getElementById("historyTable"),df=document.getElementById("historyDateFrom").value,dt=document.getElementById("historyDateTo").value,pf=document.getElementById("historyPaymentFilter").value,filtered=sales.slice();if(df){var f=new Date(df);f.setHours(0,0,0,0);filtered=filtered.filter(function(s){return new Date(s.date)>=f;});}if(dt){var t=new Date(dt);t.setHours(23,59,59,999);filtered=filtered.filter(function(s){return new Date(s.date)<=t;});}if(pf)filtered=filtered.filter(function(s){return s.payment===pf;});if(!filtered.length){tbody.innerHTML='<tr><td colspan="5" class="text-center text-muted">Нет продаж</td></tr>';return;}tbody.innerHTML=filtered.map(function(s){var itemsStr=s.items.map(function(i){return esc(i.name)+' × '+i.qty;}).join("<br>"),rb=s.returned?'<span class="badge badge-low">Возвращён</span>':'<button class="btn btn-sm btn-red" onclick="returnSale('+s.id+')">↩️</button>';return'<tr><td>'+new Date(s.date).toLocaleString("ru-RU")+'</td><td>'+itemsStr+'</td><td><b>'+money(s.total)+'</b></td><td>'+esc(s.payment)+'</td><td>'+rb+'</td></tr>';}).join("");}
-function setReportPeriod(p){reportPeriod=p;document.querySelectorAll('#periodGroup button').forEach(function(b){b.classList.remove('active');});var btn=document.querySelector('#periodGroup button[data-period="'+p+'"]');if(btn)btn.classList.add('active');renderReports();}
-function renderReports(){var range=getDateRange(reportPeriod),periodSales=sales.filter(function(s){var d=new Date(s.date);return d>=range.from&&d<=range.to;}),revenue=periodSales.reduce(function(sum,s){return sum+s.total;},0);document.getElementById("reportRevenue").textContent=money(revenue);document.getElementById("reportSales").textContent=periodSales.length;document.getElementById("reportItems").textContent=periodSales.reduce(function(sum,s){return sum+s.items.reduce(function(a,i){return a+i.qty;},0);},0);document.getElementById("reportLowStock").textContent=ingredients.filter(function(i){return Number(i.stock)<=Number(i.min);}).length;var map={};periodSales.forEach(function(s){s.items.forEach(function(i){if(!map[i.name])map[i.name]={qty:0,revenue:0};map[i.name].qty+=i.qty;map[i.name].revenue+=i.qty*i.price;});});var tbody=document.getElementById("reportTable"),rows=Object.entries(map);tbody.innerHTML=rows.length?rows.map(function(r){return'<tr><td>'+esc(r[0])+'</td><td>'+r[1].qty+'</td><td>'+money(r[1].revenue)+'</td></tr>';}).join(""):'<tr><td colspan="3" class="text-center text-muted">Нет продаж</td></tr>';var marginData=products.map(function(p){var cost=calculateCost(p),profit=p.price-cost,margin=cost===0?0:(profit/p.price*100);return{name:p.name,price:p.price,cost:cost,profit:profit,margin:margin};}).sort(function(a,b){return a.name.localeCompare(b.name);}),marginHtml='<div class="card"><h3>📈 Маржинальность товаров</h3><div class="table-wrap"><table><thead><tr><th>Товар</th><th>Цена</th><th>Себест.</th><th>Прибыль</th><th>Маржа</th></tr></thead><tbody>';marginData.forEach(function(p){var mc=p.margin>50?'badge-good':'badge-low';marginHtml+='<tr><td><b>'+esc(p.name)+'</b></td><td>'+money(p.price)+'</td><td>'+money(p.cost)+'</td><td style="color:'+(p.profit>=0?'#4ade80':'#f87171')+'">'+money(p.profit)+'</td><td><span class="badge '+mc+'">'+p.margin.toFixed(1)+'%</span></td></tr>';});marginHtml+='</tbody></table></div></div>';document.getElementById("profitReports").innerHTML=marginHtml;var fixedExpenses=Number(document.getElementById('fixedExpenses').value)||0,dailySalary=Number(document.getElementById('salaryExpense').value)||0,daysInPeriod=Math.max(1,Math.ceil((range.to-range.from)/(1000*60*60*24))+1),salaryTotal=dailySalary*daysInPeriod,grossProfit=periodSales.reduce(function(sum,s){return sum+(s.total-calculateCostSale(s));},0),periodPurchases=purchases.filter(function(p){var d=new Date(p.date);return d>=range.from&&d<=range.to;}),purchaseCost=periodPurchases.reduce(function(sum,p){return sum+(p.qty*p.price);},0),personalProfit=revenue-purchaseCost-fixedExpenses-salaryTotal;document.getElementById('grossProfitDisplay').textContent=money(grossProfit);document.getElementById('purchaseCostDisplay').textContent=money(purchaseCost);var personalDisplay=document.getElementById('personalProfitDisplay');personalDisplay.textContent=money(personalProfit);personalDisplay.style.color=personalProfit>=0?'#4ade80':'#f87171';function calculateCostSale(sale){var totalCost=0;for(var i=0;i<sale.items.length;i++){var item=sale.items[i],product=products.find(function(p){return p.id===item.id;});if(product)totalCost+=calculateCost(product)*item.qty;}return totalCost;}}
-function renderPurchases(){var tbody=document.getElementById("purchasesTable");if(!purchases.length){tbody.innerHTML='<tr><td colspan="5" class="text-center text-muted">Нет закупок</td></tr>';return;}tbody.innerHTML=purchases.map(function(p){return'<tr><td>'+new Date(p.date).toLocaleString("ru-RU")+'</td><td>'+esc(p.ingredientName)+'</td><td>'+p.qty+' '+p.unit+'</td><td>'+money(p.price)+'</td><td>'+money(p.qty*p.price)+'</td></tr>';}).join("");}
-function openPurchaseModal(){var select=document.getElementById('purchaseIngredient');select.innerHTML='<option value="">Выберите</option>';ingredients.forEach(function(i){var o=document.createElement('option');o.value=i.id;o.textContent=i.name+' ('+i.unit+')';select.appendChild(o);});document.getElementById('purchaseQty').value='';document.getElementById('purchasePrice').value='';document.getElementById('purchaseDate').value=new Date().toISOString().split('T')[0];document.getElementById('purchaseModal').classList.add('show');}
-function savePurchase(){var iid=Number(document.getElementById('purchaseIngredient').value),qty=Number(document.getElementById('purchaseQty').value),price=Number(document.getElementById('purchasePrice').value),date=document.getElementById('purchaseDate').value;if(!iid||qty<=0||!date){alert('Заполните все поля');return;}var ing=ingredients.find(function(i){return i.id===iid;});if(!ing)return;ing.stock=Number(ing.stock)+qty;purchases.push({id:Date.now(),date:new Date(date).toISOString(),ingredientId:ing.id,ingredientName:ing.name,unit:ing.unit,qty:qty,price:price});saveData();document.getElementById('purchaseModal').classList.remove('show');renderAll();alert('✅ Закупка добавлена!');}
-function exportToCSV(data,filename){if(!data.length){alert('Нет данных');return;}var headers=Object.keys(data[0]),csv='\uFEFF'+headers.join(';')+'\n';data.forEach(function(row){csv+=headers.map(function(h){var val=row[h]!==undefined?row[h]:'';if(typeof val==='string'&&val.includes(';'))val='"'+val+'"';return val;}).join(';')+'\n';});var blob=new Blob([csv],{type:'text/csv;charset=utf-8;'}),link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download=filename+'.csv';document.body.appendChild(link);link.click();document.body.removeChild(link);URL.revokeObjectURL(link.href);}
-function exportProducts(){exportToCSV(products.map(function(p){return{'Название':p.name,'Категория':p.category,'Цена':p.price,'Себестоимость':calculateCost(p).toFixed(2),'Маржа':calculateMargin(p).toFixed(1)+'%'};}),'Товары');}
-function exportIngredients(){exportToCSV(ingredients.map(function(i){return{'Название':i.name,'Ед.':i.unit,'Остаток':i.stock,'Мин.':i.min,'Цена':i.cost};}),'Ингредиенты');}
-function exportSales(){if(!sales.length){alert('Нет продаж');return;}exportToCSV(sales.map(function(s){return{'Дата':new Date(s.date).toLocaleString('ru-RU'),'Товары':s.items.map(function(i){return i.name+' × '+i.qty;}).join(', '),'Сумма':s.total,'Оплата':s.payment};}),'Продажи');}
-function exportReport(){var range=getDateRange(reportPeriod),periodSales=sales.filter(function(s){var d=new Date(s.date);return d>=range.from&&d<=range.to;});if(!periodSales.length){alert('Нет продаж за период');return;}var map={};periodSales.forEach(function(s){s.items.forEach(function(i){if(!map[i.name])map[i.name]={qty:0,revenue:0};map[i.name].qty+=i.qty;map[i.name].revenue+=i.qty*i.price;});});exportToCSV(Object.keys(map).map(function(name){return{'Товар':name,'Количество':map[name].qty,'Выручка':map[name].revenue};}),'Отчёт_за_период');}
-
-document.addEventListener('DOMContentLoaded',function(){
-    if(localStorage.getItem('coffeeAuth')==='true'){document.getElementById('loginScreen').style.display='none';document.getElementById('appContent').style.display='block';loadAllData();renderAll();}
-    document.getElementById('loginButton').addEventListener('click',function(){if(document.getElementById('loginUsername').value.trim()==='admin'&&document.getElementById('loginPassword').value.trim()==='admin123'){localStorage.setItem('coffeeAuth','true');document.getElementById('loginScreen').style.display='none';document.getElementById('appContent').style.display='block';loadAllData();renderAll();}else{document.getElementById('loginError').classList.add('show');setTimeout(function(){document.getElementById('loginError').classList.remove('show');},3000);}});
-    document.getElementById('logoutButton').addEventListener('click',function(){if(confirm('Выйти?')){saveData();localStorage.removeItem('coffeeAuth');location.reload();}});
-    document.querySelectorAll('#mainNav button').forEach(function(btn){btn.addEventListener('click',function(){document.querySelectorAll('#mainNav button').forEach(function(b){b.classList.remove('active');});document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active');});this.classList.add('active');document.getElementById(this.dataset.tab).classList.add('active');renderAll();});});
-    document.getElementById('categoryFilter').addEventListener('change',renderCash);
-    document.getElementById('cashSearch').addEventListener('input',renderCash);
-    document.getElementById('amountPaid').addEventListener('input',updateChange);
-    document.getElementById('completeSaleBtn').addEventListener('click',completeSale);
-    document.getElementById('clearCartBtn').addEventListener('click',function(){cart=[];renderCart();});
-    document.getElementById('addProductBtn').addEventListener('click',function(){openProductModal();});
-    document.getElementById('exportProductsBtn').addEventListener('click',exportProducts);
-    document.getElementById('resetProductsBtn').addEventListener('click',resetProducts);
-    document.getElementById('closeProductModal').addEventListener('click',function(){document.getElementById('productModal').classList.remove('show');});
-    document.getElementById('addRecipeLineBtn').addEventListener('click',function(){addRecipeLine();});
-    document.getElementById('saveProductBtn').addEventListener('click',saveProduct);
-    document.getElementById('productImageInput').addEventListener('change',function(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(ev){currentImageData=ev.target.result;document.getElementById('productImageUrl').value='';currentImageUrl='';var p=document.getElementById('productImagePreview');p.src=currentImageData;p.style.display='block';document.getElementById('imagePreviewContainer').style.display='block';};r.readAsDataURL(f);});
-    document.getElementById('productImageUrl').addEventListener('input',function(){var url=this.value;if(url&&url.trim()!==''){currentImageUrl=url.trim();document.getElementById('productImageInput').value='';currentImageData=null;var p=document.getElementById('productImagePreview');p.src=currentImageUrl;p.style.display='block';document.getElementById('imagePreviewContainer').style.display='block';}});
-    document.getElementById('removeProductImageBtn').addEventListener('click',function(){currentImageData=null;currentImageUrl='';document.getElementById('productImagePreview').style.display='none';document.getElementById('imagePreviewContainer').style.display='none';document.getElementById('productImageInput').value='';document.getElementById('productImageUrl').value='';});
-    document.getElementById('addIngredientBtn').addEventListener('click',function(){openIngredientModal();});
-    document.getElementById('exportIngredientsBtn').addEventListener('click',exportIngredients);
-    document.getElementById('closeIngredientModal').addEventListener('click',function(){document.getElementById('ingredientModal').classList.remove('show');});
-    document.getElementById('saveIngredientBtn').addEventListener('click',saveIngredient);
-    document.getElementById('checkLowStockBtn').addEventListener('click',function(){var low=ingredients.filter(function(i){return i.stock<=i.min;});if(low.length===0)alert('✅ Все в достатке!');else alert('⚠️ Низкий остаток:\n'+low.map(function(i){return i.name+' ('+i.stock+')';}).join(', '));});
-    document.getElementById('clearHistoryBtn').addEventListener('click',function(){if(confirm('Удалить всю историю?')){sales=[];saveData();renderAll();}});
+    document.getElementById('clearHistoryBtn').addEventListener('click',function(){if(confirm('Удалить всю историю?')){sales=[];saveAndSync();renderAll();}});
     document.getElementById('exportSalesBtn').addEventListener('click',exportSales);
     document.getElementById('historyDateFrom').addEventListener('change',renderHistory);
     document.getElementById('historyDateTo').addEventListener('change',renderHistory);
