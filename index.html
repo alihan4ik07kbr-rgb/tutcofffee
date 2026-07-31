@@ -128,6 +128,8 @@
         .recipe-line{display:grid;grid-template-columns:1fr 70px 30px;gap:8px;align-items:end;margin-bottom:8px}
         .recipe-line select,.recipe-line input{width:100%;padding:6px 8px;border:1px solid rgba(255,255,255,.06);border-radius:8px;background:rgba(255,255,255,.03);color:#fff;font-size:16px;min-height:44px}
         .grid{display:grid}
+        .notify-banner{position:fixed;top:20px;right:20px;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;padding:12px 20px;border-radius:16px;font-weight:700;font-size:14px;z-index:9999;animation:slideIn .5s ease,fadeOut .5s ease 4s forwards;box-shadow:0 10px 30px rgba(34,197,94,.4)}
+        @keyframes fadeOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(50px)}}
         @media(max-width:600px){body{font-size:14px}header h1{font-size:16px}.form-grid{grid-template-columns:1fr}.grid{grid-template-columns:1fr!important}.products-grid{grid-template-columns:repeat(auto-fill,minmax(95px,1fr));max-height:320px}.stat-grid{grid-template-columns:repeat(2,1fr)}.recipe-line{grid-template-columns:1fr 60px 26px}nav button{font-size:10px;padding:6px 10px;min-height:34px}.card{padding:12px}main{padding:10px}.product-card{min-height:95px;padding:12px 6px}.product-card .name{font-size:11px}.product-card .price{font-size:13px}.btn,.login-btn{min-height:44px}.btn{font-size:11px;padding:8px 16px}}
     </style>
 </head>
@@ -145,16 +147,9 @@
 </div>
 
 <div id="appContent">
-    <header><div><h1>☕ Касса</h1><p>Продажи, товары, ингредиенты</p></div><div class="header-right"><button id="logoutButton">🚪 Выйти</button></div></header>
+    <header><div><h1>☕ Касса</h1><p>Продажи, товары, ингредиенты</p></div><div class="header-right"><button id="notifyTestBtn">🔔 Тест</button><button id="logoutButton">🚪 Выйти</button></div></header>
     <nav id="mainNav">
-        <button class="active" data-tab="cash">Касса</button>
-        <button data-tab="products">Товары</button>
-        <button data-tab="ingredients">Ингредиенты</button>
-        <button data-tab="stock">Остатки</button>
-        <button data-tab="history">История</button>
-        <button data-tab="reports">Отчёт</button>
-        <button data-tab="purchases">Закупки</button>
-        <button data-tab="supplier">📦 Заказ</button>
+        <button class="active" data-tab="cash">Касса</button><button data-tab="products">Товары</button><button data-tab="ingredients">Ингредиенты</button><button data-tab="stock">Остатки</button><button data-tab="history">История</button><button data-tab="reports">Отчёт</button><button data-tab="purchases">Закупки</button><button data-tab="supplier">📦 Заказ</button>
     </nav>
     <main>
         <section id="cash" class="section active">
@@ -179,13 +174,68 @@
 
 <script>
 // ============================================================
-// СИНХРОНИЗАЦИЯ С ОБЛАКОМ
+// КОНФИГУРАЦИЯ
 // ============================================================
 const JSONBIN_BIN_ID = "6a66026bda38895dfe91d972";
 const JSONBIN_API_KEY = "$2a$10$yxI8bHjs.nSk80JN6OANguc6vaoFnGdPICGSNgpeBJSEIhegKWtWO";
 const JSONBIN_URL = "https://api.jsonbin.io/v3/b/" + JSONBIN_BIN_ID;
 const SYNC_ENABLED = true;
 
+// ============================================================
+// PUSH-УВЕДОМЛЕНИЯ (Web Push API)
+// ============================================================
+function requestNotificationPermission(){
+    if(!("Notification" in window)){
+        alert("Ваш браузер не поддерживает уведомления");
+        return;
+    }
+    if(Notification.permission === "granted"){
+        showNotification("✅ Уведомления уже включены!","Вы будете получать уведомления о продажах");
+        return;
+    }
+    if(Notification.permission === "denied"){
+        alert("❌ Уведомления заблокированы. Разрешите их в настройках браузера.");
+        return;
+    }
+    Notification.requestPermission().then(function(permission){
+        if(permission === "granted"){
+            showNotification("✅ Уведомления включены!","Теперь вы будете получать уведомления о новых продажах");
+        }else{
+            alert("❌ Уведомления не включены. Вы не будете получать уведомления о продажах.");
+        }
+    });
+}
+
+function showNotification(title, body){
+    if(!("Notification" in window))return;
+    if(Notification.permission === "granted"){
+        var options = {
+            body: body,
+            icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='192' height='192' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='40' fill='%230b1a2e'/%3E%3Ctext x='96' y='130' font-size='100' text-anchor='middle' fill='%23f6d365'%3E☕%3C/text%3E%3C/svg%3E",
+            badge: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Crect width='72' height='72' rx='15' fill='%23f6d365'/%3E%3Ctext x='36' y='50' font-size='40' text-anchor='middle'%3E☕%3C/text%3E%3C/svg%3E",
+            tag: "sale-notification",
+            requireInteraction: true,
+            vibrate: [200, 100, 200]
+        };
+        var notification = new Notification(title, options);
+        notification.onclick = function(){
+            window.focus();
+            notification.close();
+        };
+    }
+}
+
+function sendSaleNotification(items, total, payment){
+    var itemsList = items.map(function(i){return i.name+" × "+i.qty;}).join(", ");
+    showNotification(
+        "🛎 Новая продажа!",
+        "Товары: "+itemsList+"\nСумма: "+money(total)+"\nОплата: "+payment
+    );
+}
+
+// ============================================================
+// СИНХРОНИЗАЦИЯ С ОБЛАКОМ
+// ============================================================
 function syncToCloud(){
     if(!SYNC_ENABLED)return;
     var data={ingredients:ingredients,products:products,sales:sales,purchases:purchases,lastSync:new Date().toISOString()};
@@ -240,7 +290,10 @@ function addToCart(id){var p=products.find(function(x){return x.id===id;});if(!p
 function changeQty(id,d){var item=cart.find(function(x){return x.id===id;});if(!item)return;item.qty+=d;if(item.qty<=0)cart=cart.filter(function(x){return x.id!==id;});renderCart();}
 function renderCart(){var box=document.getElementById("cart");if(!cart.length){box.innerHTML='<div class="text-center text-muted" style="padding:20px">Корзина пуста</div>';document.getElementById("cartTotal").textContent="0 ₽";updateChange();return;}var total=0;box.innerHTML=cart.map(function(item){var p=products.find(function(x){return x.id===item.id;});if(!p)return'';var sum=p.price*item.qty;total+=sum;return'<div class="cart-item"><div class="info"><strong>'+esc(p.name)+'</strong><small>'+money(p.price)+' × '+item.qty+'</small></div><div class="qty-control"><button onclick="changeQty('+p.id+',-1)">−</button><span>'+item.qty+'</span><button onclick="changeQty('+p.id+',1)">+</button></div><b>'+money(sum)+'</b></div>';}).join("");document.getElementById("cartTotal").textContent=money(total);updateChange();}
 function updateChange(){var total=parseFloat((document.getElementById('cartTotal').textContent||"0").replace(/[^0-9.,]/g,'').replace(',','.'))||0,paid=parseFloat(document.getElementById('amountPaid').value)||0,change=paid-total,d=document.getElementById('changeDisplay');if(change>=0){d.textContent=money(change);d.style.color='#4ade80';}else{d.textContent='Недостаточно: '+money(Math.abs(change));d.style.color='#f87171';}}
-function completeSale(){if(!cart.length){alert("Корзина пуста");return;}for(var i=0;i<cart.length;i++){var item=cart[i],p=products.find(function(x){return x.id===item.id;});if(!p)continue;for(var j=0;j<(p.recipe||[]).length;j++){var r=p.recipe[j],ing=ingredients.find(function(x){return x.id===r.ingredientId;});if(ing&&Number(ing.stock)<Number(r.amount)*item.qty){alert("Недостаточно: "+ing.name);return;}}}var total=0,items=[];cart.forEach(function(item){var p=products.find(function(x){return x.id===item.id;});if(!p)return;total+=p.price*item.qty;items.push({id:p.id,name:p.name,qty:item.qty,price:p.price});(p.recipe||[]).forEach(function(r){var ing=ingredients.find(function(x){return x.id===r.ingredientId;});if(ing)ing.stock=Number(ing.stock)-Number(r.amount)*item.qty;});});sales.unshift({id:Date.now(),date:new Date().toISOString(),items:items,total:total,payment:document.getElementById("payment").value});cart=[];document.getElementById('amountPaid').value=0;saveAndSync();renderAll();alert('✅ Продажа оформлена! Сумма: '+money(total));}
+function completeSale(){if(!cart.length){alert("Корзина пуста");return;}for(var i=0;i<cart.length;i++){var item=cart[i],p=products.find(function(x){return x.id===item.id;});if(!p)continue;for(var j=0;j<(p.recipe||[]).length;j++){var r=p.recipe[j],ing=ingredients.find(function(x){return x.id===r.ingredientId;});if(ing&&Number(ing.stock)<Number(r.amount)*item.qty){alert("Недостаточно: "+ing.name);return;}}}var total=0,items=[];cart.forEach(function(item){var p=products.find(function(x){return x.id===item.id;});if(!p)return;total+=p.price*item.qty;items.push({id:p.id,name:p.name,qty:item.qty,price:p.price});(p.recipe||[]).forEach(function(r){var ing=ingredients.find(function(x){return x.id===r.ingredientId;});if(ing)ing.stock=Number(ing.stock)-Number(r.amount)*item.qty;});});sales.unshift({id:Date.now(),date:new Date().toISOString(),items:items,total:total,payment:document.getElementById("payment").value});cart=[];document.getElementById('amountPaid').value=0;saveAndSync();renderAll();
+    // ОТПРАВЛЯЕМ УВЕДОМЛЕНИЕ О ПРОДАЖЕ
+    sendSaleNotification(items, total, document.getElementById("payment").value);
+    alert('✅ Продажа оформлена! Сумма: '+money(total));}
 function openProductModal(id){document.getElementById("productId").value=id||"";document.getElementById("recipe").innerHTML="";currentImageData=null;currentImageUrl='';document.getElementById('productImagePreview').style.display='none';document.getElementById('imagePreviewContainer').style.display='none';document.getElementById('productImageInput').value='';document.getElementById('productImageUrl').value='';if(id){var p=products.find(function(x){return x.id===id;});if(!p)return;document.getElementById("productModalTitle").textContent="Редактировать товар";document.getElementById("productName").value=p.name;document.getElementById("productCategory").value=p.category||"";document.getElementById("productPrice").value=p.price;if(p.image){var preview=document.getElementById('productImagePreview');preview.src=p.image;preview.style.display='block';document.getElementById('imagePreviewContainer').style.display='block';if(p.image.startsWith('http')){currentImageUrl=p.image;document.getElementById('productImageUrl').value=p.image;}else{currentImageData=p.image;}}(p.recipe||[]).forEach(function(r){addRecipeLine(r.ingredientId,r.amount);});}else{document.getElementById("productModalTitle").textContent="Добавить товар";document.getElementById("productName").value="";document.getElementById("productCategory").value="";document.getElementById("productPrice").value="";addRecipeLine();}document.getElementById("productModal").classList.add("show");}
 function addRecipeLine(iid,amt){var box=document.getElementById("recipe"),line=document.createElement("div");line.className="recipe-line";line.innerHTML='<select class="recipe-ing" style="width:100%;padding:4px 6px;border:1px solid rgba(255,255,255,0.1);border-radius:5px;background:rgba(255,255,255,0.05);color:#fff;font-size:16px;min-height:44px"><option value="">Выберите</option>'+ingredients.map(function(i){return'<option value="'+i.id+'" '+(String(i.id)===String(iid||"")?"selected":"")+'>'+esc(i.name)+' ('+i.unit+')</option>';}).join("")+'</select><input class="recipe-amount" type="number" min="0" step="0.01" value="'+(amt||"")+'" placeholder="Кол-во" style="width:100%;padding:4px 6px;border:1px solid rgba(255,255,255,0.1);border-radius:5px;background:rgba(255,255,255,0.05);color:#fff;font-size:16px;min-height:44px"><button class="btn btn-sm btn-red" onclick="this.parentElement.remove()" style="padding:1px 6px;font-size:14px;min-height:28px">×</button>';box.appendChild(line);}
 function saveProduct(){var name=document.getElementById("productName").value.trim(),cat=document.getElementById("productCategory").value.trim(),price=Number(document.getElementById("productPrice").value),id=Number(document.getElementById("productId").value);if(!name||price<0){alert("Заполните название и цену");return;}var recipe=[...document.querySelectorAll(".recipe-line")].map(function(l){return{ingredientId:Number(l.querySelector(".recipe-ing").value),amount:Number(l.querySelector(".recipe-amount").value)};}).filter(function(x){return x.ingredientId&&x.amount>0;});var img='';if(currentImageData)img=currentImageData;else if(currentImageUrl)img=currentImageUrl;if(id){var p=products.find(function(x){return x.id===id;});if(p){p.name=name;p.category=cat;p.price=price;p.recipe=recipe;p.image=img;}}else{products.push({id:Date.now(),name:name,category:cat,price:price,recipe:recipe,image:img});}saveAndSync();document.getElementById("productModal").classList.remove("show");renderAll();}
@@ -314,6 +367,18 @@ document.addEventListener('DOMContentLoaded',function(){
     document.getElementById('savePurchaseBtn').addEventListener('click',savePurchase);
     document.getElementById('exportSupplierOrderBtn').addEventListener('click',exportSupplierOrder);
     document.querySelectorAll('.modal').forEach(function(modal){modal.addEventListener('click',function(e){if(e.target===this)this.classList.remove('show');});});
+    
+    // Кнопка теста уведомлений
+    document.getElementById('notifyTestBtn').addEventListener('click',function(){
+        requestNotificationPermission();
+    });
+    
+    // Запрашиваем разрешение на уведомления при входе
+    setTimeout(function(){
+        if(Notification.permission === "default"){
+            requestNotificationPermission();
+        }
+    }, 1000);
 });
 
 loadAllData();
